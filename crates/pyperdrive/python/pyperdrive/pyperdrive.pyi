@@ -6,13 +6,9 @@ from . import types
 class HyperdriveState:
     """A class representing the hyperdrive contract state."""
 
-    def __new__(
-        cls, pool_config: types.PoolConfig, pool_info: types.PoolInfo
-    ) -> HyperdriveState:
+    def __new__(cls, pool_config: types.PoolConfig, pool_info: types.PoolInfo) -> HyperdriveState:
         """Create the HyperdriveState instance."""
-    def __init__(
-        self, pool_config: types.PoolConfig, pool_info: types.PoolInfo
-    ) -> None:
+    def __init__(self, pool_config: types.PoolConfig, pool_info: types.PoolInfo) -> None:
         """Initializes the hyperdrive state.
 
         Arguments
@@ -45,9 +41,7 @@ class HyperdriveState:
         str
             The maximum long as a string representation of a solidity uint256 value.
         """
-    def get_max_short(
-        self, budget: str, open_share_price: str, maybe_max_iterations: int
-    ) -> str:
+    def get_max_short(self, budget: str, open_share_price: str, maybe_max_iterations: int) -> str:
         """Gets the max amount of bonds that can be shorted for the given budget.
 
         Arguments

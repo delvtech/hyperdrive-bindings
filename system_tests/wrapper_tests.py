@@ -104,9 +104,7 @@ def test_max_short_fail_conversion():
     budget = "10000000000000000000000"  # 10k base
     # bad string
     open_share_price = "asdf"
-    with pytest.raises(
-        ValueError, match="Failed to convert open_share_price string to U256"
-    ):
+    with pytest.raises(ValueError, match="Failed to convert open_share_price string to U256"):
         state.get_max_short(budget, open_share_price, max_iterations)
 
 
