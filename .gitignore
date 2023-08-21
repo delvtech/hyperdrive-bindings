@@ -1,0 +1,49 @@
+# simlinked hyperdrive repo
+hyperdrive
+
+# build cache
+cache/
+out/
+forge-cache/
+.vscode/
+broadcast
+.env
+node_modules/
+yarn-error.log
+
+# random files on MacOs
+.DS_Store
+
+# python build
+*.egg-info
+.cache
+.build
+.python-version
+.venv
+build/
+dist/
+
+# nix/shell extension - https://direnv.net/
+.direnv
+
+# vim
+remappings.txt
+
+# code coverage
+lcov.info
+
+# Ape
+.cache
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# pytest
+.pytest_cache
+
+# The generated reproduction test.
+test/Generated.t.sol
+
+# Rust
+target/
+crates/hyperdrive-wrappers/src/wrappers/
