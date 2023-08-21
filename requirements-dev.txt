@@ -1,0 +1,5 @@
+black
+pylint
+pyright
+pytest
+setuptools-rust

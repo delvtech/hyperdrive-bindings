@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         buildplat:
-          - [ubuntu-22.04, manylinux_2_28]
+          #- [ubuntu-22.04, manylinux_2_28]
           - [macos-12, macosx_x86_64]
           - [windows-2019, win_amd64]
         python-version: [cp310]
@@ -26,6 +26,13 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: check out hyperdrive
+        uses: actions/checkout@master
+        with:
+          repository: delvtech/hyperdrive
+          path: "./hyperdrive"
+          ssh-key: ${{ secrets.DELVTECH_ACCESS_KEY }}
 
       # NOTE: This is needed to ensure that hyperdrive-wrappers builds correctly.
       - name: install foundry
@@ -41,15 +48,15 @@ jobs:
       - name: set up python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: install python dependencies
         run: pip install --upgrade pip && pip install --upgrade setuptools setuptools-rust wheel twine cibuildwheel platformdirs
 
-      - name: Build wheels
+      - name: build wheels
         uses: pypa/cibuildwheel@v2.15.0
         env:
-          CIBW_BUILD: '${{ matrix.python-version }}-*'
+          CIBW_BUILD: "${{ matrix.python-version }}-*"
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
           CIBW_MANYLINUX_X86_64_IMAGE: ${{ matrix.buildplat[1] }} # specify linux distro
@@ -70,8 +77,9 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
         with:
           output-dir: wheelhouse
-          package-dir: crates/hyperdrive-math-py
+          package-dir: crates/pyperdrive
 
-      - uses: actions/upload-artifact@v3
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl

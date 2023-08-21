@@ -1,0 +1,30 @@
+[project]
+name = "pyperdrive"
+version = "0.1.0"
+authors = [
+    { name = "Dylan Paiton", email = "dylan@delv.tech" },
+    { name = "Matthew Brown", email = "matt@delv.tech" },
+    { name = "Sheng Lundquist", email = "sheng@delv.tech" },
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = ["--tb=short"]
+norecursedirs = ".git examples hyperdrive"
+python_files = ["*_test.py", "*_tests.py"]
+
+[tool.pylint.format]
+max-line-length = "120"
+
+[tool.black]
+line-length = "120"
+extend-exclude = "\\.ipynb"
+
+[tool.pylint]
+exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
+
+[tool.pylance]
+exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
+
+[tool.pyright]
+exclude = ["hyperdrive", ".venv", ".vscode", "docs"]

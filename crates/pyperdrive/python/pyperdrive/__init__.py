@@ -1,2 +1,3 @@
 """Python module wrapping the Rust implementation of HyperdriveMath"""
-from .pyperdrive import *
+# pylint: disable=import-self
+from .pyperdrive import *  # type: ignore
