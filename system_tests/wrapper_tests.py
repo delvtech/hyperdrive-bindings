@@ -1,7 +1,7 @@
 """Tests for hyperdrive_math.rs wrappers"""
 import pytest
 
-from pyperdrive import HyperdriveState
+from pyperdrive import HyperdriveState  # pylint: disable=no-name-in-module
 from pyperdrive.types import Fees, PoolConfig, PoolInfo
 
 sample_pool_config = PoolConfig(
@@ -56,7 +56,7 @@ def test_max_long():
     budget = "1000000000000000000"  # 1 base
     max_iterations = 20
     max_long = state.get_max_long(budget, max_iterations)
-    assert max_long > 0  # should == "1000000000000000000", or 1 base
+    assert int(max_long) > 0  # should == "1000000000000000000", or 1 base
 
 
 def test_max_long_fail_conversion():
@@ -82,7 +82,7 @@ def test_max_short():
     open_share_price = "1000000000000000000"  # 1 base
     max_iterations = 20
     max_short = state.get_max_short(budget, open_share_price, max_iterations)
-    assert max_short > "0"  # should == "2583754033693357393077", or apprx 2583 base
+    assert int(max_short) > 0  # should == "2583754033693357393077", or apprx 2583 base
 
 
 def test_max_short_fail_conversion():

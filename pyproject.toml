@@ -11,7 +11,7 @@ authors = [
 minversion = "6.0"
 addopts = ["--tb=short"]
 norecursedirs = ".git examples hyperdrive"
-python_files = "*_test.py"
+python_files = ["*_test.py", "*_tests.py"]
 
 [tool.pylint.format]
 max-line-length = "120"
