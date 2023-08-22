@@ -16,11 +16,35 @@ impl HyperdriveState {
     pub(crate) fn new(state: State) -> Self {
         HyperdriveState { state }
     }
+
+    pub(crate) fn new_from_pool(pool_config: &PyAny, pool_info: &PyAny) -> Self {
+        let rust_pool_config = match PyPoolConfig::extract(pool_config) {
+            Ok(py_pool_config) => py_pool_config.pool_config,
+            Err(err) => {
+                panic!("Error extracting pool config: {:?}", err);
+            }
+        };
+        let rust_pool_info = match PyPoolInfo::extract(pool_info) {
+            Ok(py_pool_info) => py_pool_info.pool_info,
+            Err(err) => {
+                // Handle the error, e.g., printing an error message or panicking
+                panic!("Error extracting pool info: {:?}", err);
+            }
+        };
+        let state = State::new(rust_pool_config, rust_pool_info);
+        HyperdriveState::new(state)
+    }
 }
 
 impl From<State> for HyperdriveState {
     fn from(state: State) -> Self {
-        HyperdriveState { state }
+        HyperdriveState::new(state)
+    }
+}
+
+impl From<(&PyAny, &PyAny)> for HyperdriveState {
+    fn from(args: (&PyAny, &PyAny)) -> Self {
+        HyperdriveState::new_from_pool(args.0, args.1)
     }
 }
 
@@ -194,6 +218,42 @@ impl HyperdriveState {
     }
 }
 
+/// Get the spot price for a Hyperdrive market with the given pool state
+#[pyfunction]
+fn get_spot_price(pool_config: &PyAny, pool_info: &PyAny) -> PyResult<String> {
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    let spot_price = hyperdrive_state.get_spot_price()?;
+    Ok(spot_price)
+}
+
+/// Get the max long for a Hyperdrive market with the given pool state
+#[pyfunction]
+fn get_max_long(
+    pool_config: &PyAny,
+    pool_info: &PyAny,
+    budget: &str,
+    maybe_max_iterations: Option<usize>,
+) -> PyResult<String> {
+
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    let max_long = hyperdrive_state.get_max_long(budget, maybe_max_iterations)?;
+    Ok(max_long)
+}
+
+/// Get the max long for a Hyperdrive market with the given pool state
+#[pyfunction]
+fn get_max_short(
+    pool_config: &PyAny,
+    pool_info: &PyAny,
+    budget: &str,
+    open_share_price: &str,
+    maybe_max_iterations: Option<usize>,
+) -> PyResult<String> {
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    let max_short = hyperdrive_state.get_max_short(budget, open_share_price, maybe_max_iterations)?;
+    Ok(max_short)
+}
+
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
 ///   - get_spot_price
@@ -201,5 +261,8 @@ impl HyperdriveState {
 #[pyo3(name = "pyperdrive")]
 fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<HyperdriveState>()?;
+    m.add_function(wrap_pyfunction!(get_spot_price, m)?)?;
+    m.add_function(wrap_pyfunction!(get_max_long, m)?)?;
+    m.add_function(wrap_pyfunction!(get_max_short, m)?)?;
     Ok(())
 }
