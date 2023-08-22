@@ -1,4 +1,4 @@
-name: Python test
+name: Python lint
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: python test
+    name: python lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
