@@ -23,7 +23,7 @@ jobs:
         with:
           repository: delvtech/hyperdrive
           path: "./hyperdrive"
-          ssh-key: ${{ secrets.DELVTECH_ACCESS_KEY }}
+          ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
       # NOTE: This is needed to ensure that hyperdrive-wrappers builds correctly.
       - name: install foundry
