@@ -1,13 +1,3 @@
 [workspace]
-
 resolver = "2"
-members = [
-    "hyperdrive/crates/fixed-point",
-    "hyperdrive/crates/fixed-point-macros",
-    "hyperdrive/crates/hyperdrive-addresses",
-    "hyperdrive/crates/hyperdrive-math",
-    "hyperdrive/crates/hyperdrive-wrappers",
-    "hyperdrive/crates/test-utils",
-    "hyperdrive/test/rust",
-    "crates/pyperdrive",
-]
+members = ["crates/pyperdrive"]
