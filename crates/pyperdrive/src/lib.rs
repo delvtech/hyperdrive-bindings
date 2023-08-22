@@ -234,7 +234,6 @@ fn get_max_long(
     budget: &str,
     maybe_max_iterations: Option<usize>,
 ) -> PyResult<String> {
-
     let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
     let max_long = hyperdrive_state.get_max_long(budget, maybe_max_iterations)?;
     Ok(max_long)

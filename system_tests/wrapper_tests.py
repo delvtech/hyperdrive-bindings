@@ -63,7 +63,13 @@ def test_max_long():
     max_long = state.get_max_long(budget, max_iterations)
     assert int(max_long) > 0  # should == "1000000000000000000", or 1 base
     # test the helper function
-    assert pyperdrive.get_max_long(sample_pool_config, sample_pool_info, budget, max_iterations) == max_long
+    max_long_direct = pyperdrive.get_max_long(
+        sample_pool_config,
+        sample_pool_info,
+        budget,
+        max_iterations,
+    )
+    assert max_long_direct == max_long
 
 
 def test_max_long_fail_conversion():
@@ -92,10 +98,14 @@ def test_max_short():
     max_short = state.get_max_short(budget, open_share_price, max_iterations)
     assert int(max_short) > 0  # should == "2583754033693357393077", or apprx 2583 base
     # test the helper function
-    assert (
-        pyperdrive.get_max_short(sample_pool_config, sample_pool_info, budget, open_share_price, max_iterations)
-        == max_short
+    max_short_direct = pyperdrive.get_max_short(
+        sample_pool_config,
+        sample_pool_info,
+        budget,
+        open_share_price,
+        max_iterations,
     )
+    assert max_short_direct == max_short
 
 
 def test_max_short_fail_conversion():
