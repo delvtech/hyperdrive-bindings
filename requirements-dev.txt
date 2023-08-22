@@ -1,5 +1,8 @@
 black
+build
 pylint
 pyright
 pytest
+setuptools
 setuptools-rust
+wheel

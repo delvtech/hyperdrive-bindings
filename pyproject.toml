@@ -6,6 +6,7 @@ authors = [
     { name = "Matthew Brown", email = "matt@delv.tech" },
     { name = "Sheng Lundquist", email = "sheng@delv.tech" },
 ]
+requires-python = ">=3.7"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
