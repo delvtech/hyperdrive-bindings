@@ -14,8 +14,7 @@ cd crates/pyperdrive
 echo "build the wheel for the current platform"
 python setup.py bdist_wheel
 
-echo "nav back to project root"
-cd ../.. 
-
-echo "copy built wheel files from pyperdrive into packages"
-cp crates/pyperdrive/dist/* .wheelhouse/
+echo "copy built wheel files from pyperdrive into wheelhouse"
+# wheelhouse is in the package root
+mkdir ../../wheelhouse 
+cp dist/* ../../wheelhouse/
