@@ -134,34 +134,32 @@ impl FromPyObject<'_> for PyPoolInfo {
     fn extract(ob: &PyAny) -> PyResult<Self> {
         let share_reserves = extract_u256_from_attr(ob, "share_reserves")?;
         let bond_reserves = extract_u256_from_attr(ob, "bond_reserves")?;
-        let lp_total_supply = extract_u256_from_attr(ob, "lp_total_supply")?;
+        let long_exposure = extract_i256_from_attr(ob, "long_exposure")?;
         let share_price = extract_u256_from_attr(ob, "share_price")?;
         let longs_outstanding = extract_u256_from_attr(ob, "longs_outstanding")?;
-        let long_average_maturity_time = extract_u256_from_attr(ob, "long_average_maturity_time")?;
         let shorts_outstanding = extract_u256_from_attr(ob, "shorts_outstanding")?;
+        let long_average_maturity_time = extract_u256_from_attr(ob, "long_average_maturity_time")?;
         let short_average_maturity_time =
             extract_u256_from_attr(ob, "short_average_maturity_time")?;
-        let short_base_volume = extract_u256_from_attr(ob, "short_base_volume")?;
+        let lp_total_supply = extract_u256_from_attr(ob, "lp_total_supply")?;
+        let lp_share_price = extract_u256_from_attr(ob, "lp_share_price")?;
+        let withdrawal_shares_proceeds = extract_u256_from_attr(ob, "withdrawal_shares_proceeds")?;
         let withdrawal_shares_ready_to_withdraw =
             extract_u256_from_attr(ob, "withdrawal_shares_ready_to_withdraw")?;
-        let withdrawal_shares_proceeds = extract_u256_from_attr(ob, "withdrawal_shares_proceeds")?;
-        let lp_share_price = extract_u256_from_attr(ob, "lp_share_price")?;
-        let long_exposure = extract_i256_from_attr(ob, "long_exposure")?;
 
         let pool_info = PoolInfo {
             share_reserves,
             bond_reserves,
-            lp_total_supply,
+            long_exposure,
             share_price,
             longs_outstanding,
-            long_average_maturity_time,
             shorts_outstanding,
+            long_average_maturity_time,
             short_average_maturity_time,
-            short_base_volume,
+            lp_total_supply,
             withdrawal_shares_ready_to_withdraw,
             withdrawal_shares_proceeds,
             lp_share_price,
-            long_exposure,
         };
 
         Ok(PyPoolInfo::new(pool_info))
