@@ -19,7 +19,7 @@ jobs:
           #- [ubuntu-22.04, manylinux_2_28]
           - [macos-12, macosx_x86_64]
           - [macos-12, macosx_arm64]
-          - [macos-12, macosx_universal2]
+          #- [macos-12, macosx_universal2]
           - [windows-2019, win_amd64]
         python-version: [cp310]
 
@@ -61,6 +61,7 @@ jobs:
           CIBW_BUILD: "${{ matrix.python-version }}-*"
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
+          CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_MANYLINUX_X86_64_IMAGE: ${{ matrix.buildplat[1] }} # specify linux distro
           CIBW_MANYLINUX_I686_IMAGE: ${{ matrix.buildplat[1] }}
           CIBW_MANYLINUX_PYPY_X86_64_IMAGE: ${{ matrix.buildplat[1] }}
