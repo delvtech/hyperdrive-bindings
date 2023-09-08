@@ -67,7 +67,7 @@ jobs:
         run: |
           files="${{ steps.list_files.outputs.files }}"
           if [ -n "$files" ]; then
-            python -m pyright $files
+            python -m pyright --project pyproject.toml $files
           else
             echo "No Python files found."
           fi

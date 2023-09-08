@@ -29,13 +29,15 @@ class HyperdriveState:
         str
             The spot price as a string representation of a solidity uint256 value.
         """
-    def get_max_long(self, budget: str, maybe_max_iterations: int) -> str:
+    def get_max_long(self, budget: str, checkpoint_exposure: str, maybe_max_iterations: int) -> str:
         """Get the max amount of bonds that can be purchased for the given budget.
 
         Arguments
         ---------
         budget : str
             The account budget in base for making a long.
+        checkpoint_exposure : str
+            The net exposure for the given checkpoint.
         maybe_max_iterations : int
             The number of iterations to use for the Newtonian method.
 
@@ -66,6 +68,7 @@ def get_max_long(
     pool_config: types.PoolConfig,
     pool_info: types.PoolInfo,
     budget: str,
+    checkpoint_exposure: str,
     maybe_max_iterations: int,
 ) -> str:
     """Get the max amount of bonds that can be purchased for the given budget.
@@ -78,7 +81,7 @@ def get_max_long(
         Current state information of the hyperdrive contract. Includes things like reserve levels and share prices.
     budget : str (FixedPoint)
         The account budget in base for making a long.
-    checkpoint_exposure : int
+    checkpoint_exposure : str
         The net exposure for the given checkpoint.
     maybe_max_iterations : int
         The number of iterations to use for the Newtonian method.

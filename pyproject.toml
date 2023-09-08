@@ -29,3 +29,4 @@ exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
 
 [tool.pyright]
 exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
+reportMissingImports = false
