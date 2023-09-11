@@ -16,6 +16,7 @@ yarn-error.log
 
 # python build
 *.egg-info
+*.so
 .cache
 .build
 .python-version
