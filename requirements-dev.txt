@@ -1,8 +1,11 @@
+cibuildwheel
 black
 build
+platformdirs
 pylint
 pyright
 pytest
 setuptools
 setuptools-rust
+twine
 wheel
