@@ -1,14 +1,16 @@
-name: build linux wheel
+name: build linux wheels
 
 on:
   push:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
-    name: build linux wheel
+    name: build on linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -32,7 +34,7 @@ jobs:
           cache: "pip"
           token: ${{github.token}}
 
-      - name: upgrade pip
+      - name: set up pip
         run: python -m pip install --upgrade pip
 
       - name: check out hyperdrive
