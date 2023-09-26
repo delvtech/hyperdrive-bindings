@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          #ref: "v0.0.12" # TODO: Once they cut a new release we can add this ref
+          ref: "v0.0.13"
           path: "./hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
