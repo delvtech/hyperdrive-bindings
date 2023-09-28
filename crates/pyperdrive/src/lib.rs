@@ -5,8 +5,7 @@ use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::PyErr;
 
-use hyperdrive_math::hyperdrive_math::State;
-use hyperdrie_math::utils::*;
+use hyperdrive_math::State;
 
 #[pyclass(module = "pyperdrive", name = "HyperdriveState")]
 pub struct HyperdriveState {
@@ -60,6 +59,13 @@ fn extract_u256_from_attr(ob: &PyAny, attr: &str) -> PyResult<U256> {
         .map_err(|e| PyErr::new::<PyValueError, _>(format!("Invalid U256 for {}: {}", attr, e)))
 }
 
+// Helper function to extract I256 values from Python object attributes
+fn extract_i256_from_attr(ob: &PyAny, attr: &str) -> PyResult<I256> {
+    let value_str: String = ob.getattr(attr)?.extract()?;
+    I256::from_dec_str(&value_str)
+        .map_err(|e| PyErr::new::<PyValueError, _>(format!("Invalid I256 for {}: {}", attr, e)))
+}
+
 // Helper function to extract Ethereum Address values from Python object attributes
 fn extract_address_from_attr(ob: &PyAny, attr: &str) -> PyResult<Address> {
     let address_str: String = ob.getattr(attr)?.extract()?;
@@ -87,6 +93,7 @@ impl FromPyObject<'_> for PyPoolConfig {
         let base_token = extract_address_from_attr(ob, "base_token")?;
         let initial_share_price = extract_u256_from_attr(ob, "initial_share_price")?;
         let minimum_share_reserves = extract_u256_from_attr(ob, "minimum_share_reserves")?;
+        let minimum_transaction_amount = extract_u256_from_attr(ob, "minimum_transaction_amount")?;
         let position_duration = extract_u256_from_attr(ob, "position_duration")?;
         let checkpoint_duration = extract_u256_from_attr(ob, "checkpoint_duration")?;
         let time_stretch = extract_u256_from_attr(ob, "time_stretch")?;
@@ -101,6 +108,7 @@ impl FromPyObject<'_> for PyPoolConfig {
                 base_token,
                 initial_share_price,
                 minimum_share_reserves,
+                minimum_transaction_amount,
                 position_duration,
                 checkpoint_duration,
                 time_stretch,
@@ -128,6 +136,7 @@ impl FromPyObject<'_> for PyPoolInfo {
     fn extract(ob: &PyAny) -> PyResult<Self> {
         let share_reserves = extract_u256_from_attr(ob, "share_reserves")?;
         let bond_reserves = extract_u256_from_attr(ob, "bond_reserves")?;
+        let share_adjustment = extract_i256_from_attr(ob, "share_adjustment")?;
         let long_exposure = extract_u256_from_attr(ob, "long_exposure")?;
         let share_price = extract_u256_from_attr(ob, "share_price")?;
         let longs_outstanding = extract_u256_from_attr(ob, "longs_outstanding")?;
@@ -144,6 +153,7 @@ impl FromPyObject<'_> for PyPoolInfo {
         let pool_info = PoolInfo {
             share_reserves,
             bond_reserves,
+            share_adjustment,
             long_exposure,
             share_price,
             longs_outstanding,
@@ -182,8 +192,12 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn to_checkpoint(%self, time: U256) -> PyResult<U256> {
-        let result = self.state.to_checkpoint(time);
+    pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
+        let time_int = U256::from_dec_str(time).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert time string to U256")
+        })?;
+        let result_int = self.state.to_checkpoint(time_int);
+        let result = result_int.to_string();
         return Ok(result);
     }
 
@@ -208,6 +222,7 @@ impl HyperdriveState {
         &self,
         budget: &str,
         open_share_price: &str,
+        checkpoint_exposure: &str,
         maybe_conservative_price: Option<&str>,
         maybe_max_iterations: Option<usize>,
     ) -> PyResult<String> {
@@ -218,6 +233,9 @@ impl HyperdriveState {
             FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
                 PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
             })?);
+        let checkpoint_exposure_i = I256::from_dec_str(checkpoint_exposure).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
+            })?;
         let maybe_conservative_price_fp = if let Some(conservative_price) = maybe_conservative_price {
             Some(FixedPoint::from(U256::from_dec_str(conservative_price).map_err(|_| {
                 PyErr::new::<PyValueError, _>("Failed to convert maybe_conservative_price string to U256")
@@ -227,7 +245,7 @@ impl HyperdriveState {
         };
         let result_fp =
             self.state
-                .get_max_short(budget_fp, open_share_price_fp, maybe_conservative_price_fp, maybe_max_iterations);
+                .get_max_short(budget_fp, open_share_price_fp, checkpoint_exposure_i, maybe_conservative_price_fp, maybe_max_iterations);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -237,8 +255,7 @@ impl HyperdriveState {
 #[pyfunction]
 fn get_spot_price(pool_config: &PyAny, pool_info: &PyAny) -> PyResult<String> {
     let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
-    let spot_price = hyperdrive_state.get_spot_price()?;
-    Ok(spot_price)
+    return hyperdrive_state.get_spot_price();
 }
 
 /// Get the max long for a Hyperdrive market with the given pool state
@@ -251,8 +268,7 @@ fn get_max_long(
     maybe_max_iterations: Option<usize>,
 ) -> PyResult<String> {
     let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
-    let max_long = hyperdrive_state.get_max_long(budget, checkpoint_exposure, maybe_max_iterations)?;
-    Ok(max_long)
+    return hyperdrive_state.get_max_long(budget, checkpoint_exposure, maybe_max_iterations);
 }
 
 /// Get the max short for a Hyperdrive market with the given pool state
@@ -262,12 +278,12 @@ fn get_max_short(
     pool_info: &PyAny,
     budget: &str,
     open_share_price: &str,
+    checkpoint_exposure: &str,
     maybe_conservative_price: Option<&str>,
     maybe_max_iterations: Option<usize>,
 ) -> PyResult<String> {
     let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
-    let max_short = hyperdrive_state.get_max_short(budget, open_share_price, maybe_conservative_price, maybe_max_iterations)?;
-    Ok(max_short)
+    return hyperdrive_state.get_max_short(budget, open_share_price, checkpoint_exposure, maybe_conservative_price, maybe_max_iterations);
 }
 
 /// Get the time stretch constant
@@ -277,7 +293,7 @@ pub fn get_time_stretch(mut rate: &str) -> PyResult<String> {
         FixedPoint::from(U256::from_dec_str(rate).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert rate string to U256")
         })?);
-    let result_fp = hyperdrie_math::utils::get_time_stretch(rate_fp)
+    let result_fp = hyperdrie_math::utils::get_time_stretch(rate_fp);
     let result = U256::from(result_fp).to_string();
     return Ok(result);
 }
@@ -296,7 +312,7 @@ pub fn get_effective_share_reserves(
         I256::from_dec_str(share_adjustment).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert share_adjustment string to U256")
         })?;
-    let result_fp = hyperdrie_math::utils::get_effective_share_reserves(share_reserves_fp, share_adjustment_int)
+    let result_fp = hyperdrie_math::utils::get_effective_share_reserves(share_reserves_fp, share_adjustment_int);
     let result = U256::from(result_fp).to_string();
     return Ok(result)
     

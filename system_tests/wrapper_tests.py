@@ -44,6 +44,23 @@ def test_initialization():
     assert state is not None, "State initialization failed."
 
 
+def test_get_spot_rate():
+    """test get_spot_rate."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    spot_rate = state.get_spot_rate()
+    assert spot_rate is not None, "Failed to get spot rate."
+    assert isinstance(spot_rate, str), "Expected spot rate to be a string."
+    assert int(spot_rate) > 0, "Expected spot rate to > 0."
+
+
+def test_to_checkpoint():
+    """test to_checkpoint."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    checkpoint_time = state.to_checkpoint(time=100)
+    assert checkpoint_time is not None, "Failed to get checkpoint time."
+    assert isinstance(checkpoint_time, str), "Expected checkpoint time to be a string."
+
+
 def test_get_spot_price():
     """test get_spot_price."""
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
