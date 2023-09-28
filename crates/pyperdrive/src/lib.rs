@@ -6,6 +6,7 @@ use pyo3::prelude::*;
 use pyo3::PyErr;
 
 use hyperdrive_math::hyperdrive_math::State;
+use hyperdrie_math::utils::*;
 
 #[pyclass(module = "pyperdrive", name = "HyperdriveState")]
 pub struct HyperdriveState {
@@ -175,6 +176,17 @@ impl HyperdriveState {
         return Ok(result);
     }
 
+    pub fn get_spot_rate(&self) -> PyResult<String> {
+        let result_fp = self.state.get_spot_rate();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn to_checkpoint(%self, time: U256) -> PyResult<U256> {
+        let result = self.state.to_checkpoint(time);
+        return Ok(result);
+    }
+
     pub fn get_max_long(
         &self,
         budget: &str,
@@ -243,7 +255,7 @@ fn get_max_long(
     Ok(max_long)
 }
 
-/// Get the max long for a Hyperdrive market with the given pool state
+/// Get the max short for a Hyperdrive market with the given pool state
 #[pyfunction]
 fn get_max_short(
     pool_config: &PyAny,
@@ -258,6 +270,38 @@ fn get_max_short(
     Ok(max_short)
 }
 
+/// Get the time stretch constant
+#[pyfunction]
+pub fn get_time_stretch(mut rate: &str) -> PyResult<String> {
+    let rate_fp =
+        FixedPoint::from(U256::from_dec_str(rate).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert rate string to U256")
+        })?);
+    let result_fp = hyperdrie_math::utils::get_time_stretch(rate_fp)
+    let result = U256::from(result_fp).to_string();
+    return Ok(result);
+}
+
+/// Get the share reserves after subtracting the adjustment used for 
+#[pyfunction]
+pub fn get_effective_share_reserves(
+    share_reserves: &str,
+    share_adjustment: &str,
+) -> PyResult<String> {
+    let share_reserves_fp =
+        FixedPoint::from(U256::from_dec_str(share_reserves).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert share_reserves string to U256")
+        })?);
+    let share_adjustment_int =
+        I256::from_dec_str(share_adjustment).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert share_adjustment string to U256")
+        })?;
+    let result_fp = hyperdrie_math::utils::get_effective_share_reserves(share_reserves_fp, share_adjustment_int)
+    let result = U256::from(result_fp).to_string();
+    return Ok(result)
+    
+}
+
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
 ///   - get_spot_price
@@ -268,5 +312,7 @@ fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_spot_price, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_long, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_short, m)?)?;
+    m.add_function(wrap_pyfunction!(get_time_stretch, m)?)?;
+    m.add_function(wrap_pyfunction!(get_effective_share_reserves, m)?)?;
     Ok(())
 }
