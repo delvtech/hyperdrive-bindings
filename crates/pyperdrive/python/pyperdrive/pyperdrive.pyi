@@ -21,13 +21,34 @@ class HyperdriveState:
         pool_info : PoolInfo
             Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
         """
+    def get_spot_rate(self) -> str:
+        """Get the spot rate (fixed rate) for the market.
+
+        Returns
+        -------
+        str
+            The spot rate as a string representation of a Solidity uint256 value.
+        """
     def get_spot_price(self) -> str:
         """Get the spot price of the bond.
 
         Returns
         -------
         str
-            The spot price as a string representation of a solidity uint256 value.
+            The spot price as a string representation of a Solidity uint256 value.
+        """
+    def to_checkpoint(self, time: str) -> str:
+        """Converts a timestamp to the checkpoint timestamp that it corresponds to.
+
+        Arguments
+        ---------
+        time : str
+            A string representation of any timestamp before the present.
+
+        Returns
+        -------
+        str
+            The checkpoint timestamp as a string representation of a Solidity uint256 value.
         """
     def get_max_long(self, budget: str, checkpoint_exposure: str, maybe_max_iterations: int | None) -> str:
         """Get the max amount of bonds that can be purchased for the given budget.
@@ -38,16 +59,21 @@ class HyperdriveState:
             The account budget in base for making a long.
         checkpoint_exposure : str
             The net exposure for the given checkpoint.
-        maybe_max_iterations : int
+        maybe_max_iterations : int, optional
             The number of iterations to use for the Newtonian method.
 
         Returns
         -------
         str
-            The maximum long as a string representation of a solidity uint256 value.
+            The maximum long as a string representation of a Solidity uint256 value.
         """
     def get_max_short(
-        self, budget: str, open_share_price: str, maybe_conservative_price: str | None, maybe_max_iterations: int | None
+        self,
+        budget: str,
+        open_share_price: str,
+        checkpoint_exposure: str,
+        maybe_conservative_price: str | None,
+        maybe_max_iterations: int | None,
     ) -> str:
         """Get the max amount of bonds that can be shorted for the given budget.
 
@@ -57,15 +83,17 @@ class HyperdriveState:
             The account budget in base for making a short.
         open_share_price : str (FixedPoint)
             The share price of underlying vault.
-        maybe_conservative_price : str (FixedPoint) | None
+        checkpoint_exposure : str (FixedPoint)
+            The net exposure for the given checkpoint.
+        maybe_conservative_price : str (FixedPoint), optional
             A lower bound on the realized price that the short will pay.
-        maybe_max_iterations : int | None
+        maybe_max_iterations : int, optional
             The number of iterations to use for the Newtonian method.
 
         Returns
         -------
         str
-            The maximum short as a string representation of a solidity uint256 value.
+            The maximum short as a string representation of a Solidity uint256 value.
         """
 
 def get_max_long(
@@ -85,15 +113,15 @@ def get_max_long(
         Current state information of the hyperdrive contract. Includes things like reserve levels and share prices.
     budget : str (FixedPoint)
         The account budget in base for making a long.
-    checkpoint_exposure : str
+    checkpoint_exposure : str (FixedPoint)
         The net exposure for the given checkpoint.
-    maybe_max_iterations : int | None
+    maybe_max_iterations : int, optional
         The number of iterations to use for the Newtonian method.
 
     Returns
     -------
     str
-        The maximum long as a string representation of a solidity uint256 value.
+        The maximum long as a string representation of a Solidity uint256 value.
     """
 
 def get_max_short(
@@ -101,6 +129,7 @@ def get_max_short(
     pool_info: types.PoolInfo,
     budget: str,
     open_share_price: str,
+    checkpoint_exposure: str,
     maybe_conservative_price: str | None,
     maybe_max_iterations: int | None,
 ) -> str:
@@ -116,15 +145,17 @@ def get_max_short(
         The account budget in base for making a short.
     open_share_price : str (FixedPoint)
         The share price of underlying vault.
-    maybe_conservative_price : str (FixedPoint) | None
+    checkpoint_exposure : str
+        The net exposure for the given checkpoint.
+    maybe_conservative_price : str (FixedPoint), optional
         A lower bound on the realized price that the short will pay.
-    maybe_max_iterations : int | None
+    maybe_max_iterations : int, optional
         The number of iterations to use for the Newtonian method.
 
     Returns
     -------
     str
-        The maximum short as a string representation of a solidity uint256 value.
+        The maximum short as a string representation of a Solidity uint256 value.
     """
 
 def get_spot_price(
@@ -143,5 +174,5 @@ def get_spot_price(
     Returns
     -------
     str
-        The spot price as a string representation of a solidity uint256 value.
+        The spot price as a string representation of a Solidity uint256 value.
     """

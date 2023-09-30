@@ -16,7 +16,7 @@ class PoolConfig(NamedTuple):
     base_token: str
     initial_share_price: str
     minimum_share_reserves: str
-    minimum_traction_amount: str
+    minimum_transaction_amount: str
     position_duration: str
     checkpoint_duration: str
     time_stretch: str
