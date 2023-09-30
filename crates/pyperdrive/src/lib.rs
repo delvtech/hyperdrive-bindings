@@ -286,41 +286,12 @@ fn get_max_short(
     return hyperdrive_state.get_max_short(budget, open_share_price, checkpoint_exposure, maybe_conservative_price, maybe_max_iterations);
 }
 
-/// Get the time stretch constant
-#[pyfunction]
-pub fn get_time_stretch(mut rate: &str) -> PyResult<String> {
-    let rate_fp =
-        FixedPoint::from(U256::from_dec_str(rate).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert rate string to U256")
-        })?);
-    let result_fp = hyperdrie_math::utils::get_time_stretch(rate_fp);
-    let result = U256::from(result_fp).to_string();
-    return Ok(result);
-}
-
 /// Get the share reserves after subtracting the adjustment used for 
-#[pyfunction]
-pub fn get_effective_share_reserves(
-    share_reserves: &str,
-    share_adjustment: &str,
-) -> PyResult<String> {
-    let share_reserves_fp =
-        FixedPoint::from(U256::from_dec_str(share_reserves).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert share_reserves string to U256")
-        })?);
-    let share_adjustment_int =
-        I256::from_dec_str(share_adjustment).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert share_adjustment string to U256")
-        })?;
-    let result_fp = hyperdrie_math::utils::get_effective_share_reserves(share_reserves_fp, share_adjustment_int);
-    let result = U256::from(result_fp).to_string();
-    return Ok(result)
-    
-}
-
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
 ///   - get_spot_price
+///   - get_max_long
+///   - get_max_short
 #[pymodule]
 #[pyo3(name = "pyperdrive")]
 fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
@@ -328,7 +299,5 @@ fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_spot_price, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_long, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_short, m)?)?;
-    m.add_function(wrap_pyfunction!(get_time_stretch, m)?)?;
-    m.add_function(wrap_pyfunction!(get_effective_share_reserves, m)?)?;
     Ok(())
 }
