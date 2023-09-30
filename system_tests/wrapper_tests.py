@@ -8,12 +8,12 @@ from pyperdrive.types import Fees, PoolConfig, PoolInfo
 
 sample_pool_config = PoolConfig(
     base_token="0x1234567890abcdef1234567890abcdef12345678",
-    initial_share_price=str(int(1e18)),
-    minimum_share_reserves=str(int(0.1e18)),
-    minimum_transaction_amount=str(int(0.001e18)),
+    initial_share_price=str(1 * 10**18),  # 1e18
+    minimum_share_reserves=str(1 * 10**17),  # 0.1e18
+    minimum_transaction_amount=str(1 * 10**16),  # 0.001e18
     position_duration=str(604_800),
     checkpoint_duration=str(86_400),
-    time_stretch=str(int(0.1e18)),
+    time_stretch=str(1 * 10**17),  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     fee_collector="0xfedcba0987654321fedcba0987654321fedcba09",
     fees=Fees(curve=str(0), flat=str(0), governance=str(0)),
@@ -23,11 +23,11 @@ sample_pool_config = PoolConfig(
 
 
 sample_pool_info = PoolInfo(
-    share_reserves=str(int(1_000_000 * 1e18)),
-    bond_reserves=str(int(2_000_000 * 1e18)),
+    share_reserves=str(int(1_000_000 * 10**18)),
+    bond_reserves=str(int(2_000_000 * 10**18)),
     share_adjustment=str(0),
-    lp_total_supply=str(int(3_000_000 * 1e18)),
-    share_price=str(int(1e18)),
+    lp_total_supply=str(int(3_000_000 * 10**18)),
+    share_price=str(int(1 * 10**18)),
     longs_outstanding=str(0),
     long_average_maturity_time=str(0),
     shorts_outstanding=str(0),
@@ -35,7 +35,7 @@ sample_pool_info = PoolInfo(
     short_base_volume=str(0),
     withdrawal_shares_ready_to_withdraw=str(0),
     withdrawal_shares_proceeds=str(0),
-    lp_share_price=str(int(1e18)),
+    lp_share_price=str(int(1 * 10**18)),
     long_exposure=str(0),
 )
 
@@ -116,8 +116,8 @@ def test_max_short():
     """test get_max_short."""
     # test using the state directly
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
-    budget = str(int(10e18))  # 10k base
-    open_share_price = str(int(1e18))  # 1 base
+    budget = str(int(10 * 10**18))  # 10k base
+    open_share_price = str(int(1 * 10**18))  # 1 base
     checkpoint_exposure = str(0)
     conservative_price = None
     max_iterations = 20
@@ -139,7 +139,7 @@ def test_max_short():
 def test_max_short_fail_conversion():
     """test get_max_short."""
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
-    open_share_price = str(int(1e18))  # 1 base
+    open_share_price = str(int(1 * 10**18))  # 1 base
     checkpoint_exposure = str(0)
     conservative_price = None
     max_iterations = 20
