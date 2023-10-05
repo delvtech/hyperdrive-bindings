@@ -90,18 +90,18 @@ fn extract_fees_from_attr(ob: &PyAny, attr: &str) -> PyResult<Fees> {
 
 impl FromPyObject<'_> for PyPoolConfig {
     fn extract(ob: &PyAny) -> PyResult<Self> {
-        let base_token = extract_address_from_attr(ob, "base_token")?;
-        let initial_share_price = extract_u256_from_attr(ob, "initial_share_price")?;
-        let minimum_share_reserves = extract_u256_from_attr(ob, "minimum_share_reserves")?;
-        let minimum_transaction_amount = extract_u256_from_attr(ob, "minimum_transaction_amount")?;
-        let position_duration = extract_u256_from_attr(ob, "position_duration")?;
-        let checkpoint_duration = extract_u256_from_attr(ob, "checkpoint_duration")?;
-        let time_stretch = extract_u256_from_attr(ob, "time_stretch")?;
+        let base_token = extract_address_from_attr(ob, "baseToken")?;
+        let initial_share_price = extract_u256_from_attr(ob, "initialSharePrice")?;
+        let minimum_share_reserves = extract_u256_from_attr(ob, "minimumShareReserves")?;
+        let minimum_transaction_amount = extract_u256_from_attr(ob, "minimumTransactionAmount")?;
+        let position_duration = extract_u256_from_attr(ob, "positionDuration")?;
+        let checkpoint_duration = extract_u256_from_attr(ob, "checkpointDuration")?;
+        let time_stretch = extract_u256_from_attr(ob, "timeStretch")?;
         let governance = extract_address_from_attr(ob, "governance")?;
-        let fees = extract_fees_from_attr(ob, "fees")?;
-        let fee_collector = extract_address_from_attr(ob, "fee_collector")?;
-        let oracle_size = extract_u256_from_attr(ob, "oracle_size")?;
-        let update_gap = extract_u256_from_attr(ob, "update_gap")?;
+        let fee_collector = extract_address_from_attr(ob, "feeCollector")?;
+        let fees = extract_fees_from_attr(ob, "Fees")?;
+        let oracle_size = extract_u256_from_attr(ob, "oracleSize")?;
+        let update_gap = extract_u256_from_attr(ob, "updateGap")?;
 
         return Ok(PyPoolConfig {
             pool_config: PoolConfig {
@@ -113,8 +113,8 @@ impl FromPyObject<'_> for PyPoolConfig {
                 checkpoint_duration,
                 time_stretch,
                 governance,
-                fees,
                 fee_collector,
+                fees,
                 oracle_size,
                 update_gap,
             },
@@ -134,36 +134,35 @@ impl PyPoolInfo {
 
 impl FromPyObject<'_> for PyPoolInfo {
     fn extract(ob: &PyAny) -> PyResult<Self> {
-        let share_reserves = extract_u256_from_attr(ob, "share_reserves")?;
-        let bond_reserves = extract_u256_from_attr(ob, "bond_reserves")?;
-        let share_adjustment = extract_i256_from_attr(ob, "share_adjustment")?;
-        let long_exposure = extract_u256_from_attr(ob, "long_exposure")?;
-        let share_price = extract_u256_from_attr(ob, "share_price")?;
-        let longs_outstanding = extract_u256_from_attr(ob, "longs_outstanding")?;
-        let shorts_outstanding = extract_u256_from_attr(ob, "shorts_outstanding")?;
-        let long_average_maturity_time = extract_u256_from_attr(ob, "long_average_maturity_time")?;
-        let short_average_maturity_time =
-            extract_u256_from_attr(ob, "short_average_maturity_time")?;
-        let lp_total_supply = extract_u256_from_attr(ob, "lp_total_supply")?;
-        let lp_share_price = extract_u256_from_attr(ob, "lp_share_price")?;
-        let withdrawal_shares_proceeds = extract_u256_from_attr(ob, "withdrawal_shares_proceeds")?;
+        let share_reserves = extract_u256_from_attr(ob, "shareReserves")?;
+        let share_adjustment = extract_i256_from_attr(ob, "shareAdjustment")?;
+        let bond_reserves = extract_u256_from_attr(ob, "bondReserves")?;
+        let lp_total_supply = extract_u256_from_attr(ob, "lpTotalSupply")?;
+        let share_price = extract_u256_from_attr(ob, "sharePrice")?;
+        let longs_outstanding = extract_u256_from_attr(ob, "longsOutstanding")?;
+        let long_average_maturity_time = extract_u256_from_attr(ob, "longAverageMaturityTime")?;
+        let shorts_outstanding = extract_u256_from_attr(ob, "shortsOutstanding")?;
+        let short_average_maturity_time = extract_u256_from_attr(ob, "shortAverageMaturityTime")?;
         let withdrawal_shares_ready_to_withdraw =
-            extract_u256_from_attr(ob, "withdrawal_shares_ready_to_withdraw")?;
+            extract_u256_from_attr(ob, "withdrawalSharesReadyToWithdraw")?;
+        let withdrawal_shares_proceeds = extract_u256_from_attr(ob, "withdrawalSharesProceeds")?;
+        let lp_share_price = extract_u256_from_attr(ob, "lpSharePrice")?;
+        let long_exposure = extract_u256_from_attr(ob, "longExposure")?;
 
         let pool_info = PoolInfo {
             share_reserves,
-            bond_reserves,
             share_adjustment,
-            long_exposure,
+            bond_reserves,
+            lp_total_supply,
             share_price,
             longs_outstanding,
-            shorts_outstanding,
             long_average_maturity_time,
+            shorts_outstanding,
             short_average_maturity_time,
-            lp_total_supply,
             withdrawal_shares_ready_to_withdraw,
             withdrawal_shares_proceeds,
             lp_share_price,
+            long_exposure,
         };
 
         Ok(PyPoolInfo::new(pool_info))
@@ -193,9 +192,8 @@ impl HyperdriveState {
     }
 
     pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
-        let time_int = U256::from_dec_str(time).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert time string to U256")
-        })?;
+        let time_int = U256::from_dec_str(time)
+            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
         let result_int = self.state.to_checkpoint(time_int);
         let result = result_int.to_string();
         return Ok(result);
@@ -211,9 +209,11 @@ impl HyperdriveState {
             PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
         })?);
         let checkpoint_exposure_i = I256::from_dec_str(checkpoint_exposure).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
-            })?;
-        let result_fp = self.state.get_max_long(budget_fp, checkpoint_exposure_i, maybe_max_iterations);
+            PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
+        })?;
+        let result_fp =
+            self.state
+                .get_max_long(budget_fp, checkpoint_exposure_i, maybe_max_iterations);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -234,18 +234,27 @@ impl HyperdriveState {
                 PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
             })?);
         let checkpoint_exposure_i = I256::from_dec_str(checkpoint_exposure).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
-            })?;
-        let maybe_conservative_price_fp = if let Some(conservative_price) = maybe_conservative_price {
-            Some(FixedPoint::from(U256::from_dec_str(conservative_price).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert maybe_conservative_price string to U256")
-            })?))
+            PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
+        })?;
+        let maybe_conservative_price_fp = if let Some(conservative_price) = maybe_conservative_price
+        {
+            Some(FixedPoint::from(
+                U256::from_dec_str(conservative_price).map_err(|_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_conservative_price string to U256",
+                    )
+                })?,
+            ))
         } else {
             None
         };
-        let result_fp =
-            self.state
-                .get_max_short(budget_fp, open_share_price_fp, checkpoint_exposure_i, maybe_conservative_price_fp, maybe_max_iterations);
+        let result_fp = self.state.get_max_short(
+            budget_fp,
+            open_share_price_fp,
+            checkpoint_exposure_i,
+            maybe_conservative_price_fp,
+            maybe_max_iterations,
+        );
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -283,10 +292,16 @@ fn get_max_short(
     maybe_max_iterations: Option<usize>,
 ) -> PyResult<String> {
     let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
-    return hyperdrive_state.get_max_short(budget, open_share_price, checkpoint_exposure, maybe_conservative_price, maybe_max_iterations);
+    return hyperdrive_state.get_max_short(
+        budget,
+        open_share_price,
+        checkpoint_exposure,
+        maybe_conservative_price,
+        maybe_max_iterations,
+    );
 }
 
-/// Get the share reserves after subtracting the adjustment used for 
+/// Get the share reserves after subtracting the adjustment used for
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
 ///   - get_spot_price
