@@ -1,0 +1,58 @@
+name: build wasm package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{github.token}}
+
+      - name: setup rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: setup foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: check out hyperdrive
+        uses: actions/checkout@master
+        with:
+          repository: delvtech/hyperdrive
+          ref: 'v0.0.14'
+          path: './hyperdrive'
+          ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
+
+      - name: build pyperdrive
+        shell: bash
+        run: source crates/hyperwasm//build.sh
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: crates/hyperwasm/pkg/*.tgz
+          name: hyperwasm-v0.0.14
