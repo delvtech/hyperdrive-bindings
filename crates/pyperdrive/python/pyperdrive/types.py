@@ -1,8 +1,15 @@
 """Types for the hyperdrive contract."""
-from typing import NamedTuple
+# contracts have PascalCase names
+# pylint: disable=invalid-name
+# We do not define the number of instance attributes
+# pylint: disable=too-many-instance-attributes
+from __future__ import annotations
+
+from dataclasses import dataclass
 
 
-class Fees(NamedTuple):
+@dataclass
+class Fees:
     """Protocal Fees."""
 
     curve: str
@@ -10,37 +17,38 @@ class Fees(NamedTuple):
     governance: str
 
 
-class PoolConfig(NamedTuple):
+@dataclass
+class PoolConfig:
     """Static configuration for the hyperdrive contract. Set at deploy time."""
 
-    base_token: str
-    initial_share_price: str
-    minimum_share_reserves: str
-    minimum_transaction_amount: str
-    position_duration: str
-    checkpoint_duration: str
-    time_stretch: str
+    baseToken: str
+    initialSharePrice: str
+    minimumShareReserves: str
+    minimumTransactionAmount: str
+    positionDuration: str
+    checkpointDuration: str
+    timeStretch: str
     governance: str
-    fee_collector: str
-    fees: Fees
-    oracle_size: str
-    update_gap: str
+    feeCollector: str
+    Fees: Fees
+    oracleSize: str
+    updateGap: str
 
 
-class PoolInfo(NamedTuple):
+@dataclass
+class PoolInfo:
     """Current state information of the hyperdrive contract. Includes things like reserve levels and share prices."""
 
-    share_reserves: str
-    bond_reserves: str
-    lp_total_supply: str
-    share_adjustment: str
-    share_price: str
-    longs_outstanding: str
-    long_average_maturity_time: str
-    shorts_outstanding: str
-    short_average_maturity_time: str
-    short_base_volume: str
-    withdrawal_shares_ready_to_withdraw: str
-    withdrawal_shares_proceeds: str
-    lp_share_price: str
-    long_exposure: str
+    shareReserves: str
+    shareAdjustment: str
+    bondReserves: str
+    lpTotalSupply: str
+    sharePrice: str
+    longsOutstanding: str
+    longAverageMaturityTime: str
+    shortsOutstanding: str
+    shortAverageMaturityTime: str
+    withdrawalSharesReadyToWithdraw: str
+    withdrawalSharesProceeds: str
+    lpSharePrice: str
+    longExposure: str
