@@ -42,7 +42,7 @@ jobs:
 
       - name: build wasm package
         shell: bash
-        run: source crates/hyperwasm//build.sh
+        run: source ./crates/hyperwasm/build.sh
 
       - name: pack package
         shell: bash
