@@ -41,15 +41,18 @@ jobs:
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
       - name: build wasm package
-        shell: bash
-        run: source ./crates/hyperwasm/build.sh
+        run: |
+          cd ./crates/hyperwasm
+          sh build.sh
 
       - name: pack package
         shell: bash
-        run: npm pack ./crates/hyperwasm/pkg
+        run: |
+          cd ../pkg
+          npm pack
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: crates/hyperwasm/pkg/*.tgz
+          path: ./*.tgz
           name: hyperwasm-v0.0.14
