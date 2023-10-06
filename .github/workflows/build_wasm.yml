@@ -26,13 +26,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
-
-      - name: Install yarn
-        run: npm install -g yarn
-
-      - name: Install dependencies
-        run: yarn
 
       - name: setup foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -47,9 +40,13 @@ jobs:
           path: './hyperdrive'
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
-      - name: build pyperdrive
+      - name: build wasm package
         shell: bash
         run: source crates/hyperwasm//build.sh
+
+      - name: pack package
+        shell: bash
+        run: npm pack ./crates/hyperwasm/pkg
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
