@@ -22,6 +22,9 @@ jobs:
         with:
           toolchain: stable
 
+      - name: Install wasm-pack
+        run: cargo install wasm-pack
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
