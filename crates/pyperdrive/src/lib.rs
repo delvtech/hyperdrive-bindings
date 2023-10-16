@@ -1,11 +1,12 @@
 use ethers::core::types::{Address, I256, U256};
 use fixed_point::FixedPoint;
+use hyperdrive_math::Asset;
 use hyperdrive_wrappers::wrappers::i_hyperdrive::{Fees, PoolConfig, PoolInfo};
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::PyErr;
 
-use hyperdrive_math::State;
+use hyperdrive_math::{State, YieldSpace};
 
 #[pyclass(module = "pyperdrive", name = "HyperdriveState")]
 pub struct HyperdriveState {
@@ -191,6 +192,51 @@ impl HyperdriveState {
         return Ok(result);
     }
 
+    /// Get amount out for a given amount in.
+    pub fn get_out_for_in(&self, amount_in: &str, shares_in: bool) -> PyResult<String> {
+        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+        })?);
+        let asset = match shares_in {
+            true => Asset::Shares(amount_in_fp),
+            false => Asset::Bonds(amount_in_fp),
+        };
+        let result_fp = self.state.get_out_for_in(asset);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    /// Get amount out for a given amount in.  Returns a python error instead of panicking.
+    pub fn get_out_for_in_safe(&self, amount_in: &str, shares_in: bool) -> PyResult<String> {
+        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+        })?);
+        let asset = match shares_in {
+            true => Asset::Shares(amount_in_fp),
+            false => Asset::Bonds(amount_in_fp),
+        };
+        match self.state.get_out_for_in_safe(asset) {
+            Some(result_fp) => Ok(U256::from(result_fp).to_string()),
+            None => Err(PyErr::new::<PyValueError, _>(
+                "get_out_for_in_safe returned None",
+            )),
+        }
+    }
+
+    /// Get amount in for a given amount out.
+    pub fn get_in_for_out(&self, amount_out: &str, shares_out: bool) -> PyResult<String> {
+        let amount_out_fp = FixedPoint::from(U256::from_dec_str(amount_out).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+        })?);
+        let asset = match shares_out {
+            true => Asset::Shares(amount_out_fp),
+            false => Asset::Bonds(amount_out_fp),
+        };
+        let result_fp = self.state.get_out_for_in(asset);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
     pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
         let time_int = U256::from_dec_str(time)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
@@ -267,6 +313,43 @@ fn get_spot_price(pool_config: &PyAny, pool_info: &PyAny) -> PyResult<String> {
     return hyperdrive_state.get_spot_price();
 }
 
+/// Get the the amount out of an asset for a corresponding amount in.
+#[pyfunction]
+fn get_out_for_in(
+    pool_config: &PyAny,
+    pool_info: &PyAny,
+    amount_in: &str,
+    shares_in: bool,
+) -> PyResult<String> {
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    return hyperdrive_state.get_out_for_in(amount_in, shares_in);
+}
+
+/// Get the the amount out of an asset for a corresponding amount in.  Safe means it will return a
+/// status instead of panicking.
+#[pyfunction]
+fn get_out_for_in_safe(
+    pool_config: &PyAny,
+    pool_info: &PyAny,
+    amount_in: &str,
+    shares_in: bool,
+) -> PyResult<String> {
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    return hyperdrive_state.get_out_for_in_safe(amount_in, shares_in);
+}
+
+/// Get the the amount in of an asset for a corresponding amount out.
+#[pyfunction]
+fn get_in_for_out(
+    pool_config: &PyAny,
+    pool_info: &PyAny,
+    amount_out: &str,
+    shares_out: bool,
+) -> PyResult<String> {
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    return hyperdrive_state.get_out_for_in(amount_out, shares_out);
+}
+
 /// Get the max long for a Hyperdrive market with the given pool state
 #[pyfunction]
 fn get_max_long(
@@ -314,5 +397,8 @@ fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_spot_price, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_long, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_short, m)?)?;
+    m.add_function(wrap_pyfunction!(get_out_for_in, m)?)?;
+    m.add_function(wrap_pyfunction!(get_out_for_in_safe, m)?)?;
+    m.add_function(wrap_pyfunction!(get_in_for_out, m)?)?;
     Ok(())
 }

@@ -4,6 +4,7 @@ import pytest
 import pyperdrive
 from pyperdrive.types import Fees, PoolConfig, PoolInfo
 
+# pylint isn't reading pyperdrive.pyi correctly, so pyperdrive.HyperdriveState etc shows 'Unknown'
 # pylint: disable=no-member
 
 sample_pool_config = PoolConfig(
@@ -71,6 +72,52 @@ def test_get_spot_price():
     assert int(spot_price) > 0, "Expected spot price to > 0."
     # test the helper function
     assert pyperdrive.get_spot_price(sample_pool_config, sample_pool_info) == spot_price
+
+
+def get_out_for_in():
+    """test get_out_for_in."""
+    # test using the state directly
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    amount_in = str(1_000 * 10**18)
+    is_shares_in = True
+    is_bonds_in = not is_shares_in
+
+    bonds_out = state.get_out_for_in(amount_in, is_shares_in)
+    assert int(bonds_out) > 0
+
+    # test the helper function
+    bonds_out_direct = pyperdrive.get_out_for_in(sample_pool_config, sample_pool_info, amount_in, is_shares_in)
+    assert bonds_out == bonds_out_direct
+
+    shares_out = state.get_out_for_in(amount_in, is_bonds_in)
+    assert int(shares_out) > 0
+
+    # test the helper function
+    shares_out_direct = pyperdrive.get_out_for_in(sample_pool_config, sample_pool_info, amount_in, is_bonds_in)
+    assert shares_out == shares_out_direct
+
+
+def get_in_for_out():
+    """test get_in_for_out."""
+    # test using the state directly
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    amount_out = str(1_000 * 10**18)
+    is_shares_out = True
+    is_bonds_out = not is_shares_out
+
+    bonds_in = state.get_in_for_out(amount_out, is_shares_out)
+    assert int(bonds_in) > 0
+
+    # test the helper function
+    bonds_in_direct = pyperdrive.get_in_for_out(sample_pool_config, sample_pool_info, amount_out, is_shares_out)
+    assert bonds_in == bonds_in_direct
+
+    shares_in = state.get_in_for_out(amount_out, is_bonds_out)
+    assert int(shares_in) > 0
+
+    # test the helper function
+    shares_in_direct = pyperdrive.get_in_for_out(sample_pool_config, sample_pool_info, amount_out, is_bonds_out)
+    assert shares_in == shares_in_direct
 
 
 def test_max_long():
