@@ -15,7 +15,7 @@ ln -s ../hyperdrive hyperdrive
 
 To install the Python package `pyperdrive`, which wraps the Rust `hyperdrive_math::State` struct, you need to:
 
-- setup a [Python venv](https://docs.python.org/3/library/venv.html) that is running at least `Python 3.7`
+- setup a [Python venv](https://docs.python.org/3/library/venv.html) that is running `Python 3.10`
 - from inside the environment, run `pip install crates/pyperdrive`
 - test the installation by running `pip install --upgrade -r requirements-dev.txt && pytest`
 
