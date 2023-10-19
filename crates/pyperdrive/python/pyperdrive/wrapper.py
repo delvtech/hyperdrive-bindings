@@ -1,12 +1,11 @@
 """Python wrapper for the rust module."""
 from __future__ import annotations
 
-from . import pyperdrive as rust_module
-from . import types
-
-# pylint: disable=unused-argument
-# pylint: disable=too-many-arguments
 # pylint: disable=c-extension-no-member
+# pylint: disable=no-name-in-module
+from . import pyperdrive as rust_module  # type: ignore
+from . import types
+from .pypechain_types.IHyperdriveTypes import PoolConfig, PoolInfo
 
 
 class HyperdriveState:
@@ -19,7 +18,7 @@ class HyperdriveState:
     #     _rust_module = rust_module.HyperdriveState(pool_config, pool_info)
     #     return cls
 
-    def __init__(self, pool_config: types.PoolConfig, pool_info: types.PoolInfo) -> None:
+    def __init__(self, pool_config: PoolConfig, pool_info: PoolInfo) -> None:
         """Initializes the hyperdrive state.
 
         Arguments
@@ -30,7 +29,9 @@ class HyperdriveState:
             Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
         """
 
-        self._rust_interface = rust_module.HyperdriveState(pool_config, pool_info)
+        pool_config_serialized = _serialize_pool_config_values(pool_config)
+        pool_info_serialized = _serialize_pool_info_values(pool_info)
+        self._rust_interface = rust_module.HyperdriveState(pool_config_serialized, pool_info_serialized)
 
     def get_spot_rate(self) -> str:
         """Get the spot rate (fixed rate) for the market.
@@ -184,8 +185,8 @@ class HyperdriveState:
 
 
 def get_max_long(
-    pool_config: types.PoolConfig,
-    pool_info: types.PoolInfo,
+    pool_config: PoolConfig,
+    pool_info: PoolInfo,
     budget: str,
     checkpoint_exposure: str,
     maybe_max_iterations: int | None,
@@ -211,12 +212,18 @@ def get_max_long(
         The maximum long as a string representation of a Solidity uint256 value.
     """
 
-    return rust_module.get_max_long(pool_config, pool_info, budget, checkpoint_exposure, maybe_max_iterations)
+    return rust_module.get_max_long(
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
+        budget,
+        checkpoint_exposure,
+        maybe_max_iterations,
+    )
 
 
 def get_max_short(
-    pool_config: types.PoolConfig,
-    pool_info: types.PoolInfo,
+    pool_config: PoolConfig,
+    pool_info: PoolInfo,
     budget: str,
     open_share_price: str,
     checkpoint_exposure: str,
@@ -249,8 +256,8 @@ def get_max_short(
     """
 
     return rust_module.get_max_short(
-        pool_config,
-        pool_info,
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
         budget,
         open_share_price,
         checkpoint_exposure,
@@ -282,8 +289,8 @@ def get_spot_price(
 
 
 def get_out_for_in(
-    pool_config: types.PoolConfig,
-    pool_info: types.PoolInfo,
+    pool_config: PoolConfig,
+    pool_info: PoolInfo,
     amount_in: str,
     shares_in: bool,
 ) -> str:
@@ -306,12 +313,14 @@ def get_out_for_in(
         The aount out as a string representation of a Solidity uint256 value.
     """
 
-    return rust_module.get_out_for_in(pool_config, pool_info, amount_in, shares_in)
+    return rust_module.get_out_for_in(
+        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info), amount_in, shares_in
+    )
 
 
 def get_out_for_in_safe(
-    pool_config: types.PoolConfig,
-    pool_info: types.PoolInfo,
+    pool_config: PoolConfig,
+    pool_info: PoolInfo,
     amount_in: str,
     shares_in: bool,
 ) -> str:
@@ -335,12 +344,14 @@ def get_out_for_in_safe(
         The aount out as a string representation of a Solidity uint256 value.
     """
 
-    return rust_module.get_out_for_in_safe(pool_config, pool_info, amount_in, shares_in)
+    return rust_module.get_out_for_in_safe(
+        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info), amount_in, shares_in
+    )
 
 
 def get_in_for_out(
-    pool_config: types.PoolConfig,
-    pool_info: types.PoolInfo,
+    pool_config: PoolConfig,
+    pool_info: PoolInfo,
     amount_out: str,
     shares_out: bool,
 ) -> str:
@@ -363,4 +374,49 @@ def get_in_for_out(
         The aount in as a string representation of a Solidity uint256 value.
     """
 
-    return rust_module.get_in_for_out(pool_config, pool_info, amount_out, shares_out)
+    return rust_module.get_in_for_out(
+        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info), amount_out, shares_out
+    )
+
+
+def _serialize_pool_config_values(pool_config: PoolConfig) -> types.PoolConfig:
+    pool_config_serialized = types.PoolConfig(
+        baseToken=str(pool_config.baseToken),
+        initialSharePrice=str(pool_config.initialSharePrice),
+        minimumShareReserves=str(pool_config.minimumShareReserves),
+        minimumTransactionAmount=str(pool_config.minimumTransactionAmount),
+        positionDuration=str(pool_config.positionDuration),
+        checkpointDuration=str(pool_config.checkpointDuration),
+        timeStretch=str(pool_config.timeStretch),
+        governance=str(pool_config.governance),
+        feeCollector=str(pool_config.feeCollector),
+        fees=types.Fees(
+            curve=str(pool_config.fees.curve),
+            flat=str(pool_config.fees.flat),
+            governance=str(pool_config.fees.governance),
+        ),
+        oracleSize=str(pool_config.oracleSize),
+        updateGap=str(pool_config.updateGap),
+    )
+
+    return pool_config_serialized
+
+
+def _serialize_pool_info_values(pool_info: PoolInfo) -> types.PoolInfo:
+    pool_info_serialized = types.PoolInfo(
+        shareReserves=str(pool_info.shareReserves),
+        shareAdjustment=str(pool_info.shareAdjustment),
+        bondReserves=str(pool_info.bondReserves),
+        lpTotalSupply=str(pool_info.lpTotalSupply),
+        sharePrice=str(pool_info.sharePrice),
+        longsOutstanding=str(pool_info.longsOutstanding),
+        longAverageMaturityTime=str(pool_info.longAverageMaturityTime),
+        shortsOutstanding=str(pool_info.shortsOutstanding),
+        shortAverageMaturityTime=str(pool_info.shortAverageMaturityTime),
+        withdrawalSharesReadyToWithdraw=str(pool_info.withdrawalSharesReadyToWithdraw),
+        withdrawalSharesProceeds=str(pool_info.withdrawalSharesProceeds),
+        lpSharePrice=str(pool_info.lpSharePrice),
+        longExposure=str(pool_info.longExposure),
+    )
+
+    return pool_info_serialized
