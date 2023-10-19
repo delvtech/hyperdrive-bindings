@@ -30,7 +30,7 @@ class PoolConfig:
     timeStretch: str
     governance: str
     feeCollector: str
-    Fees: Fees
+    fees: Fees
     oracleSize: str
     updateGap: str
 

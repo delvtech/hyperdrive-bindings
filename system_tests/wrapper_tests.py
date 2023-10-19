@@ -17,7 +17,7 @@ sample_pool_config = PoolConfig(
     timeStretch=str(1 * 10**17),  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     feeCollector="0xfedcba0987654321fedcba0987654321fedcba09",
-    Fees=Fees(curve=str(0), flat=str(0), governance=str(0)),
+    fees=Fees(curve=str(0), flat=str(0), governance=str(0)),
     oracleSize=str(10),
     updateGap=str(3_600),
 )
