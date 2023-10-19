@@ -1,11 +1,14 @@
-cibuildwheel
 black
 build
+cibuildwheel
+jinja2
 platformdirs
 pylint
+pypechain
 pyright
 pytest
 setuptools
 setuptools-rust
 twine
+web3
 wheel
