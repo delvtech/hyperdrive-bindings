@@ -299,6 +299,29 @@ def get_in_for_out(
         The aount in as a string representation of a Solidity uint256 value.
     """
 
+def get_effective_share_reserves(
+    share_reserves: str,
+    share_adjustment: str,
+) -> str:
+    """
+    Calculate the effective share reserves given the share reserves and share adjustment.
+
+    ..math::
+        z_effective = z - \zeta
+
+    Arguments
+    ---------
+    share_reserves : str (FixedPoint)
+        The pool's share reserves.
+    share_adjustment : str (I256)
+        The zeta factor for adjusting share reserves.
+
+    Returns
+    -------
+    effective_share_reserves : str (FixedPoint)
+        The adjusted share reserves, accounting for the zeta factor.
+    """
+
 def calculate_bonds_given_shares_and_rate(
     effective_share_reserves: str,
     initial_share_price: str,
@@ -317,7 +340,6 @@ def calculate_bonds_given_shares_and_rate(
 
     Arguments
     ---------
-
     effective_share_reserves : str (FixedPoint)
         The pool's effective share reserves. The
         effective share reserves are a modified version of the share

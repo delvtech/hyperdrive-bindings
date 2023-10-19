@@ -8,7 +8,8 @@ use pyo3::PyErr;
 
 use hyperdrive_math::{
     calculate_bonds_given_shares_and_rate as rs_calculate_bonds_given_shares_and_rate,
-    get_effective_share_reserves as rs_get_effective_share_reserves, State, YieldSpace,
+    get_effective_share_reserves as rs_get_effective_share_reserves,
+    get_time_stretch as rs_get_time_stretch, State, YieldSpace,
 };
 
 #[pyclass(module = "pyperdrive", name = "HyperdriveState")]
@@ -428,6 +429,20 @@ fn calculate_bonds_given_shares_and_rate(
     return Ok(result);
 }
 
+/// Get the effective share reserves given share reserves and share adjustments
+#[pyfunction]
+fn get_effective_share_reserves(share_reserves: &str, share_adjustment: &str) -> PyResult<String> {
+    let share_reserves_fp = FixedPoint::from(U256::from_dec_str(share_reserves).map_err(|_| {
+        PyErr::new::<PyValueError, _>("Failed to convert share_reserves string to U256")
+    })?);
+    let share_adjustment_i = I256::from_dec_str(share_adjustment).map_err(|_| {
+        PyErr::new::<PyValueError, _>("Failed to convert share_adjustment string to I256")
+    })?;
+    let result_fp = rs_get_effective_share_reserves(share_reserves_fp, share_adjustment_i);
+    let result = U256::from(result_fp).to_string();
+    return Ok(result);
+}
+
 /// Get the share reserves after subtracting the adjustment used for
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
@@ -445,5 +460,6 @@ fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_out_for_in_safe, m)?)?;
     m.add_function(wrap_pyfunction!(get_in_for_out, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_bonds_given_shares_and_rate, m)?)?;
+    m.add_function(wrap_pyfunction!(get_effective_share_reserves, m)?)?;
     Ok(())
 }

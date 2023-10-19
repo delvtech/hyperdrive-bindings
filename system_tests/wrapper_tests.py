@@ -74,6 +74,18 @@ def test_get_spot_price():
     assert pyperdrive.get_spot_price(sample_pool_config, sample_pool_info) == spot_price
 
 
+def test_get_effective_share_reserves():
+    """test calculate_bonds_given_shares_and_rate."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    effective_share_reserves = pyperdrive.get_effective_share_reserves(
+        state.info.share_reserves,
+        state.info.share_adjustment,
+    )
+    assert effective_share_reserves is not None, "Failed to get effective_share_reserves."
+    assert isinstance(effective_share_reserves, str), "Expected effective_share_reserves to be a string."
+    assert int(effective_share_reserves) > 0, "Expected effective_share_reserves to be > 0."
+
+
 def test_calculate_bonds_given_shares_and_rate():
     """test calculate_bonds_given_shares_and_rate."""
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
