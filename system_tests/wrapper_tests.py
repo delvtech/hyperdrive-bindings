@@ -74,8 +74,20 @@ def test_get_spot_price():
     assert pyperdrive.get_spot_price(sample_pool_config, sample_pool_info) == spot_price
 
 
+def test_get_time_stretch():
+    """test get_time_stretch."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    time_stretch = pyperdrive.get_time_stretch(
+        state.get_spot_rate(),
+    )
+    assert time_stretch is not None, "Failed to get time_stretch."
+    assert isinstance(time_stretch, str), "Expected time_stretch to be a string."
+    assert float(time_stretch) > 0, "Expected time_stretch to be > 0."
+    assert float(time_stretch) < 1, "Expected time_stretch to be < 1."
+
+
 def test_get_effective_share_reserves():
-    """test calculate_bonds_given_shares_and_rate."""
+    """test get_effective_share_reserves."""
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
     effective_share_reserves = pyperdrive.get_effective_share_reserves(
         state.info.share_reserves,

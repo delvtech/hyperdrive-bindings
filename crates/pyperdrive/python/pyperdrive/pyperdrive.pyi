@@ -299,6 +299,28 @@ def get_in_for_out(
         The aount in as a string representation of a Solidity uint256 value.
     """
 
+def get_time_stretch(
+    rate: str,
+) -> str:
+    """
+    Calculate the time stretch parameter given a pool's spot rate.
+
+    ..math::
+        tau = 5.24592 / (0.4665 * r * 100)
+
+    Arguments
+    ---------
+    rate : str (FixedPoint)
+        The pool's spot rate (aka apr, or fixed rate).
+    share_adjustment : str (I256)
+        The zeta factor for adjusting share reserves.
+
+    Returns
+    -------
+    time_stretch : str (FixedPoint)
+        The time stretch parameter (tau).
+    """
+
 def get_effective_share_reserves(
     share_reserves: str,
     share_adjustment: str,

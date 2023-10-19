@@ -443,6 +443,18 @@ fn get_effective_share_reserves(share_reserves: &str, share_adjustment: &str) ->
     return Ok(result);
 }
 
+/// Get the time stretch given a market rate
+#[pyfunction]
+fn get_time_stretch(rate: &str) -> PyResult<String> {
+    let rate_fp = FixedPoint::from(
+        U256::from_dec_str(rate)
+            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert rate string to U256"))?,
+    );
+    let result_fp = rs_get_time_stretch(rate_fp);
+    let result = U256::from(result_fp).to_string();
+    return Ok(result);
+}
+
 /// Get the share reserves after subtracting the adjustment used for
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
@@ -461,5 +473,6 @@ fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_in_for_out, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_bonds_given_shares_and_rate, m)?)?;
     m.add_function(wrap_pyfunction!(get_effective_share_reserves, m)?)?;
+    m.add_function(wrap_pyfunction!(get_time_stretch, m)?)?;
     Ok(())
 }
