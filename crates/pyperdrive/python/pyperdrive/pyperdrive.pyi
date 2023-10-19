@@ -363,9 +363,9 @@ def calculate_bonds_given_shares_and_rate(
     Arguments
     ---------
     effective_share_reserves : str (FixedPoint)
-        The pool's effective share reserves. The
-        effective share reserves are a modified version of the share
-        reserves used when pricing trades.
+        The pool's effective share reserves. The effective share
+        reserves are a modified version of the share reserves
+        used when pricing trades.
     initial_share_price : str (FixedPoint)
         The pool's initial share price.
     apr : str (FixedPoint)
