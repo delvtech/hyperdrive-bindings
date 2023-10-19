@@ -6,7 +6,10 @@ use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::PyErr;
 
-use hyperdrive_math::{State, YieldSpace};
+use hyperdrive_math::{
+    calculate_bonds_given_shares_and_rate as rs_calculate_bonds_given_shares_and_rate,
+    get_effective_share_reserves as rs_get_effective_share_reserves, State, YieldSpace,
+};
 
 #[pyclass(module = "pyperdrive", name = "HyperdriveState")]
 pub struct HyperdriveState {
@@ -384,6 +387,47 @@ fn get_max_short(
     );
 }
 
+/// Get the amount of bonds required for a given pool's share reserves and spot rate
+#[pyfunction]
+fn calculate_bonds_given_shares_and_rate(
+    effective_share_reserves: &str,
+    initial_share_price: &str,
+    apr: &str,
+    position_duration: &str,
+    time_stretch: &str,
+) -> PyResult<String> {
+    let effective_share_reserves_fp =
+        FixedPoint::from(U256::from_dec_str(effective_share_reserves).map_err(|_| {
+            PyErr::new::<PyValueError, _>(
+                "Failed to convert effective_share_reserves string to U256",
+            )
+        })?);
+    let initial_share_price_fp =
+        FixedPoint::from(U256::from_dec_str(initial_share_price).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert initial_share_price string to U256")
+        })?);
+    let apr_fp = FixedPoint::from(
+        U256::from_dec_str(apr)
+            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert apr string to U256"))?,
+    );
+    let position_duration_fp =
+        FixedPoint::from(U256::from_dec_str(position_duration).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert position_duration string to U256")
+        })?);
+    let time_stretch_fp = FixedPoint::from(U256::from_dec_str(time_stretch).map_err(|_| {
+        PyErr::new::<PyValueError, _>("Failed to convert time_stretch string to U256")
+    })?);
+    let result_fp = rs_calculate_bonds_given_shares_and_rate(
+        effective_share_reserves_fp,
+        initial_share_price_fp,
+        apr_fp,
+        position_duration_fp,
+        time_stretch_fp,
+    );
+    let result = U256::from(result_fp).to_string();
+    return Ok(result);
+}
+
 /// Get the share reserves after subtracting the adjustment used for
 /// A pyO3 wrapper for the hyperdrie_math crate.
 /// The Hyperdrive State struct will be exposed with the following methods:
@@ -400,5 +444,6 @@ fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(get_out_for_in, m)?)?;
     m.add_function(wrap_pyfunction!(get_out_for_in_safe, m)?)?;
     m.add_function(wrap_pyfunction!(get_in_for_out, m)?)?;
+    m.add_function(wrap_pyfunction!(calculate_bonds_given_shares_and_rate, m)?)?;
     Ok(())
 }

@@ -26,7 +26,7 @@ class HyperdriveState:
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The spot rate as a string representation of a Solidity uint256 value.
         """
     def get_spot_price(self) -> str:
@@ -34,7 +34,7 @@ class HyperdriveState:
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The spot price as a string representation of a Solidity uint256 value.
         """
     def get_out_for_in(self, amount_in: str, shares_in: bool) -> str:
@@ -42,14 +42,14 @@ class HyperdriveState:
 
         Arguments
         ---------
-        amount_in : str
+        amount_in : str (FixedPoint)
             The aount in as a string representation of a Solidity uint256 value.
         shares_in : bool
             True if the asset in is shares, False if it is bonds.
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The aount out as a string representation of a Solidity uint256 value.
         """
     def get_out_for_in_safe(self, amount_in: str, shares_in: bool) -> str:
@@ -58,14 +58,14 @@ class HyperdriveState:
 
         Arguments
         ---------
-        amount_in : str
+        amount_in : str (FixedPoint)
             The aount in as a string representation of a Solidity uint256 value.
         shares_in : bool
             True if the asset in is shares, False if it is bonds.
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The aount out as a string representation of a Solidity uint256 value.
         """
     def get_in_for_out(self, amount_out: str, shares_out: bool) -> str:
@@ -73,14 +73,14 @@ class HyperdriveState:
 
         Arguments
         ---------
-        amount_out : str
+        amount_out : str (FixedPoint)
             The aount out as a string representation of a Solidity uint256 value.
         shares_out : bool
             True if the asset out is shares, False if it is bonds.
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The aount in as a string representation of a Solidity uint256 value.
         """
     def to_checkpoint(self, time: str) -> str:
@@ -88,30 +88,30 @@ class HyperdriveState:
 
         Arguments
         ---------
-        time : str
+        time : str (FixedPoint)
             A string representation of any timestamp before the present.
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The checkpoint timestamp as a string representation of a Solidity uint256 value.
         """
     def get_max_long(self, budget: str, checkpoint_exposure: str, maybe_max_iterations: int | None) -> str:
-        """Get the max amount of bonds that can be purchased for the given budget.
+        """Get the max amount of base that can be used to purchase bonds for the given budget.
 
         Arguments
         ---------
-        budget : str
+        budget : str (FixedPoint)
             The account budget in base for making a long.
-        checkpoint_exposure : str
+        checkpoint_exposure : str (FixedPoint)
             The net exposure for the given checkpoint.
         maybe_max_iterations : int, optional
             The number of iterations to use for the Newtonian method.
 
         Returns
         -------
-        str
-            The maximum long as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The maximum long, in base, as a string representation of a Solidity uint256 value.
         """
     def get_max_short(
         self,
@@ -138,7 +138,7 @@ class HyperdriveState:
 
         Returns
         -------
-        str
+        str (FixedPoint)
             The maximum short as a string representation of a Solidity uint256 value.
         """
 
@@ -166,7 +166,7 @@ def get_max_long(
 
     Returns
     -------
-    str
+    str (FixedPoint)
         The maximum long as a string representation of a Solidity uint256 value.
     """
 
@@ -191,7 +191,7 @@ def get_max_short(
         The account budget in base for making a short.
     open_share_price : str (FixedPoint)
         The share price of underlying vault.
-    checkpoint_exposure : str
+    checkpoint_exposure : str (FixedPoint)
         The net exposure for the given checkpoint.
     maybe_conservative_price : str (FixedPoint), optional
         A lower bound on the realized price that the short will pay.
@@ -200,7 +200,7 @@ def get_max_short(
 
     Returns
     -------
-    str
+    str (FixedPoint)
         The maximum short as a string representation of a Solidity uint256 value.
     """
 
@@ -219,7 +219,7 @@ def get_spot_price(
 
     Returns
     -------
-    str
+    str (FixedPoint)
         The spot price as a string representation of a Solidity uint256 value.
     """
 
@@ -237,14 +237,14 @@ def get_out_for_in(
         Static configuration for the hyperdrive contract.  Set at deploy time.
     pool_info : PoolInfo
         Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
-    amount_in : str
+    amount_in : str (FixedPoint)
         The aount in as a string representation of a Solidity uint256 value.
     shares_in : bool
         True if the asset in is shares, False if it is bonds.
 
     Returns
     -------
-    str
+    str (FixedPoint)
         The aount out as a string representation of a Solidity uint256 value.
     """
 
@@ -263,14 +263,14 @@ def get_out_for_in_safe(
         Static configuration for the hyperdrive contract.  Set at deploy time.
     pool_info : PoolInfo
         Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
-    amount_in : str
+    amount_in : str (FixedPoint)
         The aount in as a string representation of a Solidity uint256 value.
     shares_in : bool
         True if the asset in is shares, False if it is bonds.
 
     Returns
     -------
-    str
+    str (FixedPoint)
         The aount out as a string representation of a Solidity uint256 value.
     """
 
@@ -288,7 +288,7 @@ def get_in_for_out(
         Static configuration for the hyperdrive contract.  Set at deploy time.
     pool_info : PoolInfo
         Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
-    amount_out : str
+    amount_out : str (FixedPoint)
         The aount out as a string representation of a Solidity uint256 value.
     shares_out : bool
         True if the asset out is shares, False if it is bonds.
@@ -297,4 +297,43 @@ def get_in_for_out(
     -------
     str
         The aount in as a string representation of a Solidity uint256 value.
+    """
+
+def calculate_bonds_given_shares_and_rate(
+    effective_share_reserves: str,
+    initial_share_price: str,
+    apr: str,
+    position_duration: str,
+    time_stretch: str,
+) -> str:
+    """
+    Calculates the bond reserves assuming that the pool has a given
+    share reserves and fixed rate APR.
+
+    ..math::
+        r = ((1/p)-1)/t = (1-p)/(pt)
+        p = ((u * z) / y) ** t
+        y = mu * (z - zeta) * (1 + apr * t) ** (1/tau)
+
+    Arguments
+    ---------
+
+    effective_share_reserves : str (FixedPoint)
+        The pool's effective share reserves. The
+        effective share reserves are a modified version of the share
+        reserves used when pricing trades.
+    initial_share_price : str (FixedPoint)
+        The pool's initial share price.
+    apr : str (FixedPoint)
+        The pool's APR.
+    position_duration : str (FixedPoint)
+        The amount of time until maturity in seconds.
+    time_stretch : str (FixedPoint)
+        The time stretch parameter (tau).
+
+    Returns
+    -------
+    bond_reserves : str (FixedPoint)
+        The bond reserves (without adjustment) that make
+        the pool have a specified APR.
     """

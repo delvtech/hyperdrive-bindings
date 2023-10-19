@@ -74,6 +74,21 @@ def test_get_spot_price():
     assert pyperdrive.get_spot_price(sample_pool_config, sample_pool_info) == spot_price
 
 
+def test_calculate_bonds_given_shares_and_rate():
+    """test calculate_bonds_given_shares_and_rate."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    bonds = pyperdrive.calculate_bonds_given_shares_and_rate(
+        state.info.effective_share_reserves,
+        state.config.initial_share_price,
+        state.get_spot_rate(),
+        state.config.position_duration,
+        state.config.time_stretch,
+    )
+    assert bonds is not None, "Failed to get bonds."
+    assert isinstance(bonds, str), "Expected bonds to be a string."
+    assert int(bonds) > 0, "Expected bonds to be > 0."
+
+
 def get_out_for_in():
     """test get_out_for_in."""
     # test using the state directly
