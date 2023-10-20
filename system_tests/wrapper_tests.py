@@ -6,34 +6,34 @@ from pyperdrive.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolIn
 
 sample_pool_config = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
-    initialSharePrice=(1 * 10**18),  # 1e18
-    minimumShareReserves=(1 * 10**17),  # 0.1e18
-    minimumTransactionAmount=(1 * 10**16),  # 0.001e18
-    positionDuration=(604_800),
-    checkpointDuration=(86_400),
-    timeStretch=(1 * 10**17),  # 0.1e18
+    initialSharePrice=1 * 10**18,  # 1e18
+    minimumShareReserves=1 * 10**17,  # 0.1e18
+    minimumTransactionAmount=1 * 10**16,  # 0.001e18
+    positionDuration=604_800,
+    checkpointDuration=86_400,
+    timeStretch=1 * 10**17,  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     feeCollector="0xfedcba0987654321fedcba0987654321fedcba09",
-    fees=Fees(curve=(0), flat=(0), governance=(0)),
-    oracleSize=(10),
-    updateGap=(3_600),
+    fees=Fees(curve=0, flat=0, governance=0),
+    oracleSize=10,
+    updateGap=3_600,
 )
 
 
 sample_pool_info = PoolInfo(
-    shareReserves=(1_000_000 * 10**18),
-    shareAdjustment=(0),
-    bondReserves=(2_000_000 * 10**18),
-    lpTotalSupply=(3_000_000 * 10**18),
-    sharePrice=(1 * 10**18),
-    longsOutstanding=(0),
-    longAverageMaturityTime=(0),
-    shortsOutstanding=(0),
-    shortAverageMaturityTime=(0),
-    withdrawalSharesReadyToWithdraw=(0),
-    withdrawalSharesProceeds=(0),
-    lpSharePrice=(1 * 10**18),
-    longExposure=(0),
+    shareReserves=1_000_000 * 10**18,
+    shareAdjustment=0,
+    bondReserves=2_000_000 * 10**18,
+    lpTotalSupply=3_000_000 * 10**18,
+    sharePrice=1 * 10**18,
+    longsOutstanding=0,
+    longAverageMaturityTime=0,
+    shortsOutstanding=0,
+    shortAverageMaturityTime=0,
+    withdrawalSharesReadyToWithdraw=0,
+    withdrawalSharesProceeds=0,
+    lpSharePrice=1 * 10**18,
+    longExposure=0,
 )
 
 

@@ -6,6 +6,9 @@ from __future__ import annotations
 from . import pyperdrive as rust_module  # type: ignore
 from . import types
 
+# we don't control the number of arguments, wrapping rust functions
+# pylint: disable=too-many-arguments
+
 
 class HyperdriveState:
     """A python class representing the hyperdrive contract state."""
