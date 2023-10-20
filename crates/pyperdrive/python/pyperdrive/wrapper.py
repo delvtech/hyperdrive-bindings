@@ -5,7 +5,6 @@ from __future__ import annotations
 # pylint: disable=no-name-in-module
 from . import pyperdrive as rust_module  # type: ignore
 from . import types
-from .pypechain_types.IHyperdriveTypes import PoolConfig, PoolInfo
 
 
 class HyperdriveState:
@@ -13,12 +12,7 @@ class HyperdriveState:
 
     _rust_interface: rust_module.HyperdriveState
 
-    # def __new__(cls, pool_config: types.PoolConfig, pool_info: types.PoolInfo) -> "HyperdriveState":
-    #     """Create the HyperdriveState instance."""
-    #     _rust_module = rust_module.HyperdriveState(pool_config, pool_info)
-    #     return cls
-
-    def __init__(self, pool_config: PoolConfig, pool_info: PoolInfo) -> None:
+    def __init__(self, pool_config: types.PoolConfigType, pool_info: types.PoolInfoType) -> None:
         """Initializes the hyperdrive state.
 
         Arguments
@@ -185,8 +179,8 @@ class HyperdriveState:
 
 
 def get_max_long(
-    pool_config: PoolConfig,
-    pool_info: PoolInfo,
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
     budget: str,
     checkpoint_exposure: str,
     maybe_max_iterations: int | None,
@@ -222,8 +216,8 @@ def get_max_long(
 
 
 def get_max_short(
-    pool_config: PoolConfig,
-    pool_info: PoolInfo,
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
     budget: str,
     open_share_price: str,
     checkpoint_exposure: str,
@@ -267,8 +261,8 @@ def get_max_short(
 
 
 def get_spot_price(
-    pool_config: types.PoolConfig,
-    pool_info: types.PoolInfo,
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
 ) -> str:
     """Get the spot price of the bond.
 
@@ -285,12 +279,14 @@ def get_spot_price(
         The spot price as a string representation of a Solidity uint256 value.
     """
 
-    return rust_module.get_spot_price(pool_config, pool_info)
+    return rust_module.get_spot_price(
+        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info)
+    )
 
 
 def get_out_for_in(
-    pool_config: PoolConfig,
-    pool_info: PoolInfo,
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
     amount_in: str,
     shares_in: bool,
 ) -> str:
@@ -319,8 +315,8 @@ def get_out_for_in(
 
 
 def get_out_for_in_safe(
-    pool_config: PoolConfig,
-    pool_info: PoolInfo,
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
     amount_in: str,
     shares_in: bool,
 ) -> str:
@@ -350,8 +346,8 @@ def get_out_for_in_safe(
 
 
 def get_in_for_out(
-    pool_config: PoolConfig,
-    pool_info: PoolInfo,
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
     amount_out: str,
     shares_out: bool,
 ) -> str:
@@ -379,7 +375,7 @@ def get_in_for_out(
     )
 
 
-def _serialize_pool_config_values(pool_config: PoolConfig) -> types.PoolConfig:
+def _serialize_pool_config_values(pool_config: types.PoolConfigType) -> types.PoolConfig:
     pool_config_serialized = types.PoolConfig(
         baseToken=str(pool_config.baseToken),
         initialSharePrice=str(pool_config.initialSharePrice),
@@ -402,7 +398,7 @@ def _serialize_pool_config_values(pool_config: PoolConfig) -> types.PoolConfig:
     return pool_config_serialized
 
 
-def _serialize_pool_info_values(pool_info: PoolInfo) -> types.PoolInfo:
+def _serialize_pool_info_values(pool_info: types.PoolInfoType) -> types.PoolInfo:
     pool_info_serialized = types.PoolInfo(
         shareReserves=str(pool_info.shareReserves),
         shareAdjustment=str(pool_info.shareAdjustment),
