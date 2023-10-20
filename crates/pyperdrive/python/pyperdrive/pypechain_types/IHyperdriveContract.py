@@ -14,6 +14,7 @@ from typing import Any, cast
 from eth_typing import ChecksumAddress
 from web3.contract.contract import Contract, ContractFunction, ContractFunctions
 from web3.exceptions import FallbackNotFound
+from web3.types import ABI
 
 
 class IHyperdriveDOMAIN_SEPARATORContractFunction(ContractFunction):
@@ -707,7 +708,7 @@ class IHyperdriveContractFunctions(ContractFunctions):
 class IHyperdriveContract(Contract):
     """A web3.py Contract class for the IHyperdrive contract."""
 
-    def __init__(self, address: ChecksumAddress | None = None, abi=Any) -> None:
+    def __init__(self, abi: ABI, address: ChecksumAddress | None = None) -> None:
         self.abi = abi
         # TODO: make this better, shouldn't initialize to the zero address, but the Contract's init
         # function requires an address.
