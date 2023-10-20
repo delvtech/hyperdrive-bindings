@@ -9,7 +9,7 @@
 # pylint: disable=no-else-return
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import cast
 
 from eth_typing import ChecksumAddress
 from web3.contract.contract import Contract, ContractFunction, ContractFunctions
