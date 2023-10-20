@@ -283,7 +283,8 @@ def get_spot_price(
     """
 
     return rust_module.get_spot_price(
-        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info)
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
     )
 
 
@@ -313,7 +314,10 @@ def get_out_for_in(
     """
 
     return rust_module.get_out_for_in(
-        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info), amount_in, shares_in
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
+        amount_in,
+        shares_in,
     )
 
 
@@ -344,7 +348,10 @@ def get_out_for_in_safe(
     """
 
     return rust_module.get_out_for_in_safe(
-        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info), amount_in, shares_in
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
+        amount_in,
+        shares_in,
     )
 
 
@@ -374,11 +381,16 @@ def get_in_for_out(
     """
 
     return rust_module.get_in_for_out(
-        _serialize_pool_config_values(pool_config), _serialize_pool_info_values(pool_info), amount_out, shares_out
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
+        amount_out,
+        shares_out,
     )
 
 
-def _serialize_pool_config_values(pool_config: types.PoolConfigType) -> types.PoolConfig:
+def _serialize_pool_config_values(
+    pool_config: types.PoolConfigType,
+) -> types.PoolConfig:
     pool_config_serialized = types.PoolConfig(
         baseToken=str(pool_config.baseToken),
         initialSharePrice=str(pool_config.initialSharePrice),
