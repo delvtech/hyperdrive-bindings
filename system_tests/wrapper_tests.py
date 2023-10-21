@@ -2,41 +2,38 @@
 import pytest
 
 import pyperdrive
-from pyperdrive.types import Fees, PoolConfig, PoolInfo
-
-# pylint isn't reading pyperdrive.pyi correctly, so pyperdrive.HyperdriveState etc shows 'Unknown'
-# pylint: disable=no-member
+from pyperdrive.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolInfo
 
 sample_pool_config = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
-    initialSharePrice=str(1 * 10**18),  # 1e18
-    minimumShareReserves=str(1 * 10**17),  # 0.1e18
-    minimumTransactionAmount=str(1 * 10**16),  # 0.001e18
-    positionDuration=str(604_800),
-    checkpointDuration=str(86_400),
-    timeStretch=str(1 * 10**17),  # 0.1e18
+    initialSharePrice=1 * 10**18,  # 1e18
+    minimumShareReserves=1 * 10**17,  # 0.1e18
+    minimumTransactionAmount=1 * 10**16,  # 0.001e18
+    positionDuration=604_800,
+    checkpointDuration=86_400,
+    timeStretch=1 * 10**17,  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     feeCollector="0xfedcba0987654321fedcba0987654321fedcba09",
-    Fees=Fees(curve=str(0), flat=str(0), governance=str(0)),
-    oracleSize=str(10),
-    updateGap=str(3_600),
+    fees=Fees(curve=0, flat=0, governance=0),
+    oracleSize=10,
+    updateGap=3_600,
 )
 
 
 sample_pool_info = PoolInfo(
-    shareReserves=str(1_000_000 * 10**18),
-    shareAdjustment=str(0),
-    bondReserves=str(2_000_000 * 10**18),
-    lpTotalSupply=str(3_000_000 * 10**18),
-    sharePrice=str(1 * 10**18),
-    longsOutstanding=str(0),
-    longAverageMaturityTime=str(0),
-    shortsOutstanding=str(0),
-    shortAverageMaturityTime=str(0),
-    withdrawalSharesReadyToWithdraw=str(0),
-    withdrawalSharesProceeds=str(0),
-    lpSharePrice=str(1 * 10**18),
-    longExposure=str(0),
+    shareReserves=1_000_000 * 10**18,
+    shareAdjustment=0,
+    bondReserves=2_000_000 * 10**18,
+    lpTotalSupply=3_000_000 * 10**18,
+    sharePrice=1 * 10**18,
+    longsOutstanding=0,
+    longAverageMaturityTime=0,
+    shortsOutstanding=0,
+    shortAverageMaturityTime=0,
+    withdrawalSharesReadyToWithdraw=0,
+    withdrawalSharesProceeds=0,
+    lpSharePrice=1 * 10**18,
+    longExposure=0,
 )
 
 

@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Any, Protocol
 
 
 @dataclass
@@ -30,7 +31,7 @@ class PoolConfig:
     timeStretch: str
     governance: str
     feeCollector: str
-    Fees: Fees
+    fees: Fees
     oracleSize: str
     updateGap: str
 
@@ -52,3 +53,70 @@ class PoolInfo:
     withdrawalSharesProceeds: str
     lpSharePrice: str
     longExposure: str
+
+
+# TODO: pypechain should either use TypedDicts or generate these interfaces.
+class CheckpointType(Protocol):
+    """Checkpoint struct."""
+
+    sharePrice: int
+    longExposure: int
+
+
+class MarketStateType(Protocol):
+    """MarketState struct."""
+
+    shareReserves: int
+    bondReserves: int
+    shareAdjustment: int
+    longExposure: int
+    longsOutstanding: int
+    shortsOutstanding: int
+    longAverageMaturityTime: int
+    shortAverageMaturityTime: int
+    isInitialized: bool
+    isPaused: bool
+
+
+class FeesType(Protocol):
+    """Fees struct."""
+
+    curve: int
+    flat: int
+    governance: int
+
+
+class PoolConfigType(Protocol):
+    """PoolConfig struct."""
+
+    baseToken: str
+    initialSharePrice: int
+    minimumShareReserves: int
+    minimumTransactionAmount: int
+    positionDuration: int
+    checkpointDuration: int
+    timeStretch: int
+    governance: str
+    feeCollector: str
+    # TODO: nested Protocol types do not play well with dataclasses.  use 'or Any' for now.
+    fees: FeesType | Any
+    oracleSize: int
+    updateGap: int
+
+
+class PoolInfoType(Protocol):
+    """PoolInfo struct."""
+
+    shareReserves: int
+    shareAdjustment: int
+    lpTotalSupply: int
+    sharePrice: int
+    longsOutstanding: int
+    longAverageMaturityTime: int
+    shortsOutstanding: int
+    bondReserves: int
+    shortAverageMaturityTime: int
+    withdrawalSharesReadyToWithdraw: int
+    withdrawalSharesProceeds: int
+    lpSharePrice: int
+    longExposure: int
