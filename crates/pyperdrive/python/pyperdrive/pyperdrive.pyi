@@ -325,7 +325,7 @@ def get_effective_share_reserves(
     share_reserves: str,
     share_adjustment: str,
 ) -> str:
-    """
+    r"""
     Calculate the effective share reserves given the share reserves and share adjustment.
 
     ..math::
