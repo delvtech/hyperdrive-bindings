@@ -71,6 +71,47 @@ def test_get_spot_price():
     assert pyperdrive.get_spot_price(sample_pool_config, sample_pool_info) == spot_price
 
 
+def test_get_time_stretch():
+    """test get_time_stretch."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    time_stretch = pyperdrive.get_time_stretch(
+        state.get_spot_rate(),
+    )
+    assert time_stretch is not None, "Failed to get time_stretch."
+    assert isinstance(time_stretch, str), "Expected time_stretch to be a string."
+    assert float(time_stretch) > 0, "Expected time_stretch to be > 0."
+
+
+def test_get_effective_share_reserves():
+    """test get_effective_share_reserves."""
+    effective_share_reserves = pyperdrive.get_effective_share_reserves(
+        str(sample_pool_info.shareReserves),
+        str(sample_pool_info.shareAdjustment),
+    )
+    assert effective_share_reserves is not None, "Failed to get effective_share_reserves."
+    assert isinstance(effective_share_reserves, str), "Expected effective_share_reserves to be a string."
+    assert int(effective_share_reserves) > 0, "Expected effective_share_reserves to be > 0."
+
+
+def test_calculate_bonds_given_shares_and_rate():
+    """test calculate_bonds_given_shares_and_rate."""
+    state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
+    effective_share_reserves = pyperdrive.get_effective_share_reserves(
+        str(sample_pool_info.shareReserves),
+        str(sample_pool_info.shareAdjustment),
+    )
+    bonds = pyperdrive.calculate_bonds_given_shares_and_rate(
+        effective_share_reserves,
+        str(sample_pool_config.initialSharePrice),
+        state.get_spot_rate(),
+        str(sample_pool_config.positionDuration),
+        str(sample_pool_config.timeStretch),
+    )
+    assert bonds is not None, "Failed to get bonds."
+    assert isinstance(bonds, str), "Expected bonds to be a string."
+    assert int(bonds) > 0, "Expected bonds to be > 0."
+
+
 def get_out_for_in():
     """test get_out_for_in."""
     # test using the state directly
