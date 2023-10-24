@@ -104,7 +104,7 @@ impl FromPyObject<'_> for PyPoolConfig {
         let time_stretch = extract_u256_from_attr(ob, "timeStretch")?;
         let governance = extract_address_from_attr(ob, "governance")?;
         let fee_collector = extract_address_from_attr(ob, "feeCollector")?;
-        let fees = extract_fees_from_attr(ob, "Fees")?;
+        let fees = extract_fees_from_attr(ob, "fees")?;
         let oracle_size = extract_u256_from_attr(ob, "oracleSize")?;
         let update_gap = extract_u256_from_attr(ob, "updateGap")?;
 

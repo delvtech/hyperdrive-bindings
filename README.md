@@ -23,8 +23,18 @@ To install the Python package `pyperdrive`, which wraps the Rust `hyperdrive_mat
 
 - `cd crates/pyperdrive/`
 - `python setup.py bdist_wheel`
-This will make the distribution ready (e.g. a tar.gz file and a .whl file in the dist directory) for your platform.
-To build for more platforms, we use [cbuildwheel](https://cibuildwheel.readthedocs.io/en/stable/) in our GitHub CI.
+  This will make the distribution ready (e.g. a tar.gz file and a .whl file in the dist directory) for your platform.
+  To build for more platforms, we use [cbuildwheel](https://cibuildwheel.readthedocs.io/en/stable/) in our GitHub CI.
+
+## Build Types
+
+PoolInfo and PoolConfig are passed into many of the functions. These are built from the hyperdrive abi json with
+pypechain. From the pyperdrive project root, run:
+
+```shell
+pip install --upgrade -r requirements-dev.txt
+pypechain hyperdrive/out/IHyperdrive.sol/IHyperdrive.json --output_dir crates/pyperdrive/python/pypechain_types
+```
 
 ## Disclaimer
 
