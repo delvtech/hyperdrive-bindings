@@ -4,9 +4,6 @@ import pytest
 import pyperdrive
 from pyperdrive.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolInfo
 
-# TODO: Fix pylint and pyright type errors
-# pylint: disable=no-member
-
 sample_pool_config = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
     initialSharePrice=1 * 10**18,  # 1e18
@@ -77,7 +74,7 @@ def test_get_spot_price():
 def test_get_time_stretch():
     """test get_time_stretch."""
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
-    time_stretch = pyperdrive.get_time_stretch(  # type: ignore
+    time_stretch = pyperdrive.get_time_stretch(
         state.get_spot_rate(),
     )
     assert time_stretch is not None, "Failed to get time_stretch."
@@ -87,7 +84,7 @@ def test_get_time_stretch():
 
 def test_get_effective_share_reserves():
     """test get_effective_share_reserves."""
-    effective_share_reserves = pyperdrive.get_effective_share_reserves(  #  type: ignore
+    effective_share_reserves = pyperdrive.get_effective_share_reserves(
         str(sample_pool_info.shareReserves),
         str(sample_pool_info.shareAdjustment),
     )
@@ -99,11 +96,11 @@ def test_get_effective_share_reserves():
 def test_calculate_bonds_given_shares_and_rate():
     """test calculate_bonds_given_shares_and_rate."""
     state = pyperdrive.HyperdriveState(sample_pool_config, sample_pool_info)
-    effective_share_reserves = pyperdrive.get_effective_share_reserves(  # type: ignore
+    effective_share_reserves = pyperdrive.get_effective_share_reserves(
         str(sample_pool_info.shareReserves),
         str(sample_pool_info.shareAdjustment),
     )
-    bonds = pyperdrive.calculate_bonds_given_shares_and_rate(  # type: ignore
+    bonds = pyperdrive.calculate_bonds_given_shares_and_rate(
         effective_share_reserves,
         str(sample_pool_config.initialSharePrice),
         state.get_spot_rate(),

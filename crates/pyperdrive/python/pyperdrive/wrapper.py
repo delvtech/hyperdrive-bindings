@@ -1,6 +1,7 @@
 """Python wrapper for the rust module."""
 from __future__ import annotations
 
+# The module itself doesn't have type hints, so we will ignore warnings in this file.
 # pylint: disable=c-extension-no-member
 # pylint: disable=no-name-in-module
 from . import pyperdrive as rust_module  # type: ignore
@@ -21,11 +22,11 @@ class HyperdriveState:
         Arguments
         ---------
         pool_config : PoolConfig
-            Static configuration for the hyperdrive contract.  Set at deploy time.
+            Static configuration for the hyperdrive contract. Set at deploy time.
         pool_info : PoolInfo
-            Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
+            Current state information of the hyperdrive contract.
+            Includes things like reserve levels and share prices.
         """
-
         pool_config_serialized = _serialize_pool_config_values(pool_config)
         pool_info_serialized = _serialize_pool_info_values(pool_info)
         self._rust_interface = rust_module.HyperdriveState(pool_config_serialized, pool_info_serialized)
@@ -35,10 +36,9 @@ class HyperdriveState:
 
         Returns
         -------
-        str
-            The spot rate as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The pool's spot rate.
         """
-
         return self._rust_interface.get_spot_rate()
 
     def get_spot_price(self) -> str:
@@ -46,10 +46,9 @@ class HyperdriveState:
 
         Returns
         -------
-        str
-            The spot price as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The pool's spot price.
         """
-
         return self._rust_interface.get_spot_price()
 
     def get_out_for_in(self, amount_in: str, shares_in: bool):
@@ -57,36 +56,36 @@ class HyperdriveState:
 
         Arguments
         ---------
-        amount_in : str
-            The aount in as a string representation of a Solidity uint256 value.
+        amount_in : str (FixedPoint)
+            The amount of asset going into the pool.
         shares_in : bool
             True if the asset in is shares, False if it is bonds.
+            The amount out will be the opposite type.
 
         Returns
         -------
-        str
-            The aount out as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The amount out.
         """
-
         return self._rust_interface.get_out_for_in(amount_in, shares_in)
 
     def get_out_for_in_safe(self, amount_in: str, shares_in: bool):
-        """Gets the amount of an asset for a given amount in of the other.  Will not cause a panic
-        if rust breaks, will return a python error instead.
+        """Gets the amount of an asset for a given amount in of the other.
+        Will not cause a panic if rust breaks, will return a python error instead.
 
         Arguments
         ---------
-        amount_in : str
-            The aount in as a string representation of a Solidity uint256 value.
+        amount_in : str (FixedPoint)
+            The amount of asset going into the pool.
         shares_in : bool
             True if the asset in is shares, False if it is bonds.
+            The amount out will be the opposite type.
 
         Returns
         -------
-        str
-            The aount out as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The amount out.
         """
-
         return self._rust_interface.get_out_for_in_safe(amount_in, shares_in)
 
     def get_in_for_out(self, amount_out: str, shares_out: bool):
@@ -94,17 +93,17 @@ class HyperdriveState:
 
         Arguments
         ---------
-        amount_out : str
-            The aount out as a string representation of a Solidity uint256 value.
+        amount_out : str (FixedPoint)
+            The amount of asset the user expects to receive from the pool.
         shares_out : bool
             True if the asset out is shares, False if it is bonds.
+            The amount in will be the opposite type.
 
         Returns
         -------
-        str
-            The aount in as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The amount in as a string representation of a Solidity uint256 value.
         """
-
         return self._rust_interface.get_out_for_in_safe(amount_out, shares_out)
 
     def to_checkpoint(self, time: str) -> str:
@@ -112,13 +111,13 @@ class HyperdriveState:
 
         Arguments
         ---------
-        time : str
-            A string representation of any timestamp before the present.
+        time : str (U256)
+            A string representation of any timestamp (in seconds) before or at the present.
 
         Returns
         -------
-        str
-            The checkpoint timestamp as a string representation of a Solidity uint256 value.
+        str (U256)
+            The checkpoint timestamp.
         """
 
         return self._rust_interface.to_checkpoint(time)
@@ -128,19 +127,18 @@ class HyperdriveState:
 
         Arguments
         ---------
-        budget : str
+        budget : str (FixedPont)
             The account budget in base for making a long.
-        checkpoint_exposure : str
+        checkpoint_exposure : str (I256)
             The net exposure for the given checkpoint.
         maybe_max_iterations : int, optional
             The number of iterations to use for the Newtonian method.
 
         Returns
         -------
-        str
-            The maximum long as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The maximum long the pool and user's wallet can support.
         """
-
         return self._rust_interface.get_max_long(budget, checkpoint_exposure, maybe_max_iterations)
 
     def get_max_short(
@@ -168,10 +166,9 @@ class HyperdriveState:
 
         Returns
         -------
-        str
-            The maximum short as a string representation of a Solidity uint256 value.
+        str (FixedPoint)
+            The maximum short the pool and user's wallet can handle.
         """
-
         return self._rust_interface.get_max_short(
             budget,
             open_share_price,
@@ -193,22 +190,23 @@ def get_max_long(
     Arguments
     ---------
     pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.  Set at deploy time.
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
     pool_info : PoolInfo
-        Current state information of the hyperdrive contract. Includes things like reserve levels and share prices.
-    budget : str (FixedPoint)
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    budget : str (FixedPont)
         The account budget in base for making a long.
-    checkpoint_exposure : str (FixedPoint)
+    checkpoint_exposure : str (I256)
         The net exposure for the given checkpoint.
     maybe_max_iterations : int, optional
         The number of iterations to use for the Newtonian method.
 
     Returns
     -------
-    str
-        The maximum long as a string representation of a Solidity uint256 value.
+    str (FixedPoint)
+        The maximum long the pool and user's wallet can support.
     """
-
     return rust_module.get_max_long(
         _serialize_pool_config_values(pool_config),
         _serialize_pool_info_values(pool_info),
@@ -232,14 +230,16 @@ def get_max_short(
     Arguments
     ---------
     pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.  Set at deploy time.
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
     pool_info : PoolInfo
-        Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
     budget : str (FixedPoint)
         The account budget in base for making a short.
     open_share_price : str (FixedPoint)
         The share price of underlying vault.
-    checkpoint_exposure : str
+    checkpoint_exposure : str (FixedPoint)
         The net exposure for the given checkpoint.
     maybe_conservative_price : str (FixedPoint), optional
         A lower bound on the realized price that the short will pay.
@@ -248,10 +248,9 @@ def get_max_short(
 
     Returns
     -------
-    str
-        The maximum short as a string representation of a Solidity uint256 value.
+    str (FixedPoint)
+        The maximum short the pool and user's wallet can handle.
     """
-
     return rust_module.get_max_short(
         _serialize_pool_config_values(pool_config),
         _serialize_pool_info_values(pool_info),
@@ -272,16 +271,17 @@ def get_spot_price(
     Arguments
     ---------
     pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.  Set at deploy time.
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
     pool_info : PoolInfo
-        Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
 
     Returns
     -------
-    str
-        The spot price as a string representation of a Solidity uint256 value.
+    str (FixedPoint)
+        The pool's spot price.
     """
-
     return rust_module.get_spot_price(
         _serialize_pool_config_values(pool_config),
         _serialize_pool_info_values(pool_info),
@@ -299,20 +299,22 @@ def get_out_for_in(
     Arguments
     ---------
     pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.  Set at deploy time.
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
     pool_info : PoolInfo
-        Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
-    amount_in : str
-        The aount in as a string representation of a Solidity uint256 value.
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    amount_in : str (FixedPoint)
+        The amount of asset going into the pool.
     shares_in : bool
         True if the asset in is shares, False if it is bonds.
+        The amount out will be the opposite type.
 
     Returns
     -------
-    str
-        The aount out as a string representation of a Solidity uint256 value.
+    str (FixedPoint)
+        The amount out.
     """
-
     return rust_module.get_out_for_in(
         _serialize_pool_config_values(pool_config),
         _serialize_pool_info_values(pool_info),
@@ -327,26 +329,27 @@ def get_out_for_in_safe(
     amount_in: str,
     shares_in: bool,
 ) -> str:
-    """Gets the amount of an asset for a given amount in of the other.  Will not cause a panic
-    if rust breaks, will return a python error instead.
+    """Gets the amount of an asset for a given amount in of the other.
 
     Arguments
     ---------
     pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.  Set at deploy time.
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
     pool_info : PoolInfo
-        Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
-    amount_in : str
-        The aount in as a string representation of a Solidity uint256 value.
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    amount_in : str (FixedPoint)
+        The amount of asset going into the pool.
     shares_in : bool
         True if the asset in is shares, False if it is bonds.
+        The amount out will be the opposite type.
 
     Returns
     -------
-    str
-        The aount out as a string representation of a Solidity uint256 value.
+    str (FixedPoint)
+        The amount out.
     """
-
     return rust_module.get_out_for_in_safe(
         _serialize_pool_config_values(pool_config),
         _serialize_pool_info_values(pool_info),
@@ -366,20 +369,22 @@ def get_in_for_out(
     Arguments
     ---------
     pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.  Set at deploy time.
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
     pool_info : PoolInfo
-        Current state information of the hyperdrive contract.  Includes things like reserve levels and share prices.
-    amount_out : str
-        The aount out as a string representation of a Solidity uint256 value.
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    amount_out : str (FixedPoint)
+        The amount of asset the user expects to receive from the pool.
     shares_out : bool
         True if the asset out is shares, False if it is bonds.
+        The amount in will be the opposite type.
 
     Returns
     -------
-    str
-        The aount in as a string representation of a Solidity uint256 value.
+    str (FixedPoint)
+        The amount in as a string representation of a Solidity uint256 value.
     """
-
     return rust_module.get_in_for_out(
         _serialize_pool_config_values(pool_config),
         _serialize_pool_info_values(pool_info),
@@ -391,8 +396,7 @@ def get_in_for_out(
 def get_time_stretch(
     rate: str,
 ) -> str:
-    """
-    Calculate the time stretch parameter given a pool's spot rate.
+    """Calculate the time stretch parameter given a pool's spot rate.
 
     ..math::
         tau = 5.24592 / (0.4665 * r * 100)
@@ -401,8 +405,6 @@ def get_time_stretch(
     ---------
     rate : str (FixedPoint)
         The pool's spot rate (aka apr, or fixed rate).
-    share_adjustment : str (I256)
-        The zeta factor for adjusting share reserves.
 
     Returns
     -------
@@ -416,8 +418,7 @@ def get_effective_share_reserves(
     share_reserves: str,
     share_adjustment: str,
 ) -> str:
-    r"""
-    Calculate the effective share reserves given the share reserves and share adjustment.
+    r"""Calculate the effective share reserves given the share reserves and share adjustment.
 
     ..math::
         z_effective = z - \zeta
