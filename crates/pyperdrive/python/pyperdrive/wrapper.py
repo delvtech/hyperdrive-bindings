@@ -31,6 +31,16 @@ class HyperdriveState:
         pool_info_serialized = _serialize_pool_info_values(pool_info)
         self._rust_interface = rust_module.HyperdriveState(pool_config_serialized, pool_info_serialized)
 
+    def get_solvency(self) -> str:
+        """Get the pool's solvency.
+
+        Returns
+        -------
+        str (FixedPoint)
+            solvency = share_reserves - long_exposure / share_price - minimum_share_reserves
+        """
+        return self._rust_interface.get_solvency()
+
     def get_spot_rate(self) -> str:
         """Get the spot rate (fixed rate) for the market.
 
@@ -50,6 +60,36 @@ class HyperdriveState:
             The pool's spot price.
         """
         return self._rust_interface.get_spot_price()
+
+    def get_long_amount(self, base_amount: str) -> str:
+        """Gets the long amount that will be opened for a given base amount.
+
+        Arguments
+        ---------
+        base_amount : str (FixedPoint)
+            The amount to spend, in base.
+
+        Returns
+        -------
+        long_amount : str (FixedPoint)
+            The amount of bonds purchased.
+        """
+        return self._rust_interface.get_long_amount(base_amount)
+
+    def get_short_deposit(self, short_amount: str, spot_price: str, open_share_price: str | None = None) -> str:
+        """Gets the amount of base the trader will need to deposit for a short of a given size.
+
+        Arguments
+        ---------
+        base_amount : str (FixedPoint)
+            The amount to spend, in base.
+
+        Returns
+        -------
+        long_amount : str (FixedPoint)
+            The amount of bonds purchased.
+        """
+        return self._rust_interface.get_long_amount(base_amount)
 
     def get_out_for_in(self, amount_in: str, shares_in: bool):
         """Gets the amount of an asset for a given amount in of the other.
