@@ -288,6 +288,33 @@ def get_spot_price(
     )
 
 
+def get_spot_rate(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """Get the spot rate (fixed rate) for the market.
+
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+
+
+    Returns
+    -------
+    str (FixedPoint)
+        The pool's spot rate.
+    """
+    return rust_module.get_spot_rate(
+        _serialize_pool_config_values(pool_config),
+        _serialize_pool_info_values(pool_info),
+    )
+
+
 def get_out_for_in(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,

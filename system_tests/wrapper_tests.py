@@ -50,6 +50,8 @@ def test_get_spot_rate():
     assert spot_rate is not None, "Failed to get spot rate."
     assert isinstance(spot_rate, str), "Expected spot rate to be a string."
     assert int(spot_rate) > 0, "Expected spot rate to > 0."
+    # test the helper function
+    assert pyperdrive.get_spot_rate(sample_pool_config, sample_pool_info) == spot_rate
 
 
 def test_to_checkpoint():
