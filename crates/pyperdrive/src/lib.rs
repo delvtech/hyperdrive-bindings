@@ -317,6 +317,13 @@ fn get_spot_price(pool_config: &PyAny, pool_info: &PyAny) -> PyResult<String> {
     return hyperdrive_state.get_spot_price();
 }
 
+/// Get the spot rate (fixed rate) for a Hyperdrive market with the given pool state
+#[pyfunction]
+fn get_spot_rate(pool_config: &PyAny, pool_info: &PyAny) -> PyResult<String> {
+    let hyperdrive_state: HyperdriveState = (pool_config, pool_info).into();
+    return hyperdrive_state.get_spot_rate();
+}
+
 /// Get the the amount out of an asset for a corresponding amount in.
 #[pyfunction]
 fn get_out_for_in(
@@ -457,15 +464,12 @@ fn get_time_stretch(rate: &str) -> PyResult<String> {
 
 /// Get the share reserves after subtracting the adjustment used for
 /// A pyO3 wrapper for the hyperdrie_math crate.
-/// The Hyperdrive State struct will be exposed with the following methods:
-///   - get_spot_price
-///   - get_max_long
-///   - get_max_short
 #[pymodule]
 #[pyo3(name = "pyperdrive")]
 fn pyperdrive(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<HyperdriveState>()?;
     m.add_function(wrap_pyfunction!(get_spot_price, m)?)?;
+    m.add_function(wrap_pyfunction!(get_spot_rate, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_long, m)?)?;
     m.add_function(wrap_pyfunction!(get_max_short, m)?)?;
     m.add_function(wrap_pyfunction!(get_out_for_in, m)?)?;
