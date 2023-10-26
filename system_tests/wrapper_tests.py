@@ -124,6 +124,29 @@ def get_in_for_out():
     assert int(shares_in) > 0
 
 
+def test_get_long_amount():
+    """Test for get_long_amount."""
+    base_amount = str(500 * 10**18)
+    long_amount = pyperdrive.get_long_amount(POOL_CONFIG, POOL_INFO, base_amount)
+    assert int(long_amount) > 0
+
+
+def test_get_short_deposit():
+    """Test for get_long_amount."""
+    short_amount = str(50 * 10**18)
+    spot_price = pyperdrive.get_spot_price(POOL_CONFIG, POOL_INFO)
+    open_share_price = str(9 * 10**17)
+    base_required = pyperdrive.get_short_deposit(POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price)
+    assert int(base_required) > 0
+    base_required_default_share_price = pyperdrive.get_short_deposit(
+        POOL_CONFIG, POOL_INFO, short_amount, spot_price, None
+    )
+    assert int(base_required_default_share_price) > 0
+    assert base_required_default_share_price == pyperdrive.get_short_deposit(
+        POOL_CONFIG, POOL_INFO, short_amount, spot_price, "0"
+    )
+
+
 def test_max_long():
     """Test get_max_long."""
     budget = "1000000000000000000"  # 1 base

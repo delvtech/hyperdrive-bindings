@@ -23,28 +23,24 @@ impl HyperdriveState {
         Ok(HyperdriveState::new(state))
     }
 
-    /// Gets the pool's solvency.
     pub fn get_solvency(&self) -> PyResult<String> {
         let result_fp = self.state.get_solvency();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
-    /// Get the pool's spot price.
     pub fn get_spot_price(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_price();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
-    /// Get the pool's spot rate.
     pub fn get_spot_rate(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_rate();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
-    /// Get the long amount that will be opened for a given base amount.
     pub fn get_long_amount(&self, base_amount: &str) -> PyResult<String> {
         let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
@@ -54,7 +50,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Get the amount of base the trader will need to deposit for a short of a given size.
     pub fn get_short_deposit(
         &self,
         short_amount: &str,
@@ -85,7 +80,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Get amount out for a given amount in.
     pub fn get_out_for_in(&self, amount_in: &str, shares_in: bool) -> PyResult<String> {
         let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
@@ -99,7 +93,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Get amount out for a given amount in.  Returns a python error instead of panicking.
     pub fn get_out_for_in_safe(&self, amount_in: &str, shares_in: bool) -> PyResult<String> {
         let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
@@ -116,7 +109,6 @@ impl HyperdriveState {
         }
     }
 
-    /// Get amount in for a given amount out.
     pub fn get_in_for_out(&self, amount_out: &str, shares_out: bool) -> PyResult<String> {
         let amount_out_fp = FixedPoint::from(U256::from_dec_str(amount_out).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
@@ -130,7 +122,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Convert a timestamp to the checkpoint timestamp that it corresponds to.
     pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
         let time_int = U256::from_dec_str(time)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
@@ -139,7 +130,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Get the max long that can be opened given a budget.
     pub fn get_max_long(
         &self,
         budget: &str,
@@ -159,7 +149,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Get the max short that can be opened with the given budget.
     pub fn get_max_short(
         &self,
         budget: &str,

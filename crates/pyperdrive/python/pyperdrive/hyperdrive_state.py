@@ -1,13 +1,10 @@
 """Python wrapper for the rust hyperdrive_math::State module."""
 from __future__ import annotations
 
-# pylint: disable=no-name-in-module
 from . import types
 from .utils import _get_interface
 
-# The module itself doesn't have type hints, so we will ignore warnings in this file.
-# pylint: disable=c-extension-no-member
-# we don't control the number of arguments, wrapping rust functions
+# We don't control the number of arguments when wrapping rust functions.
 # pylint: disable=too-many-arguments
 
 
