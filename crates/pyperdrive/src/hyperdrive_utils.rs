@@ -11,7 +11,6 @@ use hyperdrive_math::{
     get_time_stretch as rs_get_time_stretch,
 };
 
-/// Get the amount of bonds required for a given pool's share reserves and spot rate
 #[pyfunction]
 pub fn calculate_bonds_given_shares_and_rate(
     effective_share_reserves: &str,
@@ -52,7 +51,6 @@ pub fn calculate_bonds_given_shares_and_rate(
     return Ok(result);
 }
 
-/// Get the effective share reserves given share reserves and share adjustments
 #[pyfunction]
 pub fn get_effective_share_reserves(
     share_reserves: &str,
@@ -69,7 +67,6 @@ pub fn get_effective_share_reserves(
     return Ok(result);
 }
 
-/// Get the time stretch given a market rate
 #[pyfunction]
 pub fn get_time_stretch(rate: &str) -> PyResult<String> {
     let rate_fp = FixedPoint::from(
