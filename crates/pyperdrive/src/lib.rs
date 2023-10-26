@@ -32,18 +32,21 @@ impl HyperdriveState {
         Ok(HyperdriveState::new(state))
     }
 
+    /// Gets the pool's solvency.
     pub fn get_solvency(&self) -> PyResult<String> {
         let result_fp = self.state.get_solvency();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
+    /// Get the pool's spot price.
     pub fn get_spot_price(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_price();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
+    /// Get the pool's spot rate.
     pub fn get_spot_rate(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_rate();
         let result = U256::from(result_fp).to_string();
@@ -136,6 +139,7 @@ impl HyperdriveState {
         return Ok(result);
     }
 
+    /// Convert a timestamp to the checkpoint timestamp that it corresponds to.
     pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
         let time_int = U256::from_dec_str(time)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
@@ -144,6 +148,7 @@ impl HyperdriveState {
         return Ok(result);
     }
 
+    /// Get the max long that can be opened given a budget.
     pub fn get_max_long(
         &self,
         budget: &str,
@@ -163,6 +168,7 @@ impl HyperdriveState {
         return Ok(result);
     }
 
+    /// Get the max short that can be opened with the given budget.
     pub fn get_max_short(
         &self,
         budget: &str,
