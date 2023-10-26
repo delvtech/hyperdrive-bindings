@@ -81,15 +81,24 @@ class HyperdriveState:
 
         Arguments
         ---------
-        base_amount : str (FixedPoint)
-            The amount to spend, in base.
+        short_amount : str (FixedPoint)
+            The amount to of bonds to short.
+        spot_price : str (FixedPoint)
+            The pool's current price for bonds.
+        open_share_price : str (FixedPoint), optional
+            Optionally provide the open share price for the short.
+            If this is not provided or is None, then we will use the pool's current share price.
 
         Returns
         -------
-        long_amount : str (FixedPoint)
-            The amount of bonds purchased.
+        short_amount : str (FixedPoint)
+            The amount of base required to short the bonds (aka the "max loss").
         """
-        return self._rust_interface.get_long_amount(base_amount)
+        if open_share_price is None:
+            # the underlying rust code uses current market share price if this is 0
+            # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
+            open_share_price = "0"
+        return self._rust_interface.get_short_deposit(short_amount, spot_price, open_share_price)
 
     def get_out_for_in(self, amount_in: str, shares_in: bool):
         """Gets the amount of an asset for a given amount in of the other.

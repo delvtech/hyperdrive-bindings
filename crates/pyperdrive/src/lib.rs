@@ -212,13 +212,12 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    /// Gets the amount of base the trader will need to deposit for a short of
-    /// a given size.
+    /// Get the amount of base the trader will need to deposit for a short of a given size.
     pub fn get_short_deposit(
         &self,
         short_amount: &str,
         spot_price: &str,
-        mut open_share_price: &str,
+        open_share_price: &str,
     ) -> PyResult<String> {
         let short_amount_fp = FixedPoint::from(U256::from_dec_str(short_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert short_amount string to U256")
