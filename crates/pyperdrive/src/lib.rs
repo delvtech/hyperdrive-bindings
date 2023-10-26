@@ -1,9 +1,11 @@
 mod hyperdrive_state;
 mod pool_config;
 mod pool_info;
+mod utils;
 
 use ethers::core::types::{I256, U256};
 use fixed_point::FixedPoint;
+use hyperdrive_math::Asset;
 
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
@@ -16,8 +18,9 @@ use hyperdrive_math::{
 };
 
 use hyperdrive_state::HyperdriveState;
-use pool_config::PyPoolConfig;
-use pool_info::PyPoolInfo;
+pub use pool_config::PyPoolConfig;
+pub use pool_info::PyPoolInfo;
+pub use utils::*;
 
 #[pymethods]
 impl HyperdriveState {

@@ -1,3 +1,7 @@
+use crate::{extract_address_from_attr, extract_fees_from_attr, extract_u256_from_attr};
+use hyperdrive_wrappers::wrappers::i_hyperdrive::PoolConfig;
+use pyo3::prelude::*;
+
 pub struct PyPoolConfig {
     pub pool_config: PoolConfig,
 }
