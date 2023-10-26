@@ -31,6 +31,16 @@ class HyperdriveState:
         pool_info_serialized = _serialize_pool_info_values(pool_info)
         self._rust_interface = rust_module.HyperdriveState(pool_config_serialized, pool_info_serialized)
 
+    def get_solvency(self) -> str:
+        """Get the pool's solvency.
+
+        Returns
+        -------
+        str (FixedPoint)
+            solvency = share_reserves - long_exposure / share_price - minimum_share_reserves
+        """
+        return self._rust_interface.get_solvency()
+
     def get_spot_rate(self) -> str:
         """Get the spot rate (fixed rate) for the market.
 
@@ -50,6 +60,45 @@ class HyperdriveState:
             The pool's spot price.
         """
         return self._rust_interface.get_spot_price()
+
+    def get_long_amount(self, base_amount: str) -> str:
+        """Gets the long amount that will be opened for a given base amount.
+
+        Arguments
+        ---------
+        base_amount : str (FixedPoint)
+            The amount to spend, in base.
+
+        Returns
+        -------
+        long_amount : str (FixedPoint)
+            The amount of bonds purchased.
+        """
+        return self._rust_interface.get_long_amount(base_amount)
+
+    def get_short_deposit(self, short_amount: str, spot_price: str, open_share_price: str | None = None) -> str:
+        """Gets the amount of base the trader will need to deposit for a short of a given size.
+
+        Arguments
+        ---------
+        short_amount : str (FixedPoint)
+            The amount to of bonds to short.
+        spot_price : str (FixedPoint)
+            The pool's current price for bonds.
+        open_share_price : str (FixedPoint), optional
+            Optionally provide the open share price for the short.
+            If this is not provided or is None, then we will use the pool's current share price.
+
+        Returns
+        -------
+        short_amount : str (FixedPoint)
+            The amount of base required to short the bonds (aka the "max loss").
+        """
+        if open_share_price is None:
+            # the underlying rust code uses current market share price if this is 0
+            # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
+            open_share_price = "0"
+        return self._rust_interface.get_short_deposit(short_amount, spot_price, open_share_price)
 
     def get_out_for_in(self, amount_in: str, shares_in: bool):
         """Gets the amount of an asset for a given amount in of the other.

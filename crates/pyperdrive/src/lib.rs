@@ -184,6 +184,12 @@ impl HyperdriveState {
         Ok(HyperdriveState::new(state))
     }
 
+    pub fn get_solvency(&self) -> PyResult<String> {
+        let result_fp = self.state.get_solvency();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
     pub fn get_spot_price(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_price();
         let result = U256::from(result_fp).to_string();
@@ -193,6 +199,47 @@ impl HyperdriveState {
     pub fn get_spot_rate(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_rate();
         let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    /// Get the long amount that will be opened for a given base amount.
+    pub fn get_long_amount(&self, base_amount: &str) -> PyResult<String> {
+        let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
+        })?);
+        let result_fp = self.state.get_long_amount(base_amount_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    /// Get the amount of base the trader will need to deposit for a short of a given size.
+    pub fn get_short_deposit(
+        &self,
+        short_amount: &str,
+        spot_price: &str,
+        open_share_price: &str,
+    ) -> PyResult<String> {
+        let short_amount_fp = FixedPoint::from(U256::from_dec_str(short_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert short_amount string to U256")
+        })?);
+        let spot_price_fp = FixedPoint::from(U256::from_dec_str(spot_price).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert spot_price string to U256")
+        })?);
+        let open_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
+            })?);
+        let result_fp =
+            self.state
+                .get_short_deposit(short_amount_fp, spot_price_fp, open_share_price_fp);
+        let result = match result_fp {
+            Some(result) => U256::from(result).to_string(),
+            None => {
+                return Err(PyErr::new::<PyValueError, _>(
+                    "Failed to estimate the short deposit; short_principal is None ",
+                ));
+            }
+        };
         return Ok(result);
     }
 
