@@ -1,5 +1,16 @@
 """Helper functions for the wrappers."""
+# pylint: disable=no-name-in-module
+from . import pyperdrive as rust_module  # type: ignore
 from . import types
+
+
+def _get_interface(pool_config: types.PoolConfigType, pool_info: types.PoolInfoType) -> rust_module.HyperdriveState:
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface
 
 
 def _serialize_pool_config(
