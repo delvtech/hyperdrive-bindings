@@ -1,230 +1,204 @@
 """Python wrapper for the rust module."""
 from __future__ import annotations
 
-# The module itself doesn't have type hints, so we will ignore warnings in this file.
-# pylint: disable=c-extension-no-member
 # pylint: disable=no-name-in-module
 from . import pyperdrive as rust_module  # type: ignore
 from . import types
+from .utils import _serialize_pool_config, _serialize_pool_info
 
+# The module itself doesn't have type hints, so we will ignore warnings in this file.
+# pylint: disable=c-extension-no-member
 # we don't control the number of arguments, wrapping rust functions
 # pylint: disable=too-many-arguments
 
 
-class HyperdriveState:
-    """A python class representing the hyperdrive contract state."""
+## Hyperdrive State functions
+def get_solvency(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """Get the pool's solvency.
 
-    _rust_interface: rust_module.HyperdriveState
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
 
-    def __init__(self, pool_config: types.PoolConfigType, pool_info: types.PoolInfoType) -> None:
-        """Initializes the hyperdrive state.
+    Returns
+    -------
+    str (FixedPoint)
+        solvency = share_reserves - long_exposure / share_price - minimum_share_reserves
+    """
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.get_solvency()
 
-        Arguments
-        ---------
-        pool_config : PoolConfig
-            Static configuration for the hyperdrive contract. Set at deploy time.
-        pool_info : PoolInfo
-            Current state information of the hyperdrive contract.
-            Includes things like reserve levels and share prices.
-        """
-        pool_config_serialized = _serialize_pool_config_values(pool_config)
-        pool_info_serialized = _serialize_pool_info_values(pool_info)
-        self._rust_interface = rust_module.HyperdriveState(pool_config_serialized, pool_info_serialized)
 
-    def get_solvency(self) -> str:
-        """Get the pool's solvency.
+def get_spot_rate(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """Get the spot rate (fixed rate) for the market.
 
-        Returns
-        -------
-        str (FixedPoint)
-            solvency = share_reserves - long_exposure / share_price - minimum_share_reserves
-        """
-        return self._rust_interface.get_solvency()
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
 
-    def get_spot_rate(self) -> str:
-        """Get the spot rate (fixed rate) for the market.
+    Returns
+    -------
+    str (FixedPoint)
+        The pool's spot rate.
+    """
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.get_spot_rate()
 
-        Returns
-        -------
-        str (FixedPoint)
-            The pool's spot rate.
-        """
-        return self._rust_interface.get_spot_rate()
 
-    def get_spot_price(self) -> str:
-        """Get the spot price of the bond.
+def get_spot_price(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """Get the spot price of the bond.
 
-        Returns
-        -------
-        str (FixedPoint)
-            The pool's spot price.
-        """
-        return self._rust_interface.get_spot_price()
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
 
-    def get_long_amount(self, base_amount: str) -> str:
-        """Gets the long amount that will be opened for a given base amount.
+    Returns
+    -------
+    str (FixedPoint)
+        The pool's spot price.
+    """
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.get_spot_price()
 
-        Arguments
-        ---------
-        base_amount : str (FixedPoint)
-            The amount to spend, in base.
 
-        Returns
-        -------
-        long_amount : str (FixedPoint)
-            The amount of bonds purchased.
-        """
-        return self._rust_interface.get_long_amount(base_amount)
+def get_long_amount(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    base_amount: str,
+) -> str:
+    """Gets the long amount that will be opened for a given base amount.
 
-    def get_short_deposit(self, short_amount: str, spot_price: str, open_share_price: str | None = None) -> str:
-        """Gets the amount of base the trader will need to deposit for a short of a given size.
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    base_amount : str (FixedPoint)
+        The amount to spend, in base.
 
-        Arguments
-        ---------
-        short_amount : str (FixedPoint)
-            The amount to of bonds to short.
-        spot_price : str (FixedPoint)
-            The pool's current price for bonds.
-        open_share_price : str (FixedPoint), optional
-            Optionally provide the open share price for the short.
-            If this is not provided or is None, then we will use the pool's current share price.
+    Returns
+    -------
+    long_amount : str (FixedPoint)
+        The amount of bonds purchased.
+    """
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.get_long_amount(base_amount)
 
-        Returns
-        -------
-        short_amount : str (FixedPoint)
-            The amount of base required to short the bonds (aka the "max loss").
-        """
-        if open_share_price is None:
-            # the underlying rust code uses current market share price if this is 0
-            # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
-            open_share_price = "0"
-        return self._rust_interface.get_short_deposit(short_amount, spot_price, open_share_price)
 
-    def get_out_for_in(self, amount_in: str, shares_in: bool):
-        """Gets the amount of an asset for a given amount in of the other.
+def get_short_deposit(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    short_amount: str,
+    spot_price: str,
+    open_share_price: str | None = None,
+) -> str:
+    """Gets the amount of base the trader will need to deposit for a short of a given size.
 
-        Arguments
-        ---------
-        amount_in : str (FixedPoint)
-            The amount of asset going into the pool.
-        shares_in : bool
-            True if the asset in is shares, False if it is bonds.
-            The amount out will be the opposite type.
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    short_amount : str (FixedPoint)
+        The amount to of bonds to short.
+    spot_price : str (FixedPoint)
+        The pool's current price for bonds.
+    open_share_price : str (FixedPoint), optional
+        Optionally provide the open share price for the short.
+        If this is not provided or is None, then we will use the pool's current share price.
 
-        Returns
-        -------
-        str (FixedPoint)
-            The amount out.
-        """
-        return self._rust_interface.get_out_for_in(amount_in, shares_in)
+    Returns
+    -------
+    short_amount : str (FixedPoint)
+        The amount of base required to short the bonds (aka the "max loss").
+    """
+    if open_share_price is None:
+        # the underlying rust code uses current market share price if this is 0
+        # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
+        open_share_price = "0"
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.get_short_deposit(short_amount, spot_price, open_share_price)
 
-    def get_out_for_in_safe(self, amount_in: str, shares_in: bool):
-        """Gets the amount of an asset for a given amount in of the other.
-        Will not cause a panic if rust breaks, will return a python error instead.
 
-        Arguments
-        ---------
-        amount_in : str (FixedPoint)
-            The amount of asset going into the pool.
-        shares_in : bool
-            True if the asset in is shares, False if it is bonds.
-            The amount out will be the opposite type.
+def to_checkpoint(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    time: str,
+) -> str:
+    """Converts a timestamp to the checkpoint timestamp that it corresponds to.
 
-        Returns
-        -------
-        str (FixedPoint)
-            The amount out.
-        """
-        return self._rust_interface.get_out_for_in_safe(amount_in, shares_in)
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    time : str (U256)
+        A string representation of any timestamp (in seconds) before or at the present.
 
-    def get_in_for_out(self, amount_out: str, shares_out: bool):
-        """Gets the amount of an asset for a given amount out of the other.
-
-        Arguments
-        ---------
-        amount_out : str (FixedPoint)
-            The amount of asset the user expects to receive from the pool.
-        shares_out : bool
-            True if the asset out is shares, False if it is bonds.
-            The amount in will be the opposite type.
-
-        Returns
-        -------
-        str (FixedPoint)
-            The amount in as a string representation of a Solidity uint256 value.
-        """
-        return self._rust_interface.get_out_for_in_safe(amount_out, shares_out)
-
-    def to_checkpoint(self, time: str) -> str:
-        """Converts a timestamp to the checkpoint timestamp that it corresponds to.
-
-        Arguments
-        ---------
-        time : str (U256)
-            A string representation of any timestamp (in seconds) before or at the present.
-
-        Returns
-        -------
-        str (U256)
-            The checkpoint timestamp.
-        """
-
-        return self._rust_interface.to_checkpoint(time)
-
-    def get_max_long(self, budget: str, checkpoint_exposure: str, maybe_max_iterations: int | None) -> str:
-        """Get the max amount of bonds that can be purchased for the given budget.
-
-        Arguments
-        ---------
-        budget : str (FixedPont)
-            The account budget in base for making a long.
-        checkpoint_exposure : str (I256)
-            The net exposure for the given checkpoint.
-        maybe_max_iterations : int, optional
-            The number of iterations to use for the Newtonian method.
-
-        Returns
-        -------
-        str (FixedPoint)
-            The maximum long the pool and user's wallet can support.
-        """
-        return self._rust_interface.get_max_long(budget, checkpoint_exposure, maybe_max_iterations)
-
-    def get_max_short(
-        self,
-        budget: str,
-        open_share_price: str,
-        checkpoint_exposure: str,
-        maybe_conservative_price: str | None,
-        maybe_max_iterations: int | None,
-    ) -> str:
-        """Get the max amount of bonds that can be shorted for the given budget.
-
-        Arguments
-        ---------
-        budget : str (FixedPoint)
-            The account budget in base for making a short.
-        open_share_price : str (FixedPoint)
-            The share price of underlying vault.
-        checkpoint_exposure : str (FixedPoint)
-            The net exposure for the given checkpoint.
-        maybe_conservative_price : str (FixedPoint), optional
-            A lower bound on the realized price that the short will pay.
-        maybe_max_iterations : int, optional
-            The number of iterations to use for the Newtonian method.
-
-        Returns
-        -------
-        str (FixedPoint)
-            The maximum short the pool and user's wallet can handle.
-        """
-        return self._rust_interface.get_max_short(
-            budget,
-            open_share_price,
-            checkpoint_exposure,
-            maybe_conservative_price,
-            maybe_max_iterations,
-        )
+    Returns
+    -------
+    str (U256)
+        The checkpoint timestamp.
+    """
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.to_checkpoint(time)
 
 
 def get_max_long(
@@ -256,13 +230,12 @@ def get_max_long(
     str (FixedPoint)
         The maximum long the pool and user's wallet can support.
     """
-    return rust_module.get_max_long(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
-        budget,
-        checkpoint_exposure,
-        maybe_max_iterations,
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
     )
+    return rust_interface.get_max_long(budget, checkpoint_exposure, maybe_max_iterations)
 
 
 def get_max_short(
@@ -300,67 +273,17 @@ def get_max_short(
     str (FixedPoint)
         The maximum short the pool and user's wallet can handle.
     """
-    return rust_module.get_max_short(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
+    )
+    return rust_interface.get_max_short(
         budget,
         open_share_price,
         checkpoint_exposure,
         maybe_conservative_price,
         maybe_max_iterations,
-    )
-
-
-def get_spot_price(
-    pool_config: types.PoolConfigType,
-    pool_info: types.PoolInfoType,
-) -> str:
-    """Get the spot price of the bond.
-
-    Arguments
-    ---------
-    pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.
-        Set at deploy time.
-    pool_info : PoolInfo
-        Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-
-    Returns
-    -------
-    str (FixedPoint)
-        The pool's spot price.
-    """
-    return rust_module.get_spot_price(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
-    )
-
-
-def get_spot_rate(
-    pool_config: types.PoolConfigType,
-    pool_info: types.PoolInfoType,
-) -> str:
-    """Get the spot rate (fixed rate) for the market.
-
-    Arguments
-    ---------
-    pool_config : PoolConfig
-        Static configuration for the hyperdrive contract.
-        Set at deploy time.
-    pool_info : PoolInfo
-        Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-
-
-    Returns
-    -------
-    str (FixedPoint)
-        The pool's spot rate.
-    """
-    return rust_module.get_spot_rate(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
     )
 
 
@@ -391,12 +314,12 @@ def get_out_for_in(
     str (FixedPoint)
         The amount out.
     """
-    return rust_module.get_out_for_in(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
-        amount_in,
-        shares_in,
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
     )
+    return rust_interface.get_out_for_in(amount_in, shares_in)
 
 
 def get_out_for_in_safe(
@@ -426,12 +349,12 @@ def get_out_for_in_safe(
     str (FixedPoint)
         The amount out.
     """
-    return rust_module.get_out_for_in_safe(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
-        amount_in,
-        shares_in,
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
     )
+    return rust_interface.get_out_for_in_safe(amount_in, shares_in)
 
 
 def get_in_for_out(
@@ -461,17 +384,18 @@ def get_in_for_out(
     str (FixedPoint)
         The amount in as a string representation of a Solidity uint256 value.
     """
-    return rust_module.get_in_for_out(
-        _serialize_pool_config_values(pool_config),
-        _serialize_pool_info_values(pool_info),
-        amount_out,
-        shares_out,
+    pool_config_serialized = _serialize_pool_config(pool_config)
+    pool_info_serialized = _serialize_pool_info(pool_info)
+    rust_interface: rust_module.HyperdriveState = rust_module.HyperdriveState(
+        pool_config_serialized, pool_info_serialized
     )
+    return rust_interface.get_in_for_out(amount_out, shares_out)
 
 
-def get_time_stretch(
-    rate: str,
-) -> str:
+## hyperdrie_math utilities
+
+
+def get_time_stretch(rate: str) -> str:
     """Calculate the time stretch parameter given a pool's spot rate.
 
     ..math::
@@ -553,45 +477,4 @@ def calculate_bonds_given_shares_and_rate(
     """
     return rust_module.calculate_bonds_given_shares_and_rate(
         effective_share_reserves, initial_share_price, apr, position_duration, time_stretch
-    )
-
-
-def _serialize_pool_config_values(
-    pool_config: types.PoolConfigType,
-) -> types.PoolConfig:
-    return types.PoolConfig(
-        baseToken=str(pool_config.baseToken),
-        initialSharePrice=str(pool_config.initialSharePrice),
-        minimumShareReserves=str(pool_config.minimumShareReserves),
-        minimumTransactionAmount=str(pool_config.minimumTransactionAmount),
-        positionDuration=str(pool_config.positionDuration),
-        checkpointDuration=str(pool_config.checkpointDuration),
-        timeStretch=str(pool_config.timeStretch),
-        governance=str(pool_config.governance),
-        feeCollector=str(pool_config.feeCollector),
-        fees=types.Fees(
-            curve=str(pool_config.fees.curve),
-            flat=str(pool_config.fees.flat),
-            governance=str(pool_config.fees.governance),
-        ),
-        oracleSize=str(pool_config.oracleSize),
-        updateGap=str(pool_config.updateGap),
-    )
-
-
-def _serialize_pool_info_values(pool_info: types.PoolInfoType) -> types.PoolInfo:
-    return types.PoolInfo(
-        shareReserves=str(pool_info.shareReserves),
-        shareAdjustment=str(pool_info.shareAdjustment),
-        bondReserves=str(pool_info.bondReserves),
-        lpTotalSupply=str(pool_info.lpTotalSupply),
-        sharePrice=str(pool_info.sharePrice),
-        longsOutstanding=str(pool_info.longsOutstanding),
-        longAverageMaturityTime=str(pool_info.longAverageMaturityTime),
-        shortsOutstanding=str(pool_info.shortsOutstanding),
-        shortAverageMaturityTime=str(pool_info.shortAverageMaturityTime),
-        withdrawalSharesReadyToWithdraw=str(pool_info.withdrawalSharesReadyToWithdraw),
-        withdrawalSharesProceeds=str(pool_info.withdrawalSharesProceeds),
-        lpSharePrice=str(pool_info.lpSharePrice),
-        longExposure=str(pool_info.longExposure),
     )
