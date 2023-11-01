@@ -2,12 +2,13 @@ import init, { getMaxLong } from 'hyperwasm';
 
 const ZERO_ADDRESS = '0x'.padEnd(42, '0');
 const MAX_U256 = '0x'.padEnd(66, 'F');
-const MAX_I256 = '0x7'.padEnd(66, 'F');
+
+const MAX_BUDGET = BigInt(MAX_U256).toString();
 
 async function main() {
   await init();
-  const res = getMaxLong(mockState, BigInt(MAX_U256).toString(), '0');
-  console.log('res:', res);
+  const maxLong = getMaxLong(mockState, MAX_BUDGET, '0');
+  console.log('maxLong:', maxLong);
 }
 
 main();
