@@ -52,5 +52,5 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
-          path: ./*.tgz
+          path: ./crates/hyperwasm/pkg/*.tgz
           name: hyperwasm-v0.0.14
