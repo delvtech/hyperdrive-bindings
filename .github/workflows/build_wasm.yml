@@ -47,12 +47,7 @@ jobs:
         run: |
           cd ./crates/hyperwasm
           sh build.sh
-
-      - name: pack package
-        shell: bash
-        run: |
-          cd ../pkg
-          npm pack
+          echo "Built and now in... $(pwd)"
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
