@@ -8,6 +8,56 @@ from .utils import _get_interface
 # pylint: disable=too-many-arguments
 
 
+def get_max_spot_price(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """Get the pool's max spot price.
+
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+
+    Returns
+    -------
+    str (FixedPoint)
+        max_spot_price = 1/1 + curve_fee * (1 / (spot_price - 1))
+    """
+    return _get_interface(pool_config, pool_info).get_max_spot_price()
+
+
+def get_spot_price_after_long(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    long_amount: str,
+) -> str:
+    """Get the spot price after opening the long on YieldSpace
+    and before calculating the fees.
+
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    long_amount : str (FixedPoint)
+        The long amount.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The spot price after opening the long.
+    """
+    return _get_interface(pool_config, pool_info).get_spot_price_after_long()
+
+
 def get_solvency(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
@@ -137,7 +187,9 @@ def get_short_deposit(
         # the underlying rust code uses current market share price if this is 0
         # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
         open_share_price = "0"
-    return _get_interface(pool_config, pool_info).get_short_deposit(short_amount, spot_price, open_share_price)
+    return _get_interface(pool_config, pool_info).get_short_deposit(
+        short_amount, spot_price, open_share_price
+    )
 
 
 def to_checkpoint(
@@ -195,7 +247,9 @@ def get_max_long(
     str (FixedPoint)
         The maximum long the pool and user's wallet can support.
     """
-    return _get_interface(pool_config, pool_info).get_max_long(budget, checkpoint_exposure, maybe_max_iterations)
+    return _get_interface(pool_config, pool_info).get_max_long(
+        budget, checkpoint_exposure, maybe_max_iterations
+    )
 
 
 def get_max_short(
@@ -242,13 +296,14 @@ def get_max_short(
     )
 
 
-def get_out_for_in(
+def calculate_bonds_out_given_shares_in_down(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     amount_in: str,
-    shares_in: bool,
 ) -> str:
-    """Gets the amount of an asset for a given amount in of the other.
+    """Calculates the amount of bonds a user will receive from the pool by
+    providing a specified amount of shares. We underestimate the amount of
+    bonds.
 
     Arguments
     ---------
@@ -259,26 +314,25 @@ def get_out_for_in(
         Current state information of the hyperdrive contract.
         Includes things like reserve levels and share prices.
     amount_in : str (FixedPoint)
-        The amount of asset going into the pool.
-    shares_in : bool
-        True if the asset in is shares, False if it is bonds.
-        The amount out will be the opposite type.
+        The amount of shares going into the pool.
 
     Returns
     -------
     str (FixedPoint)
-        The amount out.
+        The amount of bonds out.
     """
-    return _get_interface(pool_config, pool_info).get_out_for_in(amount_in, shares_in)
+    return _get_interface(
+        pool_config, pool_info
+    ).calculate_bonds_out_given_shares_in_down(amount_in)
 
 
-def get_out_for_in_safe(
+def calculate_shares_in_given_bonds_out_up(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     amount_in: str,
-    shares_in: bool,
 ) -> str:
-    """Gets the amount of an asset for a given amount in of the other.
+    """Calculates the amount of shares a user must provide the pool to receive
+    a specified amount of bonds. We overestimate the amount of shares in.
 
     Arguments
     ---------
@@ -289,26 +343,25 @@ def get_out_for_in_safe(
         Current state information of the hyperdrive contract.
         Includes things like reserve levels and share prices.
     amount_in : str (FixedPoint)
-        The amount of asset going into the pool.
-    shares_in : bool
-        True if the asset in is shares, False if it is bonds.
-        The amount out will be the opposite type.
+        The amount of bonds to target.
 
     Returns
     -------
     str (FixedPoint)
-        The amount out.
+        The amount of shares in to reach the target.
     """
-    return _get_interface(pool_config, pool_info).get_out_for_in_safe(amount_in, shares_in)
+    return _get_interface(
+        pool_config, pool_info
+    ).calculate_shares_in_given_bonds_out_up(amount_in)
 
 
-def get_in_for_out(
+def calculate_shares_in_given_bonds_out_down(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
-    amount_out: str,
-    shares_out: bool,
+    amount_in: str,
 ) -> str:
-    """Gets the amount of an asset for a given amount out of the other.
+    """Calculates the amount of shares a user must provide the pool to receive
+    a specified amount of bonds. We underestimate the amount of shares in.
 
     Arguments
     ---------
@@ -318,15 +371,100 @@ def get_in_for_out(
     pool_info : PoolInfo
         Current state information of the hyperdrive contract.
         Includes things like reserve levels and share prices.
-    amount_out : str (FixedPoint)
-        The amount of asset the user expects to receive from the pool.
-    shares_out : bool
-        True if the asset out is shares, False if it is bonds.
-        The amount in will be the opposite type.
+    amount_in : str (FixedPoint)
+        The amount of bonds to target.
 
     Returns
     -------
     str (FixedPoint)
-        The amount in as a string representation of a Solidity uint256 value.
+        The amount of shares in to reach the target.
     """
-    return _get_interface(pool_config, pool_info).get_in_for_out(amount_out, shares_out)
+    return _get_interface(
+        pool_config, pool_info
+    ).calculate_shares_in_given_bonds_out_down(amount_in)
+
+
+def calculate_shares_out_given_bonds_in_down(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    amount_in: str,
+) -> str:
+    """Calculates the amount of shares a user will receive from the pool by
+    providing a specified amount of bonds. We underestimate the amount of
+    shares out.
+
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    amount_in : str (FixedPoint)
+        The amount of bonds in.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The amount of shares out.
+    """
+    return _get_interface(
+        pool_config, pool_info
+    ).calculate_shares_out_given_bonds_in_down(amount_in)
+
+
+def calculate_max_buy(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """
+    Calculates the maximum amount of bonds that can be purchased with the
+    specified reserves. We round so that the max buy amount is
+    underestimated.
+
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The maximum buy amount.
+    """
+    return _get_interface(pool_config, pool_info).calculate_max_buy()
+
+
+def calculate_max_sell(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    minimum_share_reserves: str,
+) -> str:
+    """Calculates the maximum amount of bonds that can be sold with the
+    specified reserves. We round so that the max sell amount is
+    underestimated.
+
+    Arguments
+    ---------
+    pool_config : PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info : PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes things like reserve levels and share prices.
+    minimum_share_reserves: str (FixedPoint)
+        The minimum share reserves to target
+
+    Returns
+    -------
+    str (FixedPoint)
+        The maximum buy amount.
+    """
+    return _get_interface(pool_config, pool_info).calculate_max_sell(
+        minimum_share_reserves
+    )
