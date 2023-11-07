@@ -55,7 +55,7 @@ def get_spot_price_after_long(
     str (FixedPoint)
         The spot price after opening the long.
     """
-    return _get_interface(pool_config, pool_info).get_spot_price_after_long()
+    return _get_interface(pool_config, pool_info).get_spot_price_after_long(long_amount)
 
 
 def get_solvency(

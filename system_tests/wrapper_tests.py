@@ -37,6 +37,30 @@ POOL_INFO = PoolInfo(
 )
 
 
+def test_get_max_spot_price():
+    """test get_max_spot_rate."""
+    max_spot_price = pyperdrive.get_max_spot_price(POOL_CONFIG, POOL_INFO)
+    assert max_spot_price is not None, "Failed to get max spot price."
+    assert isinstance(max_spot_price, str), "Expected spot rate to be a string."
+    assert int(max_spot_price) > 0, "Expected max_spot_price to > 0."
+
+
+def test_get_spot_price_after_long():
+    """test get_spot_price_after_long."""
+    spot_price = pyperdrive.get_spot_price_after_long(POOL_CONFIG, POOL_INFO, long_amount=str(1_000 * 10**18))
+    assert spot_price is not None, "Failed to get spot price after long."
+    assert isinstance(spot_price, str), "Expected spot rate to be a string."
+    assert int(spot_price) > 0, "Expected max_spot_price to > 0."
+
+
+def test_get_solvency():
+    """test get_max_spot_rate."""
+    solvency = pyperdrive.get_solvency(POOL_CONFIG, POOL_INFO)
+    assert solvency is not None, "Failed to get spot price after long."
+    assert isinstance(solvency, str), "Expected spot rate to be a string."
+    assert int(solvency) > 0, "Expected max_spot_price to > 0."
+
+
 def test_get_spot_rate():
     """test get_spot_rate."""
     spot_rate = pyperdrive.get_spot_rate(POOL_CONFIG, POOL_INFO)
@@ -99,29 +123,45 @@ def test_calculate_bonds_given_shares_and_rate():
     assert int(bonds) > 0, "Expected bonds to be > 0."
 
 
-def get_out_for_in():
-    """Test get_out_for_in."""
+def test_calculate_bonds_out_given_shares_in_down():
+    """Test calculate_bonds_out_given_shares_in_down."""
     amount_in = str(1_000 * 10**18)
-    is_shares_in = True
-    is_bonds_in = not is_shares_in
-    # test bonds
-    bonds_out = pyperdrive.get_out_for_in(POOL_CONFIG, POOL_INFO, amount_in, is_shares_in)
-    assert int(bonds_out) > 0
-    # test shares
-    shares_out = pyperdrive.get_out_for_in(POOL_CONFIG, POOL_INFO, amount_in, is_bonds_in)
-    assert int(shares_out) > 0
+    out = pyperdrive.calculate_bonds_out_given_shares_in_down(POOL_CONFIG, POOL_INFO, amount_in)
+    assert int(out) > 0
 
 
-def get_in_for_out():
-    """Test get_in_for_out."""
-    # test using the state directly
-    amount_out = str(1_000 * 10**18)
-    is_shares_out = True
-    is_bonds_out = not is_shares_out
-    bonds_in = pyperdrive.get_in_for_out(POOL_CONFIG, POOL_INFO, amount_out, is_shares_out)
-    assert int(bonds_in) > 0
-    shares_in = pyperdrive.get_in_for_out(POOL_CONFIG, POOL_INFO, amount_out, is_bonds_out)
-    assert int(shares_in) > 0
+def test_calculate_shares_in_given_bonds_out_up():
+    """Test calculate_shares_in_given_bonds_out_up."""
+    amount_in = str(1_000 * 10**18)
+    out = pyperdrive.calculate_shares_in_given_bonds_out_up(POOL_CONFIG, POOL_INFO, amount_in)
+    assert int(out) > 0
+
+
+def test_calculate_shares_in_given_bonds_out_down():
+    """Test calculate_shares_in_given_bonds_out_down."""
+    amount_in = str(1_000 * 10**18)
+    out = pyperdrive.calculate_shares_in_given_bonds_out_down(POOL_CONFIG, POOL_INFO, amount_in)
+    assert int(out) > 0
+
+
+def test_calculate_shares_out_given_bonds_in_down():
+    """Test calculate_shares_out_given_bonds_in_down."""
+    amount_in = str(1_000 * 10**18)
+    out = pyperdrive.calculate_shares_out_given_bonds_in_down(POOL_CONFIG, POOL_INFO, amount_in)
+    assert int(out) > 0
+
+
+def test_calculate_max_buy():
+    """Test calculate_max_buy."""
+    out = pyperdrive.calculate_max_buy(POOL_CONFIG, POOL_INFO)
+    assert int(out) > 0
+
+
+def test_calculate_max_sell():
+    """Test calculate_max_buy."""
+    minimum_share_reserves = str(10 * 10**18)
+    out = pyperdrive.calculate_max_sell(POOL_CONFIG, POOL_INFO, minimum_share_reserves)
+    assert int(out) > 0
 
 
 def test_get_long_amount():
