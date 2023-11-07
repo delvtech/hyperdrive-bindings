@@ -1,6 +1,6 @@
 [project]
 name = "pyperdrive"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
     { name = "Dylan Paiton", email = "dylan@delv.tech" },
     { name = "Matthew Brown", email = "matt@delv.tech" },
