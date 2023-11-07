@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: "v0.0.16"
+          ref: "v0.2.0"
           path: "./hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
