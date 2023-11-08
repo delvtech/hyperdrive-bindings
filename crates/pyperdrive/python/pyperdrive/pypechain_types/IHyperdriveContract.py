@@ -19,8 +19,7 @@ from __future__ import annotations
 from typing import cast
 
 from eth_typing import ChecksumAddress
-from web3.contract.contract import (Contract, ContractFunction,
-                                    ContractFunctions)
+from web3.contract.contract import Contract, ContractFunction, ContractFunctions
 from web3.exceptions import FallbackNotFound
 from web3.types import ABI
 
