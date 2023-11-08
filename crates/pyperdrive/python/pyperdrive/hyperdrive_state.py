@@ -187,9 +187,7 @@ def get_short_deposit(
         # the underlying rust code uses current market share price if this is 0
         # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
         open_share_price = "0"
-    return _get_interface(pool_config, pool_info).get_short_deposit(
-        short_amount, spot_price, open_share_price
-    )
+    return _get_interface(pool_config, pool_info).get_short_deposit(short_amount, spot_price, open_share_price)
 
 
 def to_checkpoint(
@@ -247,9 +245,7 @@ def get_max_long(
     str (FixedPoint)
         The maximum long the pool and user's wallet can support.
     """
-    return _get_interface(pool_config, pool_info).get_max_long(
-        budget, checkpoint_exposure, maybe_max_iterations
-    )
+    return _get_interface(pool_config, pool_info).get_max_long(budget, checkpoint_exposure, maybe_max_iterations)
 
 
 def get_max_short(
@@ -321,9 +317,7 @@ def calculate_bonds_out_given_shares_in_down(
     str (FixedPoint)
         The amount of bonds out.
     """
-    return _get_interface(
-        pool_config, pool_info
-    ).calculate_bonds_out_given_shares_in_down(amount_in)
+    return _get_interface(pool_config, pool_info).calculate_bonds_out_given_shares_in_down(amount_in)
 
 
 def calculate_shares_in_given_bonds_out_up(
@@ -350,9 +344,7 @@ def calculate_shares_in_given_bonds_out_up(
     str (FixedPoint)
         The amount of shares in to reach the target.
     """
-    return _get_interface(
-        pool_config, pool_info
-    ).calculate_shares_in_given_bonds_out_up(amount_in)
+    return _get_interface(pool_config, pool_info).calculate_shares_in_given_bonds_out_up(amount_in)
 
 
 def calculate_shares_in_given_bonds_out_down(
@@ -379,9 +371,7 @@ def calculate_shares_in_given_bonds_out_down(
     str (FixedPoint)
         The amount of shares in to reach the target.
     """
-    return _get_interface(
-        pool_config, pool_info
-    ).calculate_shares_in_given_bonds_out_down(amount_in)
+    return _get_interface(pool_config, pool_info).calculate_shares_in_given_bonds_out_down(amount_in)
 
 
 def calculate_shares_out_given_bonds_in_down(
@@ -409,9 +399,7 @@ def calculate_shares_out_given_bonds_in_down(
     str (FixedPoint)
         The amount of shares out.
     """
-    return _get_interface(
-        pool_config, pool_info
-    ).calculate_shares_out_given_bonds_in_down(amount_in)
+    return _get_interface(pool_config, pool_info).calculate_shares_out_given_bonds_in_down(amount_in)
 
 
 def calculate_max_buy(
@@ -465,6 +453,4 @@ def calculate_max_sell(
     str (FixedPoint)
         The maximum buy amount.
     """
-    return _get_interface(pool_config, pool_info).calculate_max_sell(
-        minimum_share_reserves
-    )
+    return _get_interface(pool_config, pool_info).calculate_max_sell(minimum_share_reserves)
