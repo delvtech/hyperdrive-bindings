@@ -1,6 +1,7 @@
 name: build wasm package
 
 on:
+  workflow_call:
   push:
     branches:
       - main
@@ -44,8 +45,8 @@ jobs:
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
       - name: build wasm package
+        working-directory: crates/hyperwasm
         run: |
-          cd ./crates/hyperwasm
           sh build.sh
           echo "Built and now in... $(pwd)"
 
