@@ -1,4 +1,4 @@
-import * as hyperwasm from 'hyperwasm';
+import * as hyperwasm from '@delvtech/hyperwasm';
 
 const ZERO_ADDRESS = '0x'.padEnd(42, '0');
 const MAX_U256 = '0x'.padEnd(66, 'F');
