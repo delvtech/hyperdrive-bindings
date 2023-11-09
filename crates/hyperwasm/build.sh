@@ -19,4 +19,8 @@ export const wasmBuffer = Uint8Array.from(atob(wasmBase64), (c) =>
 echo "export const wasmBase64: string;
 export const wasmBuffer: ArrayBufferLike;" >>hyperwasm.d.ts
 
+# Add a main field to the package.json file for improved commonjs compatibility
+jq '.main = "hyperwasm.js"' package.json >package.temp.json
+mv package.temp.json package.json
+
 npm pack
