@@ -76,6 +76,36 @@ pub fn getSpotRate(state: JsValue) -> String {
     _state.get_spot_rate().to_string()
 }
 
+#[wasm_bindgen]
+pub fn getLongAmount(state: JsValue, baseAmount: String) -> String {
+    utils::set_panic_hook();
+    let _state = State::from(&serde_wasm_bindgen::from_value(state).unwrap());
+
+    _state
+        .get_long_amount(U256::from_dec_str(&baseAmount).unwrap())
+        .to_string()
+}
+
+#[wasm_bindgen]
+pub fn getShortDeposit(
+    state: JsValue,
+    shortAmount: String,
+    spotPrice: String,
+    openSharePrice: String,
+) -> String {
+    utils::set_panic_hook();
+    let _state = State::from(&serde_wasm_bindgen::from_value(state).unwrap());
+
+    _state
+        .get_short_deposit(
+            FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap()),
+            FixedPoint::from(I256::from_raw(U256::from_dec_str(&spotPrice).unwrap())),
+            FixedPoint::from(I256::from_raw(U256::from_dec_str(&openSharePrice).unwrap())),
+        )
+        .unwrap()
+        .to_string()
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct WasmFees {
     pub curve: String,
