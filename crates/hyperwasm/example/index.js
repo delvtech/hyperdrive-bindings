@@ -1,18 +1,9 @@
-import init, { getMaxLong } from 'hyperwasm';
+import * as hyperwasm from 'hyperwasm';
 
 const ZERO_ADDRESS = '0x'.padEnd(42, '0');
 const MAX_U256 = '0x'.padEnd(66, 'F');
 
 const MAX_BUDGET = BigInt(MAX_U256).toString();
-
-async function main() {
-  await init();
-  const maxLong = getMaxLong(mockState, MAX_BUDGET, '0');
-  console.log('maxLong:', maxLong);
-}
-
-main();
-
 const mockState = {
   info: {
     shareReserves: '50000000000000000000000',
@@ -48,3 +39,12 @@ const mockState = {
     updateGap: '3600',
   },
 };
+
+async function main() {
+  hyperwasm.initSync(hyperwasm.wasmBuffer);
+
+  const maxLong = hyperwasm.getMaxLong(mockState, MAX_BUDGET, '0');
+  console.log('maxLong:', maxLong);
+}
+
+main();
