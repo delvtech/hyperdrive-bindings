@@ -11,7 +11,7 @@ on:
 
 jobs:
   detect-changes:
-    uses: ./.github/workflows/check-diff.yaml
+    uses: ./.github/workflows/check_diff.yaml
     with:
       pattern: ^crates/hyperwasm/
 
