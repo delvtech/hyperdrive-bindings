@@ -1,20 +1,24 @@
 name: build wasm package
 
 on:
-  workflow_call:
-    inputs:
-      # Allows other workflows to explicitly control whether this workflow runs
-      build:
-        required: true
-        description: 'Whether to build the package'
-        type: boolean
-        default: false
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
+  workflow_call:
+    inputs:
+      # Allows other workflows to explicitly control whether this workflow runs
+      build:
+        description: 'Whether to build the package'
+        type: boolean
+        default: false
+        required: true
+    secrets:
+      HYPERDRIVE_ACCESS_KEY:
+        description: 'SSH key for checking out hyperdrive'
+        required: true
 
 jobs:
   detect-changes:
