@@ -10,7 +10,7 @@ on:
 
 jobs:
   detect-changes:
-    uses: ./.github/workflows/check-diff.yaml
+    uses: ./.github/workflows/check_diff.yml
     with:
       pattern: ^crates/pyperdrive/
 
