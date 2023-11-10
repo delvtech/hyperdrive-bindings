@@ -7,9 +7,10 @@ on:
 
 jobs:
   build:
-    # Only run this job if the release tag starts with "hyperwasm@v"
-    if: startsWith(github.ref, 'refs/tags/hyperwasm@v')
     uses: ./.github/workflows/build_wasm.yml
+    with:
+      # Only run this job if the release tag starts with "hyperwasm@v"
+      build: ${{ startsWith(github.ref, 'refs/tags/hyperwasm@v') }}
 
   publish:
     needs: build
