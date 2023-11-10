@@ -5,10 +5,17 @@ on:
     inputs:
       # Allows other workflows to explicitly control whether this workflow runs
       build:
-        required: true
         description: 'Whether to build the package'
         type: boolean
         default: false
+        required: true
+    secrets:
+      HYPERDRIVE_ACCESS_KEY:
+        description: 'SSH key for checking out hyperdrive'
+        required: true
+      GITHUB_TOKEN:
+        description: 'Token for publishing to npm'
+        required: true
   push:
     branches:
       - main
