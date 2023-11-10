@@ -54,12 +54,4 @@ jobs:
 
       - name: build wasm package
         working-directory: crates/hyperwasm
-        run: |
-          sh build.sh
-          echo "Built and now in... $(pwd)"
-
-      - name: upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          path: ./crates/hyperwasm/pkg/*.tgz
-          name: hyperwasm-v0.0.14
+        run: sh build.sh
