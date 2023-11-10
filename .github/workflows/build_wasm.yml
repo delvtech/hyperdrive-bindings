@@ -19,6 +19,9 @@ jobs:
     if: (needs.detect-changes.outputs.changed == 'true') || (github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperwasm@v'))
     name: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,20 +54,13 @@ jobs:
           path: './hyperdrive'
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
-      - name: build wasm package
+      - name: build hyperwasm
         working-directory: crates/hyperwasm
         run: sh build.sh
 
-  publish:
-    # Run only if triggered by a release
-    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperwasm@v')
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - run: npm publish
+      - name: publish hyperwasm
         working-directory: crates/hyperwasm/pkg
+        run: npm publish
+        if: github.event_name == 'release'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
