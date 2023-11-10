@@ -16,11 +16,11 @@ jobs:
   build:
     needs: detect-changes
     # Run if changes are detected OR if triggered by a release
-    if: needs.detect-changes.outputs.changed == 'true' || github.event_name == 'release'
+    if: (needs.detect-changes.outputs.changed == 'true') || (github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperwasm@v'))
     name: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{github.token}}
 
@@ -36,6 +36,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          registry-url: https://npm.pkg.github.com/
 
       - name: setup foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -56,21 +57,14 @@ jobs:
 
   publish:
     # Run only if triggered by a release
-    if: github.event_name == 'release'
+    if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperwasm@v')
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    defaults:
-      run:
-        working-directory: crates/hyperwasm/pkg
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
       - run: npm publish
+        working-directory: crates/hyperwasm/pkg
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
