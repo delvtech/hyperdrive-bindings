@@ -3,5 +3,5 @@
 rm example/*.tgz
 cp pkg/*.tgz example/
 cd example
-npm uninstall hyperwasm
+npm uninstall @delvtech/hyperwasm
 npm install *.tgz

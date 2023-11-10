@@ -18,20 +18,24 @@ enable wasm support, then create a tarball for installation.
 
 ## Installing
 
-Copy the tarball into your app/library and run:
+[Authenticate to GitHub Packages with
+npm](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token).
+If using `npm login`, use `@delvtech` for the `NAMESPACE`.
+
+Once authenticated you can install like any other package:
 
 ```sh
-yarn add ./hyperwasm-[VERSION].tgz
+yarn add @delvtech/hyperwasm
 
 # or
 
-npm i ./hyperwasm-[VERSION].tgz
+npm i @delvtech/hyperwasm
 ```
 
 ## Usage
 
 ```ts
-import * as hyperwasm from "hyperwasm"
+import * as hyperwasm from "@delvtech/hyperwasm"
 
 hyperwasm.initSync(hyperwasm.wasmBuffer);
 
@@ -40,7 +44,8 @@ const apr = hyperwasm.getSpotRate({ info, config }) // => '0.034999999999999999'
 
 ## Running the Example
 
-A boilerplate wasm-pack app can be found at `./example`. To run it:
+A boilerplate wasm-pack app can be found at `./example`. To run it, first build
+then:
 
 ```sh
 sh ./example_install.sh

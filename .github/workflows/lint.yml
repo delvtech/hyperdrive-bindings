@@ -9,7 +9,15 @@ on:
       - main
 
 jobs:
-  build:
+  detect-changes:
+    uses: ./.github/workflows/check-diff.yaml
+    with:
+      pattern: ^crates/pyperdrive/
+
+  lint:
+    needs: detect-changes
+    # Run only if changes are detected
+    if: needs.detect-changes.outputs.changed == 'true'
     name: python lint
     runs-on: ubuntu-latest
     steps:

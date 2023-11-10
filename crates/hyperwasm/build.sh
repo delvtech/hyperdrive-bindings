@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -ex
-wasm-pack build --target web
+wasm-pack build --target web --scope delvtech
 
 cd pkg
 
