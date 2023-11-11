@@ -59,8 +59,8 @@ jobs:
         run: sh build.sh
 
       - name: publish hyperwasm
+        if: github.event_name == 'release'
         working-directory: crates/hyperwasm/pkg
         run: npm publish
-        if: github.event_name == 'release'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
