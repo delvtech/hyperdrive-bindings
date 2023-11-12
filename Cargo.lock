@@ -1543,7 +1543,7 @@ dependencies = [
 
 [[package]]
 name = "hyperdrive-wasm"
-version = "0.0.0"
+version = "1.0.0"
 dependencies = [
  "console_error_panic_hook",
  "const-hex",
