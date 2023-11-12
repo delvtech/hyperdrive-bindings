@@ -1,4 +1,4 @@
-import * as hyperwasm from '@delvtech/hyperdrive-wasm';
+import * as hyperdriveWasm from '@delvtech/hyperdrive-wasm';
 
 const ZERO_ADDRESS = '0x'.padEnd(42, '0');
 const MAX_U256 = '0x'.padEnd(66, 'F');
@@ -41,9 +41,9 @@ const mockState = {
 };
 
 async function main() {
-  hyperwasm.initSync(hyperwasm.wasmBuffer);
+  hyperdriveWasm.initSync(hyperdriveWasm.wasmBuffer);
 
-  const maxLong = hyperwasm.getMaxLong(mockState, MAX_BUDGET, '0');
+  const maxLong = hyperdriveWasm.getMaxLong(mockState, MAX_BUDGET, '0');
   console.log('maxLong:', maxLong);
 }
 
