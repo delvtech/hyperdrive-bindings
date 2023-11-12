@@ -19,9 +19,8 @@ jobs:
     if: (needs.detect-changes.outputs.changed == 'true') || (github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperdrive-wasm@v'))
     name: build
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,6 +38,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          registry-url: 'https://registry.npmjs.org'
 
       - name: setup foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -61,5 +61,3 @@ jobs:
         if: github.event_name == 'release'
         working-directory: crates/hyperdrive-wasm/pkg
         run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
