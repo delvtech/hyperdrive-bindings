@@ -1,8 +1,10 @@
 #!/bin/bash
-
 set -ex
+
+# Build the package with wasm-pack and add the "@delvtech/" scope to the package
 wasm-pack build --target web --scope delvtech
 
+# Move into the built package directory
 cd pkg
 
 # Convert the wasm file to a base64 string
@@ -16,6 +18,7 @@ export const wasmBuffer = Uint8Array.from(atob(wasmBase64), (c) =>
   c.charCodeAt(0),
 ).buffer;" >>hyperwasm.js
 
+# Add type definitions for the exports
 echo "export const wasmBase64: string;
 export const wasmBuffer: ArrayBufferLike;" >>hyperwasm.d.ts
 
@@ -23,4 +26,5 @@ export const wasmBuffer: ArrayBufferLike;" >>hyperwasm.d.ts
 jq '.main = "hyperwasm.js"' package.json >package.temp.json
 mv package.temp.json package.json
 
+# Create a tarball of the package
 npm pack
