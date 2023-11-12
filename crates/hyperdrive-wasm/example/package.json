@@ -1,6 +1,6 @@
 {
-  "name": "hyperwasm-example",
-  "version": "0.1.0",
+  "name": "hyperdrive-wasm-example",
+  "version": "0.0.0",
   "main": "index.js",
   "bin": {
     "create-wasm-app": ".bin/create-wasm-app.js"
@@ -17,7 +17,6 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@delvtech/hyperwasm": "file:delvtech-hyperwasm-0.0.0.tgz",
-    "hyperwasm": "file:hyperwasm-0.0.0.tgz"
+    "@delvtech/hyperdrive-wasm": "file:delvtech-hyperdrive-wasm-0.0.0.tgz"
   }
 }

@@ -11,12 +11,12 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/check_diff.yml
     with:
-      pattern: ^crates/hyperwasm/
+      pattern: ^crates/hyperdrive-wasm/
 
   build:
     needs: detect-changes
     # Run if changes are detected OR if triggered by a release
-    if: (needs.detect-changes.outputs.changed == 'true') || (github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperwasm@v'))
+    if: (needs.detect-changes.outputs.changed == 'true') || (github.event_name == 'release' && startsWith(github.ref, 'refs/tags/hyperdrive-wasm@v'))
     name: build
     runs-on: ubuntu-latest
     permissions:
@@ -39,7 +39,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          registry-url: https://npm.pkg.github.com/
 
       - name: setup foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -54,13 +53,13 @@ jobs:
           path: './hyperdrive'
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
-      - name: build hyperwasm
-        working-directory: crates/hyperwasm
+      - name: build hyperdrive-wasm
+        working-directory: crates/hyperdrive-wasm
         run: sh build.sh
 
-      - name: publish hyperwasm
+      - name: publish hyperdrive-wasm
         if: github.event_name == 'release'
-        working-directory: crates/hyperwasm/pkg
+        working-directory: crates/hyperdrive-wasm/pkg
         run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
