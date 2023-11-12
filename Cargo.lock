@@ -1542,22 +1542,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "hyperdrive-wrappers"
-version = "0.1.0"
-dependencies = [
- "ethers",
- "ethers-solc",
- "eyre",
- "fixed-point",
- "heck",
- "rand",
- "serde",
- "tokio",
-]
-
-[[package]]
-name = "hyperwasm"
-version = "0.0.2"
+name = "hyperdrive-wasm"
+version = "0.0.0"
 dependencies = [
  "console_error_panic_hook",
  "const-hex",
@@ -1574,6 +1560,20 @@ dependencies = [
  "wasm-bindgen-futures",
  "wasm-bindgen-test",
  "web-sys",
+]
+
+[[package]]
+name = "hyperdrive-wrappers"
+version = "0.1.0"
+dependencies = [
+ "ethers",
+ "ethers-solc",
+ "eyre",
+ "fixed-point",
+ "heck",
+ "rand",
+ "serde",
+ "tokio",
 ]
 
 [[package]]

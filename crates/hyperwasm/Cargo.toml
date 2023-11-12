@@ -1,6 +1,6 @@
 [package]
-name = "hyperwasm"
-version = "0.0.2"
+name = "hyperdrive-wasm"
+version = "0.0.0"
 edition = "2021"
 
 [lib]
