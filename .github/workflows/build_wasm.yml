@@ -61,6 +61,6 @@ jobs:
       - name: publish hyperwasm
         if: github.event_name == 'release'
         working-directory: crates/hyperwasm/pkg
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
