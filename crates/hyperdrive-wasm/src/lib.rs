@@ -33,8 +33,9 @@ interface PoolConfig {
     governance: string,
     feeCollector: string,
     fees: Fees,
-    oracleSize: string,
-    updateGap: string,
+    linkerFactory: string,
+    linkerCodeHash: string,
+    precisionThreshold: string,
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -265,8 +266,9 @@ pub struct WasmPoolConfig {
     pub governance: String,
     pub feeCollector: String,
     pub fees: WasmFees,
-    pub oracleSize: String,
-    pub updateGap: String,
+    pub linkerFactory: String,
+    pub linkerCodeHash: String,
+    pub precisionThreshold: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -316,8 +318,13 @@ impl From<&WasmState> for State {
                 position_duration: U256::from_dec_str(&wasm_state.config.positionDuration).unwrap(),
                 checkpoint_duration: U256::from_dec_str(&wasm_state.config.checkpointDuration)
                     .unwrap(),
-                oracle_size: U256::from_dec_str(&wasm_state.config.oracleSize).unwrap(),
-                update_gap: U256::from_dec_str(&wasm_state.config.updateGap).unwrap(),
+                linker_factory: Address::from_str(&wasm_state.config.linkerFactory).unwrap(),
+                linker_code_hash: hex::decode(&wasm_state.config.linkerCodeHash)
+                    .unwrap()
+                    .try_into()
+                    .unwrap(),
+                precision_threshold: U256::from_dec_str(&wasm_state.config.precisionThreshold)
+                    .unwrap(),
             },
             info: _PoolInfo {
                 share_reserves: U256::from_dec_str(&wasm_state.info.shareReserves).unwrap(),

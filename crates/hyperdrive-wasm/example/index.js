@@ -34,8 +34,9 @@ const mockPoolConfig = {
   timeStretch: '31124187940342208',
   positionDuration: '31536000',
   checkpointDuration: '86400',
-  oracleSize: '10',
-  updateGap: '3600',
+  linkerCodeHash: '0x2b287bf09de636779ceb93a28afed387376a9bdabfcf1470369558a3dc67accc',
+  linkerFactory: ZERO_ADDRESS,
+  precisionThreshold: .5e18.toString(),
 };
 
 async function main() {
