@@ -7,7 +7,7 @@ from pyperdrive.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolIn
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
     linkerFactory="0x1234567890abcdef1234567890abcdef12345678",
-    linkerCodeHash=bytes(0),
+    linkerCodeHash=bytes(32),
     initialSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18

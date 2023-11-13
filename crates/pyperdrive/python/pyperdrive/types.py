@@ -35,8 +35,6 @@ class PoolConfig:
     governance: str
     feeCollector: str
     fees: Fees
-    oracleSize: str
-    updateGap: str
 
 
 @dataclass

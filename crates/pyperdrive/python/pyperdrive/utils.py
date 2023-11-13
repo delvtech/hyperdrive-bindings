@@ -19,10 +19,11 @@ def _serialize_pool_config(
     return types.PoolConfig(
         baseToken=str(pool_config.baseToken),
         linkerFactory=str(pool_config.linkerFactory),
-        linkerCodeHash=str(pool_config.linkerCodeHash),
+        linkerCodeHash=pool_config.linkerCodeHash.hex(),  # bytes to string in hex format
         initialSharePrice=str(pool_config.initialSharePrice),
         minimumShareReserves=str(pool_config.minimumShareReserves),
         minimumTransactionAmount=str(pool_config.minimumTransactionAmount),
+        precisionThreshold=str(pool_config.precisionThreshold),
         positionDuration=str(pool_config.positionDuration),
         checkpointDuration=str(pool_config.checkpointDuration),
         timeStretch=str(pool_config.timeStretch),
