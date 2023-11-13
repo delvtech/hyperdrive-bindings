@@ -89,8 +89,8 @@ extern "C" {
 /// binary search for
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getMaxShort(
-    poolInfo: PoolInfo,
-    poolConfig: PoolConfig,
+    poolInfo: &PoolInfo,
+    poolConfig: &PoolConfig,
     budget: String,
     openSharePrice: String,
     checkpointExposure: String,
@@ -99,8 +99,8 @@ pub fn getMaxShort(
 ) -> String {
     utils::set_panic_hook();
     let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value::<WasmPoolInfo>(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value::<WasmPoolConfig>(poolConfig.into()).unwrap(),
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
     });
     let _budget = U256::from_dec_str(&budget).unwrap();
     let checkpoint_exposure: I256 =
@@ -145,10 +145,8 @@ pub fn getMaxLong(
 ) -> String {
     utils::set_panic_hook();
     let _state = State::from(&WasmState {
-        // info: poolInfo,
-        // config: poolConfig,
-        info: serde_wasm_bindgen::from_value::<WasmPoolInfo>(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value::<WasmPoolConfig>(poolConfig.into()).unwrap(),
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
     });
     let _budget = U256::from_dec_str(&budget).unwrap();
     let checkpoint_exposure: I256 = I256::from_dec_str(&checkpointExposure).unwrap();
@@ -168,11 +166,11 @@ pub fn getMaxLong(
 ///
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getSpotPrice(poolInfo: PoolInfo, poolConfig: PoolConfig) -> String {
+pub fn getSpotPrice(poolInfo: &PoolInfo, poolConfig: &PoolConfig) -> String {
     utils::set_panic_hook();
     let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value::<WasmPoolInfo>(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value::<WasmPoolConfig>(poolConfig.into()).unwrap(),
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
     });
     _state.get_spot_price().to_string()
 }
@@ -184,11 +182,11 @@ pub fn getSpotPrice(poolInfo: PoolInfo, poolConfig: PoolConfig) -> String {
 ///
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getSpotRate(poolInfo: PoolInfo, poolConfig: PoolConfig) -> String {
+pub fn getSpotRate(poolInfo: &PoolInfo, poolConfig: &PoolConfig) -> String {
     utils::set_panic_hook();
     let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value::<WasmPoolInfo>(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value::<WasmPoolConfig>(poolConfig.into()).unwrap(),
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
     });
     _state.get_spot_rate().to_string()
 }
@@ -201,11 +199,11 @@ pub fn getSpotRate(poolInfo: PoolInfo, poolConfig: PoolConfig) -> String {
 ///
 /// @param baseAmount - The amount of base tokens to open a long for
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getLongAmount(poolInfo: PoolInfo, poolConfig: PoolConfig, baseAmount: String) -> String {
+pub fn getLongAmount(poolInfo: &PoolInfo, poolConfig: &PoolConfig, baseAmount: String) -> String {
     utils::set_panic_hook();
     let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value::<WasmPoolInfo>(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value::<WasmPoolConfig>(poolConfig.into()).unwrap(),
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
     });
 
     _state
@@ -226,16 +224,16 @@ pub fn getLongAmount(poolInfo: PoolInfo, poolConfig: PoolConfig, baseAmount: Str
 /// checkpoint
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getShortDeposit(
-    poolInfo: PoolInfo,
-    poolConfig: PoolConfig,
+    poolInfo: &PoolInfo,
+    poolConfig: &PoolConfig,
     shortAmount: String,
     spotPrice: String,
     openSharePrice: String,
 ) -> String {
     utils::set_panic_hook();
     let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value::<WasmPoolInfo>(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value::<WasmPoolConfig>(poolConfig.into()).unwrap(),
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
     });
 
     _state
