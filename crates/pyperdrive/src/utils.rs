@@ -31,9 +31,7 @@ pub fn extract_bytes32_from_attr(ob: &PyAny, attr: &str) -> PyResult<[u8; 32]> {
     let bytes32_h256: H256 = bytes32_str.parse::<H256>().map_err(|e| {
         PyErr::new::<PyValueError, _>(format!("Invalid bytes32 for {}: {}", attr, e))
     })?;
-    bytes32_h256.try_into().map_err(|e| {
-        PyErr::new::<PyValueError, _>(format!("Invalid bytes32 for {}: {}", attr, e))
-    })
+    Ok(bytes32_h256.into())
 }
 
 pub fn extract_fees_from_attr(ob: &PyAny, attr: &str) -> PyResult<Fees> {
