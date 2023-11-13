@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ex
 
+rm -rf pkg
+
 # Build the package with wasm-pack and add the "@delvtech/" scope to the package
 wasm-pack build --target web --scope delvtech
 
