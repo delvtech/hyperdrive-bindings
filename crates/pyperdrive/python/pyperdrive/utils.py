@@ -18,6 +18,8 @@ def _serialize_pool_config(
 ) -> types.PoolConfig:
     return types.PoolConfig(
         baseToken=str(pool_config.baseToken),
+        linkerFactory=str(pool_config.linkerFactory),
+        linkerCodeHash=str(pool_config.linkerCodeHash),
         initialSharePrice=str(pool_config.initialSharePrice),
         minimumShareReserves=str(pool_config.minimumShareReserves),
         minimumTransactionAmount=str(pool_config.minimumTransactionAmount),
@@ -31,8 +33,6 @@ def _serialize_pool_config(
             flat=str(pool_config.fees.flat),
             governance=str(pool_config.fees.governance),
         ),
-        oracleSize=str(pool_config.oracleSize),
-        updateGap=str(pool_config.updateGap),
     )
 
 
