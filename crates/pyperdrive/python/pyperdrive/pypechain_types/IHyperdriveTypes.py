@@ -13,9 +13,12 @@
 # pylint: disable=no-else-return
 from __future__ import annotations
 
+
 from dataclasses import dataclass
 
-from web3.types import ABIEvent, ABIEventParams
+from web3.types import ABIEvent
+
+from web3.types import ABIEventParams
 
 
 @dataclass
@@ -32,7 +35,7 @@ class Checkpoint:
     """Checkpoint struct."""
 
     sharePrice: int
-    longExposure: int
+    exposure: int
 
 
 @dataclass
@@ -65,17 +68,18 @@ class PoolConfig:
     """PoolConfig struct."""
 
     baseToken: str
+    linkerFactory: str
+    linkerCodeHash: bytes
     initialSharePrice: int
     minimumShareReserves: int
     minimumTransactionAmount: int
+    precisionThreshold: int
     positionDuration: int
     checkpointDuration: int
     timeStretch: int
     governance: str
     feeCollector: str
     fees: Fees
-    oracleSize: int
-    updateGap: int
 
 
 @dataclass
@@ -237,7 +241,9 @@ RedeemWithdrawalShares = ABIEvent(
     anonymous=False,
     inputs=[
         ABIEventParams(indexed=True, name="provider", type="address"),
-        ABIEventParams(indexed=False, name="withdrawalShareAmount", type="uint256"),
+        ABIEventParams(
+            indexed=False, name="withdrawalShareAmount", type="uint256"
+        ),
         ABIEventParams(indexed=False, name="baseAmount", type="uint256"),
         ABIEventParams(indexed=False, name="sharePrice", type="uint256"),
     ],
@@ -252,7 +258,9 @@ RemoveLiquidity = ABIEvent(
         ABIEventParams(indexed=False, name="lpAmount", type="uint256"),
         ABIEventParams(indexed=False, name="baseAmount", type="uint256"),
         ABIEventParams(indexed=False, name="sharePrice", type="uint256"),
-        ABIEventParams(indexed=False, name="withdrawalShareAmount", type="uint256"),
+        ABIEventParams(
+            indexed=False, name="withdrawalShareAmount", type="uint256"
+        ),
         ABIEventParams(indexed=False, name="lpSharePrice", type="uint256"),
     ],
     name="RemoveLiquidity",

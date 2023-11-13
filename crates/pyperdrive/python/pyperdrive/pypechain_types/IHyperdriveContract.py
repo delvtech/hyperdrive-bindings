@@ -15,13 +15,12 @@
 # pylint: disable=too-many-lines
 
 from __future__ import annotations
-
 from typing import cast
 
 from eth_typing import ChecksumAddress
+from web3.types import ABI
 from web3.contract.contract import Contract, ContractFunction, ContractFunctions
 from web3.exceptions import FallbackNotFound
-from web3.types import ABI
 
 
 class IHyperdriveDOMAIN_SEPARATORContractFunction(ContractFunction):
@@ -31,6 +30,20 @@ class IHyperdriveDOMAIN_SEPARATORContractFunction(ContractFunction):
     # pylint: disable=arguments-differ
 
     def __call__(self) -> "IHyperdriveDOMAIN_SEPARATORContractFunction":
+        super().__call__()
+        return self
+
+    # TODO: add call def so we can get return types for the calls
+    # def call()
+
+
+class IHyperdrivePERMIT_TYPEHASHContractFunction(ContractFunction):
+    """ContractFunction for the PERMIT_TYPEHASH method."""
+
+    # super() call methods are generic, while our version adds values & types
+    # pylint: disable=arguments-differ
+
+    def __call__(self) -> "IHyperdrivePERMIT_TYPEHASHContractFunction":
         super().__call__()
         return self
 
@@ -60,7 +73,9 @@ class IHyperdriveBalanceOfContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, tokenId: int, owner: str) -> "IHyperdriveBalanceOfContractFunction":
+    def __call__(
+        self, tokenId: int, owner: str
+    ) -> "IHyperdriveBalanceOfContractFunction":
         super().__call__(tokenId, owner)
         return self
 
@@ -104,7 +119,9 @@ class IHyperdriveCheckpointContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, _checkpointTime: int) -> "IHyperdriveCheckpointContractFunction":
+    def __call__(
+        self, _checkpointTime: int
+    ) -> "IHyperdriveCheckpointContractFunction":
         super().__call__(_checkpointTime)
         return self
 
@@ -158,36 +175,10 @@ class IHyperdriveCollectGovernanceFeeContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, _options: tuple) -> "IHyperdriveCollectGovernanceFeeContractFunction":
+    def __call__(
+        self, _options: tuple
+    ) -> "IHyperdriveCollectGovernanceFeeContractFunction":
         super().__call__(_options)
-        return self
-
-    # TODO: add call def so we can get return types for the calls
-    # def call()
-
-
-class IHyperdriveDataProviderContractFunction(ContractFunction):
-    """ContractFunction for the dataProvider method."""
-
-    # super() call methods are generic, while our version adds values & types
-    # pylint: disable=arguments-differ
-
-    def __call__(self) -> "IHyperdriveDataProviderContractFunction":
-        super().__call__()
-        return self
-
-    # TODO: add call def so we can get return types for the calls
-    # def call()
-
-
-class IHyperdriveFactoryContractFunction(ContractFunction):
-    """ContractFunction for the factory method."""
-
-    # super() call methods are generic, while our version adds values & types
-    # pylint: disable=arguments-differ
-
-    def __call__(self) -> "IHyperdriveFactoryContractFunction":
-        super().__call__()
         return self
 
     # TODO: add call def so we can get return types for the calls
@@ -200,7 +191,9 @@ class IHyperdriveGetCheckpointContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, _checkpointId: int) -> "IHyperdriveGetCheckpointContractFunction":
+    def __call__(
+        self, _checkpointId: int
+    ) -> "IHyperdriveGetCheckpointContractFunction":
         super().__call__(_checkpointId)
         return self
 
@@ -286,7 +279,9 @@ class IHyperdriveInitializeContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, _contribution: int, _apr: int, _options: tuple) -> "IHyperdriveInitializeContractFunction":
+    def __call__(
+        self, _contribution: int, _apr: int, _options: tuple
+    ) -> "IHyperdriveInitializeContractFunction":
         super().__call__(_contribution, _apr, _options)
         return self
 
@@ -300,22 +295,10 @@ class IHyperdriveIsApprovedForAllContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, owner: str, spender: str) -> "IHyperdriveIsApprovedForAllContractFunction":
+    def __call__(
+        self, owner: str, spender: str
+    ) -> "IHyperdriveIsApprovedForAllContractFunction":
         super().__call__(owner, spender)
-        return self
-
-    # TODO: add call def so we can get return types for the calls
-    # def call()
-
-
-class IHyperdriveLinkerCodeHashContractFunction(ContractFunction):
-    """ContractFunction for the linkerCodeHash method."""
-
-    # super() call methods are generic, while our version adds values & types
-    # pylint: disable=arguments-differ
-
-    def __call__(self) -> "IHyperdriveLinkerCodeHashContractFunction":
-        super().__call__()
         return self
 
     # TODO: add call def so we can get return types for the calls
@@ -424,7 +407,9 @@ class IHyperdrivePerTokenApprovalsContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, tokenId: int, owner: str, spender: str) -> "IHyperdrivePerTokenApprovalsContractFunction":
+    def __call__(
+        self, tokenId: int, owner: str, spender: str
+    ) -> "IHyperdrivePerTokenApprovalsContractFunction":
         super().__call__(tokenId, owner, spender)
         return self
 
@@ -477,7 +462,9 @@ class IHyperdriveRemoveLiquidityContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, _shares: int, _minOutput: int, _options: tuple) -> "IHyperdriveRemoveLiquidityContractFunction":
+    def __call__(
+        self, _shares: int, _minOutput: int, _options: tuple
+    ) -> "IHyperdriveRemoveLiquidityContractFunction":
         super().__call__(_shares, _minOutput, _options)
         return self
 
@@ -491,7 +478,9 @@ class IHyperdriveSetApprovalContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, tokenID: int, operator: str, amount: int) -> "IHyperdriveSetApprovalContractFunction":
+    def __call__(
+        self, tokenID: int, operator: str, amount: int
+    ) -> "IHyperdriveSetApprovalContractFunction":
         super().__call__(tokenID, operator, amount)
         return self
 
@@ -521,7 +510,9 @@ class IHyperdriveSetApprovalForAllContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, operator: str, approved: bool) -> "IHyperdriveSetApprovalForAllContractFunction":
+    def __call__(
+        self, operator: str, approved: bool
+    ) -> "IHyperdriveSetApprovalForAllContractFunction":
         super().__call__(operator, approved)
         return self
 
@@ -549,8 +540,10 @@ class IHyperdriveSetPauserContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, _who: str, _status: bool) -> "IHyperdriveSetPauserContractFunction":
-        super().__call__(_who, _status)
+    def __call__(
+        self, who: str, status: bool
+    ) -> "IHyperdriveSetPauserContractFunction":
+        super().__call__(who, status)
         return self
 
     # TODO: add call def so we can get return types for the calls
@@ -565,6 +558,34 @@ class IHyperdriveSymbolContractFunction(ContractFunction):
 
     def __call__(self, _id: int) -> "IHyperdriveSymbolContractFunction":
         super().__call__(_id)
+        return self
+
+    # TODO: add call def so we can get return types for the calls
+    # def call()
+
+
+class IHyperdriveTarget0ContractFunction(ContractFunction):
+    """ContractFunction for the target0 method."""
+
+    # super() call methods are generic, while our version adds values & types
+    # pylint: disable=arguments-differ
+
+    def __call__(self) -> "IHyperdriveTarget0ContractFunction":
+        super().__call__()
+        return self
+
+    # TODO: add call def so we can get return types for the calls
+    # def call()
+
+
+class IHyperdriveTarget1ContractFunction(ContractFunction):
+    """ContractFunction for the target1 method."""
+
+    # super() call methods are generic, while our version adds values & types
+    # pylint: disable=arguments-differ
+
+    def __call__(self) -> "IHyperdriveTarget1ContractFunction":
+        super().__call__()
         return self
 
     # TODO: add call def so we can get return types for the calls
@@ -591,7 +612,9 @@ class IHyperdriveTransferFromContractFunction(ContractFunction):
     # super() call methods are generic, while our version adds values & types
     # pylint: disable=arguments-differ
 
-    def __call__(self, tokenID: int, _from: str, to: str, amount: int) -> "IHyperdriveTransferFromContractFunction":
+    def __call__(
+        self, tokenID: int, _from: str, to: str, amount: int
+    ) -> "IHyperdriveTransferFromContractFunction":
         super().__call__(tokenID, _from, to, amount)
         return self
 
@@ -620,6 +643,8 @@ class IHyperdriveContractFunctions(ContractFunctions):
 
     DOMAIN_SEPARATOR: IHyperdriveDOMAIN_SEPARATORContractFunction
 
+    PERMIT_TYPEHASH: IHyperdrivePERMIT_TYPEHASHContractFunction
+
     addLiquidity: IHyperdriveAddLiquidityContractFunction
 
     balanceOf: IHyperdriveBalanceOfContractFunction
@@ -636,10 +661,6 @@ class IHyperdriveContractFunctions(ContractFunctions):
 
     collectGovernanceFee: IHyperdriveCollectGovernanceFeeContractFunction
 
-    dataProvider: IHyperdriveDataProviderContractFunction
-
-    factory: IHyperdriveFactoryContractFunction
-
     getCheckpoint: IHyperdriveGetCheckpointContractFunction
 
     getMarketState: IHyperdriveGetMarketStateContractFunction
@@ -655,8 +676,6 @@ class IHyperdriveContractFunctions(ContractFunctions):
     initialize: IHyperdriveInitializeContractFunction
 
     isApprovedForAll: IHyperdriveIsApprovedForAllContractFunction
-
-    linkerCodeHash: IHyperdriveLinkerCodeHashContractFunction
 
     load: IHyperdriveLoadContractFunction
 
@@ -689,6 +708,10 @@ class IHyperdriveContractFunctions(ContractFunctions):
     setPauser: IHyperdriveSetPauserContractFunction
 
     symbol: IHyperdriveSymbolContractFunction
+
+    target0: IHyperdriveTarget0ContractFunction
+
+    target1: IHyperdriveTarget1ContractFunction
 
     totalSupply: IHyperdriveTotalSupplyContractFunction
 
@@ -723,6 +746,7 @@ ihyperdrive_abi: ABI = cast(
             "name": "CallFailed",
             "type": "error",
         },
+        {"inputs": [], "name": "EndIndexTooLarge", "type": "error"},
         {"inputs": [], "name": "ExpiredDeadline", "type": "error"},
         {"inputs": [], "name": "FeeTooHigh", "type": "error"},
         {
@@ -748,6 +772,7 @@ ihyperdrive_abi: ABI = cast(
         {"inputs": [], "name": "InvalidFeeAmounts", "type": "error"},
         {"inputs": [], "name": "InvalidFeeDestination", "type": "error"},
         {"inputs": [], "name": "InvalidForwarderAddress", "type": "error"},
+        {"inputs": [], "name": "InvalidIndexes", "type": "error"},
         {"inputs": [], "name": "InvalidInitialSharePrice", "type": "error"},
         {"inputs": [], "name": "InvalidMaturityTime", "type": "error"},
         {"inputs": [], "name": "InvalidMinimumShareReserves", "type": "error"},
@@ -772,7 +797,9 @@ ihyperdrive_abi: ABI = cast(
         {"inputs": [], "name": "QueryOutOfRange", "type": "error"},
         {"inputs": [], "name": "RestrictedZeroAddress", "type": "error"},
         {
-            "inputs": [{"internalType": "bytes", "name": "data", "type": "bytes"}],
+            "inputs": [
+                {"internalType": "bytes", "name": "data", "type": "bytes"}
+            ],
             "name": "ReturnData",
             "type": "error",
         },
@@ -1262,7 +1289,18 @@ ihyperdrive_abi: ABI = cast(
         {
             "inputs": [],
             "name": "DOMAIN_SEPARATOR",
-            "outputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
+            "outputs": [
+                {"internalType": "bytes32", "name": "", "type": "bytes32"}
+            ],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "PERMIT_TYPEHASH",
+            "outputs": [
+                {"internalType": "bytes32", "name": "", "type": "bytes32"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
@@ -1327,14 +1365,18 @@ ihyperdrive_abi: ABI = cast(
                 {"internalType": "address", "name": "owner", "type": "address"},
             ],
             "name": "balanceOf",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
         {
             "inputs": [],
             "name": "baseToken",
-            "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+            "outputs": [
+                {"internalType": "address", "name": "", "type": "address"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
@@ -1412,7 +1454,9 @@ ihyperdrive_abi: ABI = cast(
                 },
             ],
             "name": "closeLong",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "nonpayable",
             "type": "function",
         },
@@ -1457,7 +1501,9 @@ ihyperdrive_abi: ABI = cast(
                 },
             ],
             "name": "closeShort",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "nonpayable",
             "type": "function",
         },
@@ -1498,20 +1544,6 @@ ihyperdrive_abi: ABI = cast(
             "type": "function",
         },
         {
-            "inputs": [],
-            "name": "dataProvider",
-            "outputs": [{"internalType": "address", "name": "", "type": "address"}],
-            "stateMutability": "view",
-            "type": "function",
-        },
-        {
-            "inputs": [],
-            "name": "factory",
-            "outputs": [{"internalType": "address", "name": "", "type": "address"}],
-            "stateMutability": "view",
-            "type": "function",
-        },
-        {
             "inputs": [
                 {
                     "internalType": "uint256",
@@ -1530,7 +1562,7 @@ ihyperdrive_abi: ABI = cast(
                         },
                         {
                             "internalType": "int128",
-                            "name": "longExposure",
+                            "name": "exposure",
                             "type": "int128",
                         },
                     ],
@@ -1619,6 +1651,16 @@ ihyperdrive_abi: ABI = cast(
                             "type": "address",
                         },
                         {
+                            "internalType": "address",
+                            "name": "linkerFactory",
+                            "type": "address",
+                        },
+                        {
+                            "internalType": "bytes32",
+                            "name": "linkerCodeHash",
+                            "type": "bytes32",
+                        },
+                        {
                             "internalType": "uint256",
                             "name": "initialSharePrice",
                             "type": "uint256",
@@ -1631,6 +1673,11 @@ ihyperdrive_abi: ABI = cast(
                         {
                             "internalType": "uint256",
                             "name": "minimumTransactionAmount",
+                            "type": "uint256",
+                        },
+                        {
+                            "internalType": "uint256",
+                            "name": "precisionThreshold",
                             "type": "uint256",
                         },
                         {
@@ -1679,16 +1726,6 @@ ihyperdrive_abi: ABI = cast(
                             "internalType": "struct IHyperdrive.Fees",
                             "name": "fees",
                             "type": "tuple",
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "oracleSize",
-                            "type": "uint256",
-                        },
-                        {
-                            "internalType": "uint256",
-                            "name": "updateGap",
-                            "type": "uint256",
                         },
                     ],
                     "internalType": "struct IHyperdrive.PoolConfig",
@@ -1782,7 +1819,9 @@ ihyperdrive_abi: ABI = cast(
         {
             "inputs": [],
             "name": "getUncollectedGovernanceFees",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
@@ -1868,13 +1907,6 @@ ihyperdrive_abi: ABI = cast(
             "type": "function",
         },
         {
-            "inputs": [],
-            "name": "linkerCodeHash",
-            "outputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
-            "stateMutability": "view",
-            "type": "function",
-        },
-        {
             "inputs": [
                 {
                     "internalType": "uint256[]",
@@ -1883,21 +1915,31 @@ ihyperdrive_abi: ABI = cast(
                 }
             ],
             "name": "load",
-            "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
+            "outputs": [
+                {"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
         {
-            "inputs": [{"internalType": "uint256", "name": "id", "type": "uint256"}],
+            "inputs": [
+                {"internalType": "uint256", "name": "id", "type": "uint256"}
+            ],
             "name": "name",
-            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "outputs": [
+                {"internalType": "string", "name": "", "type": "string"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
         {
-            "inputs": [{"internalType": "address", "name": "owner", "type": "address"}],
+            "inputs": [
+                {"internalType": "address", "name": "owner", "type": "address"}
+            ],
             "name": "nonces",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
@@ -2014,7 +2056,9 @@ ihyperdrive_abi: ABI = cast(
             "type": "function",
         },
         {
-            "inputs": [{"internalType": "bool", "name": "_status", "type": "bool"}],
+            "inputs": [
+                {"internalType": "bool", "name": "_status", "type": "bool"}
+            ],
             "name": "pause",
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -2035,7 +2079,9 @@ ihyperdrive_abi: ABI = cast(
                 },
             ],
             "name": "perTokenApprovals",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
@@ -2230,7 +2276,9 @@ ihyperdrive_abi: ABI = cast(
             "type": "function",
         },
         {
-            "inputs": [{"internalType": "address", "name": "_who", "type": "address"}],
+            "inputs": [
+                {"internalType": "address", "name": "_who", "type": "address"}
+            ],
             "name": "setGovernance",
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -2238,8 +2286,8 @@ ihyperdrive_abi: ABI = cast(
         },
         {
             "inputs": [
-                {"internalType": "address", "name": "_who", "type": "address"},
-                {"internalType": "bool", "name": "_status", "type": "bool"},
+                {"internalType": "address", "name": "who", "type": "address"},
+                {"internalType": "bool", "name": "status", "type": "bool"},
             ],
             "name": "setPauser",
             "outputs": [],
@@ -2247,16 +2295,42 @@ ihyperdrive_abi: ABI = cast(
             "type": "function",
         },
         {
-            "inputs": [{"internalType": "uint256", "name": "id", "type": "uint256"}],
+            "inputs": [
+                {"internalType": "uint256", "name": "id", "type": "uint256"}
+            ],
             "name": "symbol",
-            "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+            "outputs": [
+                {"internalType": "string", "name": "", "type": "string"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
         {
-            "inputs": [{"internalType": "uint256", "name": "id", "type": "uint256"}],
+            "inputs": [],
+            "name": "target0",
+            "outputs": [
+                {"internalType": "address", "name": "", "type": "address"}
+            ],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [],
+            "name": "target1",
+            "outputs": [
+                {"internalType": "address", "name": "", "type": "address"}
+            ],
+            "stateMutability": "view",
+            "type": "function",
+        },
+        {
+            "inputs": [
+                {"internalType": "uint256", "name": "id", "type": "uint256"}
+            ],
             "name": "totalSupply",
-            "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+            "outputs": [
+                {"internalType": "uint256", "name": "", "type": "uint256"}
+            ],
             "stateMutability": "view",
             "type": "function",
         },
