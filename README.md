@@ -33,7 +33,7 @@ pypechain. From the pyperdrive project root, run:
 
 ```shell
 pip install --upgrade -r requirements-dev.txt
-pypechain hyperdrive/out/IHyperdrive.sol/IHyperdrive.json --output_dir crates/pyperdrive/python/pypechain/pypechain_types
+pypechain hyperdrive/out/IHyperdrive.sol/IHyperdrive.json --output_dir crates/pyperdrive/python/pyperdrive/pypechain_types
 ```
 
 ## Disclaimer
