@@ -4,7 +4,7 @@ from setuptools_rust import Binding, RustExtension
 
 setup(
     name="pyperdrive",
-    version="0.2.0",
+    version="0.3.0",
     packages=["pyperdrive"],
     package_dir={"": "python"},
     rust_extensions=[
