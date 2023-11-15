@@ -1,5 +1,5 @@
 [project]
-name = "hyperdrive-py"
+name = "hyperdrivepy"
 version = "0.3.0"
 authors = [
     { name = "Dylan Paiton", email = "dylan@delv.tech" },

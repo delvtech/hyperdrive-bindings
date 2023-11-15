@@ -3,12 +3,12 @@ from setuptools import setup
 from setuptools_rust import Binding, RustExtension
 
 setup(
-    name="hyperdrive_py",
+    name="hyperdrivepy",
     version="0.3.0",
-    packages=["hyperdrive_py"],
+    packages=["hyperdrivepy"],
     package_dir={"": "python"},
     rust_extensions=[
-        RustExtension("hyperdrive_py.hyperdrive_py", binding=Binding.PyO3),
+        RustExtension("hyperdrivepy.hyperdrivepy", binding=Binding.PyO3),
     ],
     # rust extensions are not zip safe, just like C-extensions.
     zip_safe=False,

@@ -12,7 +12,7 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/check_diff.yml
     with:
-      pattern: ^crates/hyperdrive_py/
+      pattern: ^crates/hyperdrivepy/
 
   build:
     needs: detect-changes
@@ -79,7 +79,7 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
         with:
           output-dir: wheelhouse
-          package-dir: crates/hyperdrive_py
+          package-dir: crates/hyperdrivepy
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3

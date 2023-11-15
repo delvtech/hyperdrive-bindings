@@ -1,5 +1,5 @@
 [package]
-name = "hyperdrive_py"
+name = "hyperdrivepy"
 edition = "2021"
 version = "0.2.0"
 authors = [
@@ -10,7 +10,7 @@ authors = [
 description = "Python wrappers for the Hyperdrive AMM"
 
 [lib]
-name = "hyperdrive_py"
+name = "hyperdrivepy"
 # "cdylib" is necessary to produce a shared library for Python to import from.
 crate-type = ["cdylib"]
 
