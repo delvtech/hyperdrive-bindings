@@ -12,7 +12,7 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/check_diff.yml
     with:
-      pattern: ^crates/hyperdrive-sdk/
+      pattern: ^crates/hyperdrive_py/
 
   build:
     needs: detect-changes

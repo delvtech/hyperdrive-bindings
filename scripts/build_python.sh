@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# hyperdrive-py install for Linux-based platforms
+# hyperdrive_py install for Linux-based platforms
 # This is a temporary script until we finish seting up cibuildwheel for linux
 # The script assumes that the `hyperdrive` repo is cloned inside this repository root
 
@@ -9,7 +9,7 @@ echo "install required packages for building wheels"
 python -m pip install --upgrade -r requirements-dev.txt
 
 echo "nav into the crate so relative paths work"
-cd crates/hyperdrive-py
+cd crates/hyperdrive_py
 
 echo "build the wheel for the current platform"
 python setup.py bdist_wheel
