@@ -23,17 +23,18 @@ class PoolConfig:
     """Static configuration for the hyperdrive contract. Set at deploy time."""
 
     baseToken: str
+    linkerFactory: str
+    linkerCodeHash: str
     initialSharePrice: str
     minimumShareReserves: str
     minimumTransactionAmount: str
+    precisionThreshold: str
     positionDuration: str
     checkpointDuration: str
     timeStretch: str
     governance: str
     feeCollector: str
     fees: Fees
-    oracleSize: str
-    updateGap: str
 
 
 @dataclass
@@ -90,9 +91,12 @@ class PoolConfigType(Protocol):
     """PoolConfig struct."""
 
     baseToken: str
+    linkerFactory: str
+    linkerCodeHash: bytes
     initialSharePrice: int
     minimumShareReserves: int
     minimumTransactionAmount: int
+    precisionThreshold: int
     positionDuration: int
     checkpointDuration: int
     timeStretch: int
@@ -100,8 +104,6 @@ class PoolConfigType(Protocol):
     feeCollector: str
     # TODO: nested Protocol types do not play well with dataclasses.  use 'or Any' for now.
     fees: FeesType | Any
-    oracleSize: int
-    updateGap: int
 
 
 class PoolInfoType(Protocol):

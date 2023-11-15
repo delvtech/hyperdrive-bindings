@@ -6,17 +6,18 @@ from pyperdrive.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolIn
 
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
+    linkerFactory="0x1234567890abcdef1234567890abcdef12345678",
+    linkerCodeHash=bytes(32),
     initialSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18
+    precisionThreshold=1 * 10**14,
     positionDuration=604_800,
     checkpointDuration=86_400,
     timeStretch=1 * 10**17,  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     feeCollector="0xfedcba0987654321fedcba0987654321fedcba09",
     fees=Fees(curve=0, flat=0, governance=0),
-    oracleSize=10,
-    updateGap=3_600,
 )
 
 

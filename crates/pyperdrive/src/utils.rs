@@ -1,4 +1,4 @@
-use ethers::core::types::{Address, I256, U256};
+use ethers::core::types::{Address, I256, U256, H256};
 use hyperdrive_wrappers::wrappers::i_hyperdrive::Fees;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
@@ -23,6 +23,15 @@ pub fn extract_address_from_attr(ob: &PyAny, attr: &str) -> PyResult<Address> {
     address_str.parse::<Address>().map_err(|e| {
         PyErr::new::<PyValueError, _>(format!("Invalid Ethereum address for {}: {}", attr, e))
     })
+}
+
+// Helper function to extract bytes32 values from Python object attributes
+pub fn extract_bytes32_from_attr(ob: &PyAny, attr: &str) -> PyResult<[u8; 32]> {
+    let bytes32_str: String = ob.getattr(attr)?.extract()?;
+    let bytes32_h256: H256 = bytes32_str.parse::<H256>().map_err(|e| {
+        PyErr::new::<PyValueError, _>(format!("Invalid bytes32 for {}: {}", attr, e))
+    })?;
+    Ok(bytes32_h256.into())
 }
 
 pub fn extract_fees_from_attr(ob: &PyAny, attr: &str) -> PyResult<Fees> {
