@@ -12,7 +12,7 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/check_diff.yml
     with:
-      pattern: ^crates/pyperdrive/
+      pattern: ^crates/hyperdrive_py
 
   test:
     needs: detect-changes
@@ -50,8 +50,8 @@ jobs:
       - name: setup pip
         run: python -m pip install --upgrade pip && python -m pip install --upgrade pytest
 
-      - name: install pyperdrive
-        run: python -m pip install crates/pyperdrive
+      - name: install hyperdrive_py
+        run: python -m pip install crates/hyperdrive_py
 
       - name: install requirements
         run: python -m pip install -r requirements.txt

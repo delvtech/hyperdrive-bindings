@@ -1,6 +1,6 @@
 """Helper functions for the wrappers."""
 # pylint: disable=no-name-in-module
-from . import pyperdrive as rust_module  # type: ignore
+from . import hyperdrive_py as rust_module  # type: ignore
 from . import types
 
 

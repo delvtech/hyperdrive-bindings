@@ -1577,6 +1577,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "hyperdrive_py"
+version = "0.2.0"
+dependencies = [
+ "ethers",
+ "eyre",
+ "fixed-point",
+ "fixed-point-macros",
+ "hyperdrive-math",
+ "hyperdrive-wrappers",
+ "pyo3",
+ "rand",
+ "tokio",
+]
+
+[[package]]
 name = "iana-time-zone"
 version = "0.1.58"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2487,21 +2502,6 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
-]
-
-[[package]]
-name = "pyperdrive"
-version = "0.2.0"
-dependencies = [
- "ethers",
- "eyre",
- "fixed-point",
- "fixed-point-macros",
- "hyperdrive-math",
- "hyperdrive-wrappers",
- "pyo3",
- "rand",
- "tokio",
 ]
 
 [[package]]
