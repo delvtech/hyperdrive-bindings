@@ -1,8 +1,7 @@
 """Tests for hyperdrive_math.rs wrappers"""
+import hyperdrivepy
 import pytest
-
-import pyperdrive
-from pyperdrive.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolInfo
+from hyperdrivepy.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolInfo
 
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
@@ -40,7 +39,7 @@ POOL_INFO = PoolInfo(
 
 def test_get_max_spot_price():
     """test get_max_spot_rate."""
-    max_spot_price = pyperdrive.get_max_spot_price(POOL_CONFIG, POOL_INFO)
+    max_spot_price = hyperdrivepy.get_max_spot_price(POOL_CONFIG, POOL_INFO)
     assert max_spot_price is not None, "Failed to get max spot price."
     assert isinstance(max_spot_price, str), "Expected spot rate to be a string."
     assert int(max_spot_price) > 0, "Expected max_spot_price to > 0."
@@ -48,7 +47,7 @@ def test_get_max_spot_price():
 
 def test_get_spot_price_after_long():
     """test get_spot_price_after_long."""
-    spot_price = pyperdrive.get_spot_price_after_long(POOL_CONFIG, POOL_INFO, long_amount=str(1_000 * 10**18))
+    spot_price = hyperdrivepy.get_spot_price_after_long(POOL_CONFIG, POOL_INFO, long_amount=str(1_000 * 10**18))
     assert spot_price is not None, "Failed to get spot price after long."
     assert isinstance(spot_price, str), "Expected spot rate to be a string."
     assert int(spot_price) > 0, "Expected max_spot_price to > 0."
@@ -56,7 +55,7 @@ def test_get_spot_price_after_long():
 
 def test_get_solvency():
     """test get_max_spot_rate."""
-    solvency = pyperdrive.get_solvency(POOL_CONFIG, POOL_INFO)
+    solvency = hyperdrivepy.get_solvency(POOL_CONFIG, POOL_INFO)
     assert solvency is not None, "Failed to get spot price after long."
     assert isinstance(solvency, str), "Expected spot rate to be a string."
     assert int(solvency) > 0, "Expected max_spot_price to > 0."
@@ -64,7 +63,7 @@ def test_get_solvency():
 
 def test_get_spot_rate():
     """test get_spot_rate."""
-    spot_rate = pyperdrive.get_spot_rate(POOL_CONFIG, POOL_INFO)
+    spot_rate = hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO)
     assert spot_rate is not None, "Failed to get spot rate."
     assert isinstance(spot_rate, str), "Expected spot rate to be a string."
     assert int(spot_rate) > 0, "Expected spot rate to > 0."
@@ -72,14 +71,14 @@ def test_get_spot_rate():
 
 def test_to_checkpoint():
     """test to_checkpoint."""
-    checkpoint_time = pyperdrive.to_checkpoint(POOL_CONFIG, POOL_INFO, time=str(100))
+    checkpoint_time = hyperdrivepy.to_checkpoint(POOL_CONFIG, POOL_INFO, time=str(100))
     assert checkpoint_time is not None, "Failed to get checkpoint time."
     assert isinstance(checkpoint_time, str), "Expected checkpoint time to be a string."
 
 
 def test_get_spot_price():
     """test get_spot_price."""
-    spot_price = pyperdrive.get_spot_price(POOL_CONFIG, POOL_INFO)
+    spot_price = hyperdrivepy.get_spot_price(POOL_CONFIG, POOL_INFO)
     assert spot_price is not None, "Failed to get spot price."
     assert isinstance(spot_price, str), "Expected spot price to be a string."
     assert int(spot_price) > 0, "Expected spot price to > 0."
@@ -87,8 +86,8 @@ def test_get_spot_price():
 
 def test_get_time_stretch():
     """test get_time_stretch."""
-    time_stretch = pyperdrive.get_time_stretch(
-        pyperdrive.get_spot_rate(POOL_CONFIG, POOL_INFO),
+    time_stretch = hyperdrivepy.get_time_stretch(
+        hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
     )
     assert time_stretch is not None, "Failed to get time_stretch."
     assert isinstance(time_stretch, str), "Expected time_stretch to be a string."
@@ -97,7 +96,7 @@ def test_get_time_stretch():
 
 def test_get_effective_share_reserves():
     """Test get_effective_share_reserves."""
-    effective_share_reserves = pyperdrive.get_effective_share_reserves(
+    effective_share_reserves = hyperdrivepy.get_effective_share_reserves(
         str(POOL_INFO.shareReserves),
         str(POOL_INFO.shareAdjustment),
     )
@@ -108,14 +107,14 @@ def test_get_effective_share_reserves():
 
 def test_calculate_bonds_given_shares_and_rate():
     """Test calculate_bonds_given_shares_and_rate."""
-    effective_share_reserves = pyperdrive.get_effective_share_reserves(
+    effective_share_reserves = hyperdrivepy.get_effective_share_reserves(
         str(POOL_INFO.shareReserves),
         str(POOL_INFO.shareAdjustment),
     )
-    bonds = pyperdrive.calculate_bonds_given_shares_and_rate(
+    bonds = hyperdrivepy.calculate_bonds_given_shares_and_rate(
         effective_share_reserves,
         str(POOL_CONFIG.initialSharePrice),
-        pyperdrive.get_spot_rate(POOL_CONFIG, POOL_INFO),
+        hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
         str(POOL_CONFIG.positionDuration),
         str(POOL_CONFIG.timeStretch),
     )
@@ -127,63 +126,63 @@ def test_calculate_bonds_given_shares_and_rate():
 def test_calculate_bonds_out_given_shares_in_down():
     """Test calculate_bonds_out_given_shares_in_down."""
     amount_in = str(1_000 * 10**18)
-    out = pyperdrive.calculate_bonds_out_given_shares_in_down(POOL_CONFIG, POOL_INFO, amount_in)
+    out = hyperdrivepy.calculate_bonds_out_given_shares_in_down(POOL_CONFIG, POOL_INFO, amount_in)
     assert int(out) > 0
 
 
 def test_calculate_shares_in_given_bonds_out_up():
     """Test calculate_shares_in_given_bonds_out_up."""
     amount_in = str(1_000 * 10**18)
-    out = pyperdrive.calculate_shares_in_given_bonds_out_up(POOL_CONFIG, POOL_INFO, amount_in)
+    out = hyperdrivepy.calculate_shares_in_given_bonds_out_up(POOL_CONFIG, POOL_INFO, amount_in)
     assert int(out) > 0
 
 
 def test_calculate_shares_in_given_bonds_out_down():
     """Test calculate_shares_in_given_bonds_out_down."""
     amount_in = str(1_000 * 10**18)
-    out = pyperdrive.calculate_shares_in_given_bonds_out_down(POOL_CONFIG, POOL_INFO, amount_in)
+    out = hyperdrivepy.calculate_shares_in_given_bonds_out_down(POOL_CONFIG, POOL_INFO, amount_in)
     assert int(out) > 0
 
 
 def test_calculate_shares_out_given_bonds_in_down():
     """Test calculate_shares_out_given_bonds_in_down."""
     amount_in = str(1_000 * 10**18)
-    out = pyperdrive.calculate_shares_out_given_bonds_in_down(POOL_CONFIG, POOL_INFO, amount_in)
+    out = hyperdrivepy.calculate_shares_out_given_bonds_in_down(POOL_CONFIG, POOL_INFO, amount_in)
     assert int(out) > 0
 
 
 def test_calculate_max_buy():
     """Test calculate_max_buy."""
-    out = pyperdrive.calculate_max_buy(POOL_CONFIG, POOL_INFO)
+    out = hyperdrivepy.calculate_max_buy(POOL_CONFIG, POOL_INFO)
     assert int(out) > 0
 
 
 def test_calculate_max_sell():
     """Test calculate_max_buy."""
     minimum_share_reserves = str(10 * 10**18)
-    out = pyperdrive.calculate_max_sell(POOL_CONFIG, POOL_INFO, minimum_share_reserves)
+    out = hyperdrivepy.calculate_max_sell(POOL_CONFIG, POOL_INFO, minimum_share_reserves)
     assert int(out) > 0
 
 
 def test_get_long_amount():
     """Test for get_long_amount."""
     base_amount = str(500 * 10**18)
-    long_amount = pyperdrive.get_long_amount(POOL_CONFIG, POOL_INFO, base_amount)
+    long_amount = hyperdrivepy.get_long_amount(POOL_CONFIG, POOL_INFO, base_amount)
     assert int(long_amount) > 0
 
 
 def test_get_short_deposit():
     """Test for get_long_amount."""
     short_amount = str(50 * 10**18)
-    spot_price = pyperdrive.get_spot_price(POOL_CONFIG, POOL_INFO)
+    spot_price = hyperdrivepy.get_spot_price(POOL_CONFIG, POOL_INFO)
     open_share_price = str(9 * 10**17)
-    base_required = pyperdrive.get_short_deposit(POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price)
+    base_required = hyperdrivepy.get_short_deposit(POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price)
     assert int(base_required) > 0
-    base_required_default_share_price = pyperdrive.get_short_deposit(
+    base_required_default_share_price = hyperdrivepy.get_short_deposit(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, None
     )
     assert int(base_required_default_share_price) > 0
-    assert base_required_default_share_price == pyperdrive.get_short_deposit(
+    assert base_required_default_share_price == hyperdrivepy.get_short_deposit(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, "0"
     )
 
@@ -193,7 +192,7 @@ def test_max_long():
     budget = "1000000000000000000"  # 1 base
     checkpoint_exposure = "10000"
     max_iterations = 20
-    max_long = pyperdrive.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
+    max_long = hyperdrivepy.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
     assert int(max_long) > 0  # should == "1000000000000000000", or 1 base
 
 
@@ -204,15 +203,15 @@ def test_max_long_fail_conversion():
     budget = "asdf"
     checkpoint_exposure = "100"
     with pytest.raises(ValueError, match="Failed to convert budget string to U256"):
-        pyperdrive.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
+        hyperdrivepy.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
     budget = "1.23"
     checkpoint_exposure = "100"
     with pytest.raises(ValueError, match="Failed to convert budget string to U256"):
-        pyperdrive.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
+        hyperdrivepy.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
     budget = "1000000000000000000"  # 1 base
     checkpoint_exposure = "asdf"
     with pytest.raises(ValueError, match="Failed to convert checkpoint_exposure string to I256"):
-        pyperdrive.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
+        hyperdrivepy.get_max_long(POOL_CONFIG, POOL_INFO, budget, checkpoint_exposure, max_iterations)
 
 
 def test_max_short():
@@ -223,7 +222,7 @@ def test_max_short():
     checkpoint_exposure = str(0)
     conservative_price = None
     max_iterations = 20
-    max_short = pyperdrive.get_max_short(
+    max_short = hyperdrivepy.get_max_short(
         POOL_CONFIG,
         POOL_INFO,
         budget,
@@ -244,7 +243,7 @@ def test_max_short_fail_conversion():
     # bad string inputs
     budget = "asdf"
     with pytest.raises(ValueError, match="Failed to convert budget string to U256"):
-        pyperdrive.get_max_short(
+        hyperdrivepy.get_max_short(
             POOL_CONFIG,
             POOL_INFO,
             budget,
@@ -255,7 +254,7 @@ def test_max_short_fail_conversion():
         )
     budget = "1.23"
     with pytest.raises(ValueError, match="Failed to convert budget string to U256"):
-        pyperdrive.get_max_short(
+        hyperdrivepy.get_max_short(
             POOL_CONFIG,
             POOL_INFO,
             budget,
@@ -267,7 +266,7 @@ def test_max_short_fail_conversion():
     budget = "10000000000000000000000"  # 10k base
     open_share_price = "asdf"
     with pytest.raises(ValueError, match="Failed to convert open_share_price string to U256"):
-        pyperdrive.get_max_short(
+        hyperdrivepy.get_max_short(
             POOL_CONFIG,
             POOL_INFO,
             budget,

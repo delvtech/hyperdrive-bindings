@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 # pylint: disable=no-name-in-module
-from . import pyperdrive as rust_module  # type: ignore
+from . import hyperdrivepy as rust_module  # type: ignore
 
 
 def get_time_stretch(rate: str) -> str:

@@ -12,7 +12,7 @@ jobs:
   detect-changes:
     uses: ./.github/workflows/check_diff.yml
     with:
-      pattern: ^crates/pyperdrive/
+      pattern: ^crates/hyperdrivepy
 
   build:
     needs: detect-changes
@@ -53,9 +53,9 @@ jobs:
           path: "./hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
-      - name: build pyperdrive
+      - name: build hyperdrivepy
         shell: bash
-        run: source scripts/build_pyperdrive.sh
+        run: source scripts/build_python.sh
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3

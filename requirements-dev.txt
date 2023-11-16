@@ -10,5 +10,4 @@ pytest
 setuptools
 setuptools-rust
 twine
-web3
 wheel
