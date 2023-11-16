@@ -299,7 +299,7 @@ def calculate_bonds_out_given_shares_in_down(
 ) -> str:
     """Calculates the amount of bonds a user will receive from the pool by
     providing a specified amount of shares. We underestimate the amount of
-    bonds.
+    bonds. This uses Yieldspace math, and thus ignores Hyperdrive fees.
 
     Arguments
     ---------
@@ -327,6 +327,7 @@ def calculate_shares_in_given_bonds_out_up(
 ) -> str:
     """Calculates the amount of shares a user must provide the pool to receive
     a specified amount of bonds. We overestimate the amount of shares in.
+    This uses Yieldspace math, and thus ignores Hyperdrive fees.
 
     Arguments
     ---------
@@ -354,6 +355,7 @@ def calculate_shares_in_given_bonds_out_down(
 ) -> str:
     """Calculates the amount of shares a user must provide the pool to receive
     a specified amount of bonds. We underestimate the amount of shares in.
+    This uses Yieldspace math, and thus ignores Hyperdrive fees.
 
     Arguments
     ---------
@@ -381,7 +383,7 @@ def calculate_shares_out_given_bonds_in_down(
 ) -> str:
     """Calculates the amount of shares a user will receive from the pool by
     providing a specified amount of bonds. We underestimate the amount of
-    shares out.
+    shares out. This uses Yieldspace math, and thus ignores Hyperdrive fees.
 
     Arguments
     ---------
