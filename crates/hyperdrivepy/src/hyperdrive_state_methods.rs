@@ -80,44 +80,54 @@ impl HyperdriveState {
             FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
                 PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
             })?);
-        let result_fp = 
-            self.state.get_short_deposit(short_amount_fp, spot_price_fp, open_share_price_fp).unwrap();
+        let result_fp = self
+            .state
+            .get_short_deposit(short_amount_fp, spot_price_fp, open_share_price_fp)
+            .unwrap();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
     pub fn calculate_bonds_out_given_shares_in_down(&self, amount_in: &str) -> PyResult<String> {
         let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
         })?);
-        let result_fp = self.state.calculate_bonds_out_given_shares_in_down(amount_in_fp);
+        let result_fp = self
+            .state
+            .calculate_bonds_out_given_shares_in_down(amount_in_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
     pub fn calculate_shares_in_given_bonds_out_up(&self, amount_in: &str) -> PyResult<String> {
         let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
         })?);
-        let result_fp = self.state.calculate_shares_in_given_bonds_out_up(amount_in_fp);
+        let result_fp = self
+            .state
+            .calculate_shares_in_given_bonds_out_up(amount_in_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
     pub fn calculate_shares_in_given_bonds_out_down(&self, amount_in: &str) -> PyResult<String> {
         let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
         })?);
-        let result_fp = self.state.calculate_shares_in_given_bonds_out_down(amount_in_fp);
+        let result_fp = self
+            .state
+            .calculate_shares_in_given_bonds_out_down(amount_in_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
     pub fn calculate_shares_out_given_bonds_in_down(&self, amount_in: &str) -> PyResult<String> {
         let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
         })?);
-        let result_fp = self.state.calculate_shares_out_given_bonds_in_down(amount_in_fp);
+        let result_fp = self
+            .state
+            .calculate_shares_out_given_bonds_in_down(amount_in_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -129,9 +139,11 @@ impl HyperdriveState {
     }
 
     pub fn calculate_max_sell(&self, minimum_share_reserves: &str) -> PyResult<String> {
-        let minimum_share_reserves_fp = 
+        let minimum_share_reserves_fp =
             FixedPoint::from(U256::from_dec_str(minimum_share_reserves).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
+                PyErr::new::<PyValueError, _>(
+                    "Failed to convert minimum_share_reserves string to U256",
+                )
             })?);
         let result_fp = self.state.calculate_max_sell(minimum_share_reserves_fp);
         let result = U256::from(result_fp).to_string();
