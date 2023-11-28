@@ -1,9 +1,9 @@
 import * as hyperdriveWasm from '@delvtech/hyperdrive-wasm';
 
 const ZERO_ADDRESS = '0x'.padEnd(42, '0');
-const MAX_U256 = '0x'.padEnd(66, 'F');
+// const MAX_U256 = '0x'.padEnd(66, 'F');
 
-const MAX_BUDGET = BigInt(MAX_U256).toString();
+// const MAX_BUDGET = BigInt(MAX_U256).toString();
 const mockPoolInfo = {
   shareReserves: '50000000000000000000000',
   bondReserves: '151005848028396475250000',
@@ -42,13 +42,12 @@ const mockPoolConfig = {
 async function main() {
   hyperdriveWasm.initSync(hyperdriveWasm.wasmBuffer);
 
-  const maxLong = hyperdriveWasm.getMaxLong(
+  const bondsReceived = hyperdriveWasm.calcOpenLong(
     mockPoolInfo,
     mockPoolConfig,
-    MAX_BUDGET,
-    '0'
+    10e18.toString(),
   );
-  console.log('maxLong:', maxLong);
+  console.log('bondsReceived:', bondsReceived);
 }
 
 main();

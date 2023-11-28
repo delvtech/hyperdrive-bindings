@@ -123,6 +123,25 @@ pub fn getMaxShort(
         .to_string()
 }
 
+/// Gets the long amount that will be opened for a given base amount.
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param baseAmount - The amount of base tokens to open a long for
+#[wasm_bindgen(skip_jsdoc)]
+pub fn calcOpenLong(poolInfo: &PoolInfo, poolConfig: &PoolConfig, baseAmount: String) -> String {
+    utils::set_panic_hook();
+    let _state = State::from(&WasmState {
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
+    });
+    let base_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
+
+    _state.calculate_open_long(base_amount).to_string()
+}
+
 /// Get the max amount of base tokens that can be spent on a long position
 /// given the current state of the pool.
 ///
