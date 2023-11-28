@@ -124,7 +124,8 @@ pub fn getMaxShort(
         .to_string()
 }
 
-/// Gets the long amount that will be opened for a given base amount.
+/// Gets the number of bonds received when opening a long for a given base
+/// amount.
 ///
 /// @param poolInfo - The current state of the pool
 ///
