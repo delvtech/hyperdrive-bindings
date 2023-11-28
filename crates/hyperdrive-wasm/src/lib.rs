@@ -140,7 +140,7 @@ pub fn calcOpenLong(poolInfo: &PoolInfo, poolConfig: &PoolConfig, baseAmount: St
     });
     let base_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
-    _state.calculate_open_long(base_amount).to_string()
+    _state.get_long_amount(base_amount).to_string()
 }
 
 /// Gets the amount of base the trader will need to deposit for a short of
@@ -163,7 +163,7 @@ pub fn calcOpenShort(poolInfo: &PoolInfo, poolConfig: &PoolConfig, shortAmount: 
     let spot_price = _state.get_spot_price();
 
     _state
-        .calculate_open_short(short_amount, spot_price, fixed!(0))
+        .get_short_deposit(short_amount, spot_price, fixed!(0))
         .unwrap()
         .to_string()
 }
