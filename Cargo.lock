@@ -1549,6 +1549,7 @@ dependencies = [
  "const-hex",
  "ethers",
  "fixed-point",
+ "fixed-point-macros",
  "getrandom",
  "hyperdrive-math",
  "hyperdrive-wrappers",
