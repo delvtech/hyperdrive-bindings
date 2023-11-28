@@ -42,12 +42,12 @@ const mockPoolConfig = {
 async function main() {
   hyperdriveWasm.initSync(hyperdriveWasm.wasmBuffer);
 
-  const bondsReceived = hyperdriveWasm.calcOpenLong(
+  const baseAmountRequired = hyperdriveWasm.calcOpenShort(
     mockPoolInfo,
     mockPoolConfig,
     10e18.toString(),
   );
-  console.log('bondsReceived:', bondsReceived);
+  console.log('baseAmountRequired:', baseAmountRequired);
 }
 
 main();

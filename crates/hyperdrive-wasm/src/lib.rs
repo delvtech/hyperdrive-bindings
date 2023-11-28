@@ -4,6 +4,7 @@ mod utils;
 
 use ethers::core::types::{Address, I256, U256};
 use fixed_point::FixedPoint;
+use fixed_point_macros::fixed;
 use hyperdrive_math::State;
 use hyperdrive_wrappers::wrappers::i_hyperdrive::{
     Fees as _Fees, PoolConfig as _PoolConfig, PoolInfo as _PoolInfo,
@@ -140,6 +141,31 @@ pub fn calcOpenLong(poolInfo: &PoolInfo, poolConfig: &PoolConfig, baseAmount: St
     let base_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
     _state.calculate_open_long(base_amount).to_string()
+}
+
+/// Gets the amount of base the trader will need to deposit for a short of
+/// a given number of bonds.
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param shortAmount - The amount of bonds to short
+#[wasm_bindgen(skip_jsdoc)]
+pub fn calcOpenShort(poolInfo: &PoolInfo, poolConfig: &PoolConfig, shortAmount: String) -> String {
+    utils::set_panic_hook();
+    let _state = State::from(&WasmState {
+        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
+        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
+    });
+    let short_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
+
+    let spot_price = _state.get_spot_price();
+
+    _state
+        .calculate_open_short(short_amount, spot_price, fixed!(0))
+        .unwrap()
+        .to_string()
 }
 
 /// Get the max amount of base tokens that can be spent on a long position

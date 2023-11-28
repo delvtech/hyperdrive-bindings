@@ -22,6 +22,7 @@ wasm-bindgen = { version = "0.2.86", features = ["serde-serialize"] }
 hex = { package = "const-hex", version = "1.6", features = ["hex"] }
 
 fixed-point = { version = "0.1.0", path = "../../hyperdrive/crates/fixed-point" }
+fixed-point-macros = { version = "0.1.0", path = "../../hyperdrive/crates/fixed-point-macros" }
 hyperdrive-math = { version = "0.1.0", path = "../../hyperdrive/crates/hyperdrive-math" }
 hyperdrive-wrappers = { version = "0.1.0", path = "../../hyperdrive/crates/hyperdrive-wrappers" }
 
