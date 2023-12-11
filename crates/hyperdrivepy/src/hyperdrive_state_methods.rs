@@ -37,7 +37,7 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn get_solvency(&self) -> PyResult<String> {
+    pub fn get_solvency(&self) -> PyResult<String> {    
         let result_fp = self.state.get_solvency();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
@@ -216,5 +216,41 @@ impl HyperdriveState {
         );
         let result = U256::from(result_fp).to_string();
         return Ok(result);
+    }
+
+    fn convert_to_fixed_point(decimal_string: &str) -> PyResult<FixedPoint> {
+        U256::from_dec_str(decimal_string)
+            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert decimal string to U256"))
+            .and_then(|u256_value| FixedPoint::from(u256_value).map_err(|_| PyErr::new::<PyValueError, _>("Conversion to FixedPoint failed")))
+    }
+
+    pub fn calculate_open_long(&self, base_amount: &str) -> PyResult<String> {
+        return Ok(U256::from(self.state.calculate_open_long(Self::convert_to_fixed_point(base_amount)?)).to_string());
+    }
+
+    pub fn calculate_close_long_flat_plus_curve(&self, bond_amount: &str, normalized_time_remaining: &str) -> PyResult<String> {
+        return Ok(U256::from(self.state.calculate_close_long_flat_plus_curve(
+            Self::convert_to_fixed_point(bond_amount)?,
+            Self::convert_to_fixed_point(normalized_time_remaining)?,
+        )).to_string());
+    }
+
+    fn calculate_short_proceeds(
+        &self,
+        bond_amount: &str,
+        share_amount: &str,
+        open_share_price: &str,
+        close_share_price: &str,
+        share_price: &str,
+        flat_fee: &str,
+    ) -> PyResult<String> {
+        return Ok(U256::from(self.state.calculate_short_proceeds(
+            Self::convert_to_fixed_point(bond_amount)?,
+            Self::convert_to_fixed_point(share_amount)?,
+            Self::convert_to_fixed_point(open_share_price)?,
+            Self::convert_to_fixed_point(close_share_price)?,
+            Self::convert_to_fixed_point(share_price)?,
+            Self::convert_to_fixed_point(flat_fee)?,
+        )).to_string());
     }
 }
