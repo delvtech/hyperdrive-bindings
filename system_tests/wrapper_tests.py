@@ -10,7 +10,6 @@ POOL_CONFIG = PoolConfig(
     initialSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18
-    precisionThreshold=1 * 10**14,
     positionDuration=604_800,
     checkpointDuration=86_400,
     timeStretch=1 * 10**17,  # 0.1e18
@@ -23,6 +22,7 @@ POOL_CONFIG = PoolConfig(
 POOL_INFO = PoolInfo(
     shareReserves=1_000_000 * 10**18,
     shareAdjustment=0,
+    zombieShareReserves=0,
     bondReserves=2_000_000 * 10**18,
     lpTotalSupply=3_000_000 * 10**18,
     sharePrice=1 * 10**18,
@@ -161,7 +161,7 @@ def test_calculate_open_long():
 def test_calculate_close_long():
     """Test for calculate_close_long."""
     bond_amount = str(500 * 10**18)
-    normalized_time_remaining = str(0.9)
+    normalized_time_remaining = str(9 * 10**17)
     shares_returned = hyperdrivepy.calculate_close_long(POOL_CONFIG, POOL_INFO, bond_amount, normalized_time_remaining)
     assert int(shares_returned) > 0
 
@@ -187,9 +187,9 @@ def test_calculate_open_short():
 def test_calculate_close_short():
     """Test for calculate_close_short."""
     short_amount = str(50 * 10**18)
-    open_share_price = str(9 * 10**17)
-    close_share_price = str(11 * 10**17)
-    normalized_time_remaining = str(0.9)
+    open_share_price = str(8 * 10**17)
+    close_share_price = str(9 * 10**17)
+    normalized_time_remaining = str(9 * 10**17)
     shares_received = hyperdrivepy.calculate_close_short(
         POOL_CONFIG, POOL_INFO, short_amount, open_share_price, close_share_price, normalized_time_remaining
     )

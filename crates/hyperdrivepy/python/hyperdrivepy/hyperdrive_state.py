@@ -159,7 +159,7 @@ def calculate_close_long(
     bond_amount: str,
     normalized_time_remaining: str,
 ) -> str:
-    """Gets the amount of shares that will be returned after fees for closing a long.
+    """Calculates the amount of shares that will be returned after fees for closing a long.
 
     Arguments
     ---------
