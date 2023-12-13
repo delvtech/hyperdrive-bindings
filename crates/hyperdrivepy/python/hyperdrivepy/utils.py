@@ -23,7 +23,6 @@ def _serialize_pool_config(
         initialSharePrice=str(pool_config.initialSharePrice),
         minimumShareReserves=str(pool_config.minimumShareReserves),
         minimumTransactionAmount=str(pool_config.minimumTransactionAmount),
-        precisionThreshold=str(pool_config.precisionThreshold),
         positionDuration=str(pool_config.positionDuration),
         checkpointDuration=str(pool_config.checkpointDuration),
         timeStretch=str(pool_config.timeStretch),
@@ -41,6 +40,7 @@ def _serialize_pool_info(pool_info: types.PoolInfoType) -> types.PoolInfo:
     return types.PoolInfo(
         shareReserves=str(pool_info.shareReserves),
         shareAdjustment=str(pool_info.shareAdjustment),
+        zombieShareReserves=str(pool_info.zombieShareReserves),
         bondReserves=str(pool_info.bondReserves),
         lpTotalSupply=str(pool_info.lpTotalSupply),
         sharePrice=str(pool_info.sharePrice),

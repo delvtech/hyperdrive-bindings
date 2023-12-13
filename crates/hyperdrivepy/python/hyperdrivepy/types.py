@@ -28,7 +28,6 @@ class PoolConfig:
     initialSharePrice: str
     minimumShareReserves: str
     minimumTransactionAmount: str
-    precisionThreshold: str
     positionDuration: str
     checkpointDuration: str
     timeStretch: str
@@ -43,6 +42,7 @@ class PoolInfo:
 
     shareReserves: str
     shareAdjustment: str
+    zombieShareReserves: str
     bondReserves: str
     lpTotalSupply: str
     sharePrice: str
@@ -96,7 +96,6 @@ class PoolConfigType(Protocol):
     initialSharePrice: int
     minimumShareReserves: int
     minimumTransactionAmount: int
-    precisionThreshold: int
     positionDuration: int
     checkpointDuration: int
     timeStretch: int
@@ -111,6 +110,7 @@ class PoolInfoType(Protocol):
 
     shareReserves: int
     shareAdjustment: int
+    zombieShareReserves: int
     lpTotalSupply: int
     sharePrice: int
     longsOutstanding: int

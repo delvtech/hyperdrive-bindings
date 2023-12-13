@@ -127,7 +127,7 @@ def get_spot_price(
     return _get_interface(pool_config, pool_info).get_spot_price()
 
 
-def get_long_amount(
+def calculate_open_long(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     base_amount: str,
@@ -150,10 +150,10 @@ def get_long_amount(
     long_amount : str (FixedPoint)
         The amount of bonds purchased.
     """
-    return _get_interface(pool_config, pool_info).get_long_amount(base_amount)
+    return _get_interface(pool_config, pool_info).calculate_open_long(base_amount)
 
 
-def get_short_deposit(
+def calculate_open_short(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     short_amount: str,
@@ -187,7 +187,7 @@ def get_short_deposit(
         # the underlying rust code uses current market share price if this is 0
         # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
         open_share_price = "0"
-    return _get_interface(pool_config, pool_info).get_short_deposit(short_amount, spot_price, open_share_price)
+    return _get_interface(pool_config, pool_info).calculate_open_short(short_amount, spot_price, open_share_price)
 
 
 def to_checkpoint(

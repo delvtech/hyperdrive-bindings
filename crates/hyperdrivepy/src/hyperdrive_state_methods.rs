@@ -43,11 +43,11 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn get_long_amount(&self, base_amount: &str) -> PyResult<String> {
+    pub fn calculate_open_long(&self, base_amount: &str) -> PyResult<String> {
         let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
         })?);
-        let result_fp = self.state.get_long_amount(base_amount_fp);
+        let result_fp = self.state.calculate_open_long(base_amount_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -64,7 +64,7 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn get_short_deposit(
+    pub fn calculate_open_short(
         &self,
         short_amount: &str,
         spot_price: &str,
@@ -82,7 +82,7 @@ impl HyperdriveState {
             })?);
         let result_fp = self
             .state
-            .get_short_deposit(short_amount_fp, spot_price_fp, open_share_price_fp)
+            .calculate_open_short(short_amount_fp, spot_price_fp, open_share_price_fp)
             .unwrap();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
