@@ -153,6 +153,35 @@ def calculate_open_long(
     return _get_interface(pool_config, pool_info).calculate_open_long(base_amount)
 
 
+def calculate_close_long(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    bond_amount: str,
+    normalized_time_remaining: str,
+) -> str:
+    """Gets the amount of shares that will be returned after fees for closing a long.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    bond_amount: str (FixedPoint)
+        The amount of bonds to sell.
+    normalized_time_remaining: str (FixedPoint)
+        The time remaining before the long reaches maturity, normalized such that 0 is at opening and 1 is at maturity.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The amount of shares returned.
+    """
+    return _get_interface(pool_config, pool_info).calculate_close_long(bond_amount, normalized_time_remaining)
+
+
 def calculate_open_short(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,

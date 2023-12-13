@@ -158,6 +158,14 @@ def test_calculate_open_long():
     assert int(long_amount) > 0
 
 
+def test_calculate_close_long():
+    """Test for calculate_close_long."""
+    bond_amount = str(500 * 10**18)
+    normalized_time_remaining = str(0.9)
+    shares_returned = hyperdrivepy.calculate_close_long(POOL_CONFIG, POOL_INFO, bond_amount, normalized_time_remaining)
+    assert int(shares_returned) > 0
+
+
 def test_calculate_open_short():
     """Test for calculate_open_short."""
     short_amount = str(50 * 10**18)

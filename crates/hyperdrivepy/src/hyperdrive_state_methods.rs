@@ -64,6 +64,27 @@ impl HyperdriveState {
         return Ok(result);
     }
 
+    pub fn calculate_close_long(
+        &self,
+        bond_amount: &str,
+        normalized_time_remaining: &str,
+    ) -> PyResult<String> {
+        let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
+        })?);
+        let normalized_time_remaining_fp =
+            FixedPoint::from(U256::from_dec_str(normalized_time_remaining).map_err(|_| {
+                PyErr::new::<PyValueError, _>(
+                    "Failed to convert normalized_time_remaining string to U256",
+                )
+            })?);
+        let result_fp = self
+            .state
+            .calculate_close_long(bond_amount_fp, normalized_time_remaining_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
     pub fn calculate_open_short(
         &self,
         short_amount: &str,
