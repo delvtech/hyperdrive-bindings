@@ -164,27 +164,41 @@ def test_calculate_max_sell():
     assert int(out) > 0
 
 
-def test_get_long_amount():
-    """Test for get_long_amount."""
+def test_calculate_open_long():
+    """Test for calculate_open_long."""
     base_amount = str(500 * 10**18)
-    long_amount = hyperdrivepy.get_long_amount(POOL_CONFIG, POOL_INFO, base_amount)
+    long_amount = hyperdrivepy.calculate_open_long(POOL_CONFIG, POOL_INFO, base_amount)
     assert int(long_amount) > 0
 
 
-def test_get_short_deposit():
-    """Test for get_long_amount."""
+def test_calculate_open_short():
+    """Test for calculate_open_short."""
     short_amount = str(50 * 10**18)
     spot_price = hyperdrivepy.get_spot_price(POOL_CONFIG, POOL_INFO)
     open_share_price = str(9 * 10**17)
-    base_required = hyperdrivepy.get_short_deposit(POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price)
+    base_required = hyperdrivepy.calculate_open_short(
+        POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price
+    )
     assert int(base_required) > 0
-    base_required_default_share_price = hyperdrivepy.get_short_deposit(
+    base_required_default_share_price = hyperdrivepy.calculate_open_short(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, None
     )
     assert int(base_required_default_share_price) > 0
-    assert base_required_default_share_price == hyperdrivepy.get_short_deposit(
+    assert base_required_default_share_price == hyperdrivepy.calculate_open_short(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, "0"
     )
+
+
+def test_calculate_close_short():
+    """Test for calculate_close_short."""
+    short_amount = str(50 * 10**18)
+    open_share_price = str(9 * 10**17)
+    close_share_price = str(11 * 10**17)
+    normalized_time_remaining = str(0.9)
+    shares_received = hyperdrivepy.calculate_close_short(
+        POOL_CONFIG, POOL_INFO, short_amount, open_share_price, close_share_price, normalized_time_remaining
+    )
+    assert int(shares_received) > 0
 
 
 def test_max_long():

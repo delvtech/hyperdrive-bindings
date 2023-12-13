@@ -16,12 +16,12 @@ def get_max_spot_price(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
+        Includes attributes like reserve levels and share prices.
 
     Returns
     -------
@@ -41,13 +41,13 @@ def get_spot_price_after_long(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    long_amount : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    long_amount: str (FixedPoint)
         The long amount.
 
     Returns
@@ -66,12 +66,12 @@ def get_solvency(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
+        Includes attributes like reserve levels and share prices.
 
     Returns
     -------
@@ -89,12 +89,12 @@ def get_spot_rate(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
+        Includes attributes like reserve levels and share prices.
 
     Returns
     -------
@@ -112,12 +112,12 @@ def get_spot_price(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
+        Includes attributes like reserve levels and share prices.
 
     Returns
     -------
@@ -136,18 +136,18 @@ def calculate_open_long(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    base_amount : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    base_amount: str (FixedPoint)
         The amount to spend, in base.
 
     Returns
     -------
-    long_amount : str (FixedPoint)
+    str (FixedPoint)
         The amount of bonds purchased.
     """
     return _get_interface(pool_config, pool_info).calculate_open_long(base_amount)
@@ -164,23 +164,23 @@ def calculate_open_short(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    short_amount : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    short_amount: str (FixedPoint)
         The amount to of bonds to short.
-    spot_price : str (FixedPoint)
+    spot_price: str (FixedPoint)
         The pool's current price for bonds.
-    open_share_price : str (FixedPoint), optional
+    open_share_price: str (FixedPoint) | None, optional
         Optionally provide the open share price for the short.
         If this is not provided or is None, then we will use the pool's current share price.
 
     Returns
     -------
-    short_amount : str (FixedPoint)
+    str (FixedPoint)
         The amount of base required to short the bonds (aka the "max loss").
     """
     if open_share_price is None:
@@ -188,6 +188,43 @@ def calculate_open_short(
         # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
         open_share_price = "0"
     return _get_interface(pool_config, pool_info).calculate_open_short(short_amount, spot_price, open_share_price)
+
+
+def calculate_close_short(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    bond_amount: str,
+    open_share_price: str,
+    close_share_price: str,
+    normalized_time_remaining: str,
+) -> str:
+    """Gets the amount of shares the trader will receive from closing a short.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    bond_amount: str (FixedPoint)
+        The amount to of bonds provided.
+    open_share_price: str (FixedPoint)
+        The share price when the short was opened.
+    close_share_price: str (FixedPoint)
+        The share price when the short was closed.
+    normalized_time_remaining: str (FixedPoint)
+        The time remaining before the short reaches maturity, normalized such that 0 is at opening and 1 is at maturity.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The amount of shares the trader will receive for closing the short.
+    """
+    return _get_interface(pool_config, pool_info).calculate_close_short(
+        bond_amount, open_share_price, close_share_price, normalized_time_remaining
+    )
 
 
 def to_checkpoint(
@@ -199,13 +236,13 @@ def to_checkpoint(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    time : str (U256)
+        Includes attributes like reserve levels and share prices.
+    time: str (U256)
         A string representation of any timestamp (in seconds) before or at the present.
 
     Returns
@@ -227,17 +264,17 @@ def get_max_long(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    budget : str (FixedPont)
+        Includes attributes like reserve levels and share prices.
+    budget: str (FixedPont)
         The account budget in base for making a long.
-    checkpoint_exposure : str (I256)
+    checkpoint_exposure: str (I256)
         The net exposure for the given checkpoint.
-    maybe_max_iterations : int, optional
+    maybe_max_iterations: int, optional
         The number of iterations to use for the Newtonian method.
 
     Returns
@@ -261,21 +298,21 @@ def get_max_short(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    budget : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    budget: str (FixedPoint)
         The account budget in base for making a short.
-    open_share_price : str (FixedPoint)
+    open_share_price: str (FixedPoint)
         The share price of underlying vault.
-    checkpoint_exposure : str (FixedPoint)
+    checkpoint_exposure: str (FixedPoint)
         The net exposure for the given checkpoint.
-    maybe_conservative_price : str (FixedPoint), optional
+    maybe_conservative_price: str (FixedPoint), optional
         A lower bound on the realized price that the short will pay.
-    maybe_max_iterations : int, optional
+    maybe_max_iterations: int, optional
         The number of iterations to use for the Newtonian method.
 
     Returns
@@ -303,13 +340,13 @@ def calculate_bonds_out_given_shares_in_down(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    amount_in : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    amount_in: str (FixedPoint)
         The amount of shares going into the pool.
 
     Returns
@@ -331,13 +368,13 @@ def calculate_shares_in_given_bonds_out_up(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    amount_in : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    amount_in: str (FixedPoint)
         The amount of bonds to target.
 
     Returns
@@ -359,13 +396,13 @@ def calculate_shares_in_given_bonds_out_down(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    amount_in : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    amount_in: str (FixedPoint)
         The amount of bonds to target.
 
     Returns
@@ -387,13 +424,13 @@ def calculate_shares_out_given_bonds_in_down(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
-    amount_in : str (FixedPoint)
+        Includes attributes like reserve levels and share prices.
+    amount_in: str (FixedPoint)
         The amount of bonds in.
 
     Returns
@@ -415,12 +452,12 @@ def calculate_max_buy(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
+        Includes attributes like reserve levels and share prices.
 
     Returns
     -------
@@ -441,12 +478,12 @@ def calculate_max_sell(
 
     Arguments
     ---------
-    pool_config : PoolConfig
+    pool_config: PoolConfig
         Static configuration for the hyperdrive contract.
         Set at deploy time.
-    pool_info : PoolInfo
+    pool_info: PoolInfo
         Current state information of the hyperdrive contract.
-        Includes things like reserve levels and share prices.
+        Includes attributes like reserve levels and share prices.
     minimum_share_reserves: str (FixedPoint)
         The minimum share reserves to target
 
