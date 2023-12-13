@@ -151,19 +151,6 @@ def test_calculate_shares_out_given_bonds_in_down():
     assert int(out) > 0
 
 
-def test_calculate_max_buy():
-    """Test calculate_max_buy."""
-    out = hyperdrivepy.calculate_max_buy(POOL_CONFIG, POOL_INFO)
-    assert int(out) > 0
-
-
-def test_calculate_max_sell():
-    """Test calculate_max_buy."""
-    minimum_share_reserves = str(10 * 10**18)
-    out = hyperdrivepy.calculate_max_sell(POOL_CONFIG, POOL_INFO, minimum_share_reserves)
-    assert int(out) > 0
-
-
 def test_calculate_open_long():
     """Test for calculate_open_long."""
     base_amount = str(500 * 10**18)

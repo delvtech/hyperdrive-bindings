@@ -166,24 +166,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn calculate_max_buy(&self) -> PyResult<String> {
-        let result_fp = self.state.calculate_max_buy();
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn calculate_max_sell(&self, minimum_share_reserves: &str) -> PyResult<String> {
-        let minimum_share_reserves_fp =
-            FixedPoint::from(U256::from_dec_str(minimum_share_reserves).map_err(|_| {
-                PyErr::new::<PyValueError, _>(
-                    "Failed to convert minimum_share_reserves string to U256",
-                )
-            })?);
-        let result_fp = self.state.calculate_max_sell(minimum_share_reserves_fp);
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
     pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
         let time_int = U256::from_dec_str(time)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
