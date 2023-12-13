@@ -284,3 +284,10 @@ def test_max_short_fail_conversion():
             conservative_price,
             max_iterations,
         )
+
+
+def test_calculate_present_value():
+    """Test calculate_present_value."""
+    current_block_timestamp = str(1000)
+    present_value = hyperdrivepy.calculate_present_value(POOL_CONFIG, POOL_INFO, current_block_timestamp)
+    assert int(present_value) > 0

@@ -468,3 +468,29 @@ def calculate_shares_out_given_bonds_in_down(
         The amount of shares out.
     """
     return _get_interface(pool_config, pool_info).calculate_shares_out_given_bonds_in_down(amount_in)
+
+
+def calculate_present_value(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    current_block_timestamp: str,
+) -> str:
+    """Calculates the present value of LPs capital in the pool.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    current_block_timestamp: str (U256)
+        The current block timestamp, as an epoch time integer.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The present value of all LP capital in the pool.
+    """
+    return _get_interface(pool_config, pool_info).calculate_present_value(current_block_timestamp)
