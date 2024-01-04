@@ -18,7 +18,8 @@ const FEES: &'static str = r#"
 interface Fees {
     curve: string;
     flat: string;
-    governance: string;
+    governanceLP: string;
+    governanceZombie: string;
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -36,7 +37,6 @@ interface PoolConfig {
     fees: Fees,
     linkerFactory: string,
     linkerCodeHash: string,
-    precisionThreshold: string,
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -55,6 +55,7 @@ interface PoolInfo {
     withdrawalSharesProceeds: string,
     lpSharePrice: string,
     longExposure: string,
+    zombieShareReserves: string,
 }
 "#;
 
@@ -297,7 +298,8 @@ pub fn getShortDeposit(
 pub struct WasmFees {
     pub curve: String,
     pub flat: String,
-    pub governance: String,
+    pub governanceLP: String,
+    pub governanceZombie: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -314,7 +316,6 @@ pub struct WasmPoolConfig {
     pub fees: WasmFees,
     pub linkerFactory: String,
     pub linkerCodeHash: String,
-    pub precisionThreshold: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -332,6 +333,7 @@ pub struct WasmPoolInfo {
     pub withdrawalSharesProceeds: String,
     pub lpSharePrice: String,
     pub longExposure: String,
+    pub zombieShareReserves: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -350,7 +352,10 @@ impl From<&WasmState> for State {
                 fees: _Fees {
                     curve: U256::from_dec_str(&wasm_state.config.fees.curve).unwrap(),
                     flat: U256::from_dec_str(&wasm_state.config.fees.flat).unwrap(),
-                    governance: U256::from_dec_str(&wasm_state.config.fees.governance).unwrap(),
+                    governance_lp: U256::from_dec_str(&wasm_state.config.fees.governanceLP)
+                        .unwrap(),
+                    governance_zombie: U256::from_dec_str(&wasm_state.config.fees.governanceZombie)
+                        .unwrap(),
                 },
                 initial_share_price: U256::from_dec_str(&wasm_state.config.initialSharePrice)
                     .unwrap(),
@@ -368,8 +373,6 @@ impl From<&WasmState> for State {
                 linker_code_hash: hex::decode(&wasm_state.config.linkerCodeHash)
                     .unwrap()
                     .try_into()
-                    .unwrap(),
-                precision_threshold: U256::from_dec_str(&wasm_state.config.precisionThreshold)
                     .unwrap(),
             },
             info: _PoolInfo {
@@ -398,6 +401,8 @@ impl From<&WasmState> for State {
                     &wasm_state.info.withdrawalSharesReadyToWithdraw,
                 )
                 .unwrap(),
+                zombie_share_reserves: U256::from_dec_str(&wasm_state.info.zombieShareReserves)
+                    .unwrap(),
             },
         }
     }
