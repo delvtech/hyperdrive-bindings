@@ -15,7 +15,8 @@ class Fees:
 
     curve: str
     flat: str
-    governance: str
+    governanceLP: str
+    governanceZombie: str
 
 
 @dataclass

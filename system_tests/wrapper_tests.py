@@ -15,7 +15,7 @@ POOL_CONFIG = PoolConfig(
     timeStretch=1 * 10**17,  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     feeCollector="0xfedcba0987654321fedcba0987654321fedcba09",
-    fees=Fees(curve=0, flat=0, governance=0),
+    fees=Fees(curve=0, flat=0, governanceLP=0, governanceZombie=0),
 )
 
 

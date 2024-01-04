@@ -39,8 +39,8 @@ pub fn extract_fees_from_attr(ob: &PyAny, attr: &str) -> PyResult<Fees> {
 
     let curve = extract_u256_from_attr(&fees_obj, "curve")?;
     let flat = extract_u256_from_attr(&fees_obj, "flat")?;
-    let governance_lp = extract_u256_from_attr(&fees_obj, "governance_lp")?;
-    let governance_zombie = extract_u256_from_attr(&fees_obj, "governance_zombie")?;
+    let governance_lp = extract_u256_from_attr(&fees_obj, "governanceLP")?;
+    let governance_zombie = extract_u256_from_attr(&fees_obj, "governanceZombie")?;
 
     Ok(Fees {
         curve,
