@@ -84,7 +84,8 @@ class FeesType(Protocol):
 
     curve: int
     flat: int
-    governance: int
+    governanceLP: int
+    governanceZombie: int
 
 
 class PoolConfigType(Protocol):

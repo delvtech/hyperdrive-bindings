@@ -31,7 +31,8 @@ def _serialize_pool_config(
         fees=types.Fees(
             curve=str(pool_config.fees.curve),
             flat=str(pool_config.fees.flat),
-            governance=str(pool_config.fees.governance),
+            governanceLP=str(pool_config.fees.governanceLP),
+            governanceZombie=str(pool_config.fees.governanceZombie),
         ),
     )
 
