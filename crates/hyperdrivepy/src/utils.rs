@@ -1,4 +1,4 @@
-use ethers::core::types::{Address, I256, U256, H256};
+use ethers::core::types::{Address, H256, I256, U256};
 use hyperdrive_wrappers::wrappers::i_hyperdrive::Fees;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
@@ -39,11 +39,13 @@ pub fn extract_fees_from_attr(ob: &PyAny, attr: &str) -> PyResult<Fees> {
 
     let curve = extract_u256_from_attr(&fees_obj, "curve")?;
     let flat = extract_u256_from_attr(&fees_obj, "flat")?;
-    let governance = extract_u256_from_attr(&fees_obj, "governance")?;
+    let governance_lp = extract_u256_from_attr(&fees_obj, "governance_lp")?;
+    let governance_zombie = extract_u256_from_attr(&fees_obj, "governance_zombie")?;
 
     Ok(Fees {
         curve,
         flat,
-        governance,
+        governance_lp,
+        governance_zombie,
     })
 }

@@ -1,7 +1,7 @@
 """Tests for hyperdrive_math.rs wrappers"""
 import hyperdrivepy
 import pytest
-from hyperdrivepy.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolInfo
+from hyperdrivepy.pypechain_types.IERC4626HyperdriveTypes import Fees, PoolConfig, PoolInfo
 
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
