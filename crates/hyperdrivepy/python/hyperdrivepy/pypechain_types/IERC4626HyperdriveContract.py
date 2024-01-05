@@ -112,7 +112,13 @@ class IERC4626HyperdrivePERMIT_TYPEHASHContractFunction(ContractFunction):
 class IERC4626HyperdriveAddLiquidityContractFunction(ContractFunction):
     """ContractFunction for the addLiquidity method."""
 
-    def __call__(self, contribution: int, minApr: int, maxApr: int, options: Options) -> IERC4626HyperdriveAddLiquidityContractFunction:  # type: ignore
+    def __call__(
+        self,
+        contribution: int,
+        minApr: int,
+        maxApr: int,
+        options: Options,
+    ) -> IERC4626HyperdriveAddLiquidityContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(contribution),
             dataclass_to_tuple(minApr),
@@ -198,9 +204,18 @@ class IERC4626HyperdriveBaseTokenContractFunction(ContractFunction):
 class IERC4626HyperdriveBatchTransferFromContractFunction(ContractFunction):
     """ContractFunction for the batchTransferFrom method."""
 
-    def __call__(self, _from: str, to: str, ids: list[int], values: list[int]) -> IERC4626HyperdriveBatchTransferFromContractFunction:  # type: ignore
+    def __call__(
+        self,
+        _from: str,
+        to: str,
+        ids: list[int],
+        values: list[int],
+    ) -> IERC4626HyperdriveBatchTransferFromContractFunction:  # type: ignore
         clone = super().__call__(
-            dataclass_to_tuple(_from), dataclass_to_tuple(to), dataclass_to_tuple(ids), dataclass_to_tuple(values)
+            dataclass_to_tuple(_from),
+            dataclass_to_tuple(to),
+            dataclass_to_tuple(ids),
+            dataclass_to_tuple(values),
         )
         self.kwargs = clone.kwargs
         self.args = clone.args
@@ -244,7 +259,13 @@ class IERC4626HyperdriveCheckpointContractFunction(ContractFunction):
 class IERC4626HyperdriveCloseLongContractFunction(ContractFunction):
     """ContractFunction for the closeLong method."""
 
-    def __call__(self, maturityTime: int, bondAmount: int, minOutput: int, options: Options) -> IERC4626HyperdriveCloseLongContractFunction:  # type: ignore
+    def __call__(
+        self,
+        maturityTime: int,
+        bondAmount: int,
+        minOutput: int,
+        options: Options,
+    ) -> IERC4626HyperdriveCloseLongContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(maturityTime),
             dataclass_to_tuple(bondAmount),
@@ -276,7 +297,13 @@ class IERC4626HyperdriveCloseLongContractFunction(ContractFunction):
 class IERC4626HyperdriveCloseShortContractFunction(ContractFunction):
     """ContractFunction for the closeShort method."""
 
-    def __call__(self, maturityTime: int, bondAmount: int, minOutput: int, options: Options) -> IERC4626HyperdriveCloseShortContractFunction:  # type: ignore
+    def __call__(
+        self,
+        maturityTime: int,
+        bondAmount: int,
+        minOutput: int,
+        options: Options,
+    ) -> IERC4626HyperdriveCloseShortContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(maturityTime),
             dataclass_to_tuple(bondAmount),
@@ -410,7 +437,10 @@ class IERC4626HyperdriveGetMarketStateContractFunction(ContractFunction):
         # Call the function
 
         raw_values = super().call(transaction, block_identifier, state_override, ccip_read_enabled)
-        return cast(MarketState, rename_returned_types(structs, return_types, raw_values))
+        return cast(
+            MarketState,
+            rename_returned_types(structs, return_types, raw_values),
+        )
 
 
 class IERC4626HyperdriveGetPoolConfigContractFunction(ContractFunction):
@@ -518,14 +548,26 @@ class IERC4626HyperdriveGetWithdrawPoolContractFunction(ContractFunction):
         # Call the function
 
         raw_values = super().call(transaction, block_identifier, state_override, ccip_read_enabled)
-        return cast(WithdrawPool, rename_returned_types(structs, return_types, raw_values))
+        return cast(
+            WithdrawPool,
+            rename_returned_types(structs, return_types, raw_values),
+        )
 
 
 class IERC4626HyperdriveInitializeContractFunction(ContractFunction):
     """ContractFunction for the initialize method."""
 
-    def __call__(self, contribution: int, apr: int, options: Options) -> IERC4626HyperdriveInitializeContractFunction:  # type: ignore
-        clone = super().__call__(dataclass_to_tuple(contribution), dataclass_to_tuple(apr), dataclass_to_tuple(options))
+    def __call__(
+        self,
+        contribution: int,
+        apr: int,
+        options: Options,
+    ) -> IERC4626HyperdriveInitializeContractFunction:  # type: ignore
+        clone = super().__call__(
+            dataclass_to_tuple(contribution),
+            dataclass_to_tuple(apr),
+            dataclass_to_tuple(options),
+        )
         self.kwargs = clone.kwargs
         self.args = clone.args
         return self
@@ -626,7 +668,10 @@ class IERC4626HyperdriveLoadContractFunction(ContractFunction):
         # Call the function
 
         raw_values = super().call(transaction, block_identifier, state_override, ccip_read_enabled)
-        return cast(list[bytes], rename_returned_types(structs, return_types, raw_values))
+        return cast(
+            list[bytes],
+            rename_returned_types(structs, return_types, raw_values),
+        )
 
 
 class IERC4626HyperdriveNameContractFunction(ContractFunction):
@@ -692,7 +737,13 @@ class IERC4626HyperdriveOpenLongContractFunction(ContractFunction):
         maturityTime: int
         bondProceeds: int
 
-    def __call__(self, baseAmount: int, minOutput: int, minSharePrice: int, options: Options) -> IERC4626HyperdriveOpenLongContractFunction:  # type: ignore
+    def __call__(
+        self,
+        baseAmount: int,
+        minOutput: int,
+        minSharePrice: int,
+        options: Options,
+    ) -> IERC4626HyperdriveOpenLongContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(baseAmount),
             dataclass_to_tuple(minOutput),
@@ -730,7 +781,13 @@ class IERC4626HyperdriveOpenShortContractFunction(ContractFunction):
         maturityTime: int
         traderDeposit: int
 
-    def __call__(self, bondAmount: int, maxDeposit: int, minSharePrice: int, options: Options) -> IERC4626HyperdriveOpenShortContractFunction:  # type: ignore
+    def __call__(
+        self,
+        bondAmount: int,
+        maxDeposit: int,
+        minSharePrice: int,
+        options: Options,
+    ) -> IERC4626HyperdriveOpenShortContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(bondAmount),
             dataclass_to_tuple(maxDeposit),
@@ -784,8 +841,17 @@ class IERC4626HyperdrivePauseContractFunction(ContractFunction):
 class IERC4626HyperdrivePerTokenApprovalsContractFunction(ContractFunction):
     """ContractFunction for the perTokenApprovals method."""
 
-    def __call__(self, tokenId: int, owner: str, spender: str) -> IERC4626HyperdrivePerTokenApprovalsContractFunction:  # type: ignore
-        clone = super().__call__(dataclass_to_tuple(tokenId), dataclass_to_tuple(owner), dataclass_to_tuple(spender))
+    def __call__(
+        self,
+        tokenId: int,
+        owner: str,
+        spender: str,
+    ) -> IERC4626HyperdrivePerTokenApprovalsContractFunction:  # type: ignore
+        clone = super().__call__(
+            dataclass_to_tuple(tokenId),
+            dataclass_to_tuple(owner),
+            dataclass_to_tuple(spender),
+        )
         self.kwargs = clone.kwargs
         self.args = clone.args
         return self
@@ -811,7 +877,16 @@ class IERC4626HyperdrivePerTokenApprovalsContractFunction(ContractFunction):
 class IERC4626HyperdrivePermitForAllContractFunction(ContractFunction):
     """ContractFunction for the permitForAll method."""
 
-    def __call__(self, owner: str, spender: str, approved: bool, deadline: int, v: int, r: bytes, s: bytes) -> IERC4626HyperdrivePermitForAllContractFunction:  # type: ignore
+    def __call__(
+        self,
+        owner: str,
+        spender: str,
+        approved: bool,
+        deadline: int,
+        v: int,
+        r: bytes,
+        s: bytes,
+    ) -> IERC4626HyperdrivePermitForAllContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(owner),
             dataclass_to_tuple(spender),
@@ -874,8 +949,17 @@ class IERC4626HyperdriveRedeemWithdrawalSharesContractFunction(ContractFunction)
         proceeds: int
         sharesRedeemed: int
 
-    def __call__(self, shares: int, minOutput: int, options: Options) -> IERC4626HyperdriveRedeemWithdrawalSharesContractFunction:  # type: ignore
-        clone = super().__call__(dataclass_to_tuple(shares), dataclass_to_tuple(minOutput), dataclass_to_tuple(options))
+    def __call__(
+        self,
+        shares: int,
+        minOutput: int,
+        options: Options,
+    ) -> IERC4626HyperdriveRedeemWithdrawalSharesContractFunction:  # type: ignore
+        clone = super().__call__(
+            dataclass_to_tuple(shares),
+            dataclass_to_tuple(minOutput),
+            dataclass_to_tuple(options),
+        )
         self.kwargs = clone.kwargs
         self.args = clone.args
         return self
@@ -907,8 +991,17 @@ class IERC4626HyperdriveRemoveLiquidityContractFunction(ContractFunction):
         baseProceeds: int
         withdrawalShares: int
 
-    def __call__(self, shares: int, minOutput: int, options: Options) -> IERC4626HyperdriveRemoveLiquidityContractFunction:  # type: ignore
-        clone = super().__call__(dataclass_to_tuple(shares), dataclass_to_tuple(minOutput), dataclass_to_tuple(options))
+    def __call__(
+        self,
+        shares: int,
+        minOutput: int,
+        options: Options,
+    ) -> IERC4626HyperdriveRemoveLiquidityContractFunction:  # type: ignore
+        clone = super().__call__(
+            dataclass_to_tuple(shares),
+            dataclass_to_tuple(minOutput),
+            dataclass_to_tuple(options),
+        )
         self.kwargs = clone.kwargs
         self.args = clone.args
         return self
@@ -934,8 +1027,17 @@ class IERC4626HyperdriveRemoveLiquidityContractFunction(ContractFunction):
 class IERC4626HyperdriveSetApprovalContractFunction(ContractFunction):
     """ContractFunction for the setApproval method."""
 
-    def __call__(self, tokenID: int, operator: str, amount: int) -> IERC4626HyperdriveSetApprovalContractFunction:  # type: ignore
-        clone = super().__call__(dataclass_to_tuple(tokenID), dataclass_to_tuple(operator), dataclass_to_tuple(amount))
+    def __call__(
+        self,
+        tokenID: int,
+        operator: str,
+        amount: int,
+    ) -> IERC4626HyperdriveSetApprovalContractFunction:  # type: ignore
+        clone = super().__call__(
+            dataclass_to_tuple(tokenID),
+            dataclass_to_tuple(operator),
+            dataclass_to_tuple(amount),
+        )
         self.kwargs = clone.kwargs
         self.args = clone.args
         return self
@@ -956,7 +1058,13 @@ class IERC4626HyperdriveSetApprovalContractFunction(ContractFunction):
 class IERC4626HyperdriveSetApprovalBridgeContractFunction(ContractFunction):
     """ContractFunction for the setApprovalBridge method."""
 
-    def __call__(self, tokenID: int, operator: str, amount: int, caller: str) -> IERC4626HyperdriveSetApprovalBridgeContractFunction:  # type: ignore
+    def __call__(
+        self,
+        tokenID: int,
+        operator: str,
+        amount: int,
+        caller: str,
+    ) -> IERC4626HyperdriveSetApprovalBridgeContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(tokenID),
             dataclass_to_tuple(operator),
@@ -983,7 +1091,11 @@ class IERC4626HyperdriveSetApprovalBridgeContractFunction(ContractFunction):
 class IERC4626HyperdriveSetApprovalForAllContractFunction(ContractFunction):
     """ContractFunction for the setApprovalForAll method."""
 
-    def __call__(self, operator: str, approved: bool) -> IERC4626HyperdriveSetApprovalForAllContractFunction:  # type: ignore
+    def __call__(
+        self,
+        operator: str,
+        approved: bool,
+    ) -> IERC4626HyperdriveSetApprovalForAllContractFunction:  # type: ignore
         clone = super().__call__(dataclass_to_tuple(operator), dataclass_to_tuple(approved))
         self.kwargs = clone.kwargs
         self.args = clone.args
@@ -1179,9 +1291,18 @@ class IERC4626HyperdriveTotalSupplyContractFunction(ContractFunction):
 class IERC4626HyperdriveTransferFromContractFunction(ContractFunction):
     """ContractFunction for the transferFrom method."""
 
-    def __call__(self, tokenID: int, _from: str, to: str, amount: int) -> IERC4626HyperdriveTransferFromContractFunction:  # type: ignore
+    def __call__(
+        self,
+        tokenID: int,
+        _from: str,
+        to: str,
+        amount: int,
+    ) -> IERC4626HyperdriveTransferFromContractFunction:  # type: ignore
         clone = super().__call__(
-            dataclass_to_tuple(tokenID), dataclass_to_tuple(_from), dataclass_to_tuple(to), dataclass_to_tuple(amount)
+            dataclass_to_tuple(tokenID),
+            dataclass_to_tuple(_from),
+            dataclass_to_tuple(to),
+            dataclass_to_tuple(amount),
         )
         self.kwargs = clone.kwargs
         self.args = clone.args
@@ -1203,7 +1324,14 @@ class IERC4626HyperdriveTransferFromContractFunction(ContractFunction):
 class IERC4626HyperdriveTransferFromBridgeContractFunction(ContractFunction):
     """ContractFunction for the transferFromBridge method."""
 
-    def __call__(self, tokenID: int, _from: str, to: str, amount: int, caller: str) -> IERC4626HyperdriveTransferFromBridgeContractFunction:  # type: ignore
+    def __call__(
+        self,
+        tokenID: int,
+        _from: str,
+        to: str,
+        amount: int,
+        caller: str,
+    ) -> IERC4626HyperdriveTransferFromBridgeContractFunction:  # type: ignore
         clone = super().__call__(
             dataclass_to_tuple(tokenID),
             dataclass_to_tuple(_from),
@@ -1694,7 +1822,10 @@ class IERC4626HyperdriveAddLiquidityContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1709,7 +1840,10 @@ class IERC4626HyperdriveAddLiquidityContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1725,7 +1859,11 @@ class IERC4626HyperdriveAddLiquidityContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1742,7 +1880,11 @@ class IERC4626HyperdriveAddLiquidityContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1770,7 +1912,10 @@ class IERC4626HyperdriveApprovalContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1785,7 +1930,10 @@ class IERC4626HyperdriveApprovalContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1801,7 +1949,11 @@ class IERC4626HyperdriveApprovalContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1818,7 +1970,11 @@ class IERC4626HyperdriveApprovalContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1846,7 +2002,10 @@ class IERC4626HyperdriveApprovalForAllContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1861,7 +2020,10 @@ class IERC4626HyperdriveApprovalForAllContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1877,7 +2039,11 @@ class IERC4626HyperdriveApprovalForAllContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1894,7 +2060,11 @@ class IERC4626HyperdriveApprovalForAllContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1922,7 +2092,10 @@ class IERC4626HyperdriveCloseLongContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1937,7 +2110,10 @@ class IERC4626HyperdriveCloseLongContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -1953,7 +2129,11 @@ class IERC4626HyperdriveCloseLongContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1970,7 +2150,11 @@ class IERC4626HyperdriveCloseLongContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -1998,7 +2182,10 @@ class IERC4626HyperdriveCloseShortContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2013,7 +2200,10 @@ class IERC4626HyperdriveCloseShortContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2029,7 +2219,11 @@ class IERC4626HyperdriveCloseShortContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2046,7 +2240,11 @@ class IERC4626HyperdriveCloseShortContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2074,7 +2272,10 @@ class IERC4626HyperdriveCollectGovernanceFeeContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2089,7 +2290,10 @@ class IERC4626HyperdriveCollectGovernanceFeeContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2105,7 +2309,11 @@ class IERC4626HyperdriveCollectGovernanceFeeContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2122,7 +2330,11 @@ class IERC4626HyperdriveCollectGovernanceFeeContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2150,7 +2362,10 @@ class IERC4626HyperdriveCreateCheckpointContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2165,7 +2380,10 @@ class IERC4626HyperdriveCreateCheckpointContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2181,7 +2399,11 @@ class IERC4626HyperdriveCreateCheckpointContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2198,7 +2420,11 @@ class IERC4626HyperdriveCreateCheckpointContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2226,7 +2452,10 @@ class IERC4626HyperdriveInitializeContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2241,7 +2470,10 @@ class IERC4626HyperdriveInitializeContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2257,7 +2489,11 @@ class IERC4626HyperdriveInitializeContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2274,7 +2510,11 @@ class IERC4626HyperdriveInitializeContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2302,7 +2542,10 @@ class IERC4626HyperdriveOpenLongContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2317,7 +2560,10 @@ class IERC4626HyperdriveOpenLongContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2333,7 +2579,11 @@ class IERC4626HyperdriveOpenLongContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2350,7 +2600,11 @@ class IERC4626HyperdriveOpenLongContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2378,7 +2632,10 @@ class IERC4626HyperdriveOpenShortContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2393,7 +2650,10 @@ class IERC4626HyperdriveOpenShortContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2409,7 +2669,11 @@ class IERC4626HyperdriveOpenShortContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2426,7 +2690,11 @@ class IERC4626HyperdriveOpenShortContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2454,7 +2722,10 @@ class IERC4626HyperdriveRedeemWithdrawalSharesContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2469,7 +2740,10 @@ class IERC4626HyperdriveRedeemWithdrawalSharesContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2485,7 +2759,11 @@ class IERC4626HyperdriveRedeemWithdrawalSharesContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2502,7 +2780,11 @@ class IERC4626HyperdriveRedeemWithdrawalSharesContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2530,7 +2812,10 @@ class IERC4626HyperdriveRemoveLiquidityContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2545,7 +2830,10 @@ class IERC4626HyperdriveRemoveLiquidityContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2561,7 +2849,11 @@ class IERC4626HyperdriveRemoveLiquidityContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2578,7 +2870,11 @@ class IERC4626HyperdriveRemoveLiquidityContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2606,7 +2902,10 @@ class IERC4626HyperdriveTransferSingleContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2621,7 +2920,10 @@ class IERC4626HyperdriveTransferSingleContractEvent(ContractEvent):
         return cast(
             Iterable[EventData],
             super().get_logs(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                block_hash=block_hash,
             ),
         )
 
@@ -2637,7 +2939,11 @@ class IERC4626HyperdriveTransferSingleContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2654,7 +2960,11 @@ class IERC4626HyperdriveTransferSingleContractEvent(ContractEvent):
         return cast(
             LogFilter,
             super().create_filter(
-                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+                argument_filters=argument_filters,
+                fromBlock=fromBlock,
+                toBlock=toBlock,
+                address=address,
+                topics=topics,
             ),
         )
 
@@ -2698,79 +3008,131 @@ class IERC4626HyperdriveContractEvents(ContractEvents):
         self.AddLiquidity = cast(
             IERC4626HyperdriveAddLiquidityContractEvent,
             IERC4626HyperdriveAddLiquidityContractEvent.factory(
-                "AddLiquidity", w3=w3, contract_abi=abi, address=address, event_name="AddLiquidity"
+                "AddLiquidity",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="AddLiquidity",
             ),
         )
         self.Approval = cast(
             IERC4626HyperdriveApprovalContractEvent,
             IERC4626HyperdriveApprovalContractEvent.factory(
-                "Approval", w3=w3, contract_abi=abi, address=address, event_name="Approval"
+                "Approval",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="Approval",
             ),
         )
         self.ApprovalForAll = cast(
             IERC4626HyperdriveApprovalForAllContractEvent,
             IERC4626HyperdriveApprovalForAllContractEvent.factory(
-                "ApprovalForAll", w3=w3, contract_abi=abi, address=address, event_name="ApprovalForAll"
+                "ApprovalForAll",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="ApprovalForAll",
             ),
         )
         self.CloseLong = cast(
             IERC4626HyperdriveCloseLongContractEvent,
             IERC4626HyperdriveCloseLongContractEvent.factory(
-                "CloseLong", w3=w3, contract_abi=abi, address=address, event_name="CloseLong"
+                "CloseLong",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="CloseLong",
             ),
         )
         self.CloseShort = cast(
             IERC4626HyperdriveCloseShortContractEvent,
             IERC4626HyperdriveCloseShortContractEvent.factory(
-                "CloseShort", w3=w3, contract_abi=abi, address=address, event_name="CloseShort"
+                "CloseShort",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="CloseShort",
             ),
         )
         self.CollectGovernanceFee = cast(
             IERC4626HyperdriveCollectGovernanceFeeContractEvent,
             IERC4626HyperdriveCollectGovernanceFeeContractEvent.factory(
-                "CollectGovernanceFee", w3=w3, contract_abi=abi, address=address, event_name="CollectGovernanceFee"
+                "CollectGovernanceFee",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="CollectGovernanceFee",
             ),
         )
         self.CreateCheckpoint = cast(
             IERC4626HyperdriveCreateCheckpointContractEvent,
             IERC4626HyperdriveCreateCheckpointContractEvent.factory(
-                "CreateCheckpoint", w3=w3, contract_abi=abi, address=address, event_name="CreateCheckpoint"
+                "CreateCheckpoint",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="CreateCheckpoint",
             ),
         )
         self.Initialize = cast(
             IERC4626HyperdriveInitializeContractEvent,
             IERC4626HyperdriveInitializeContractEvent.factory(
-                "Initialize", w3=w3, contract_abi=abi, address=address, event_name="Initialize"
+                "Initialize",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="Initialize",
             ),
         )
         self.OpenLong = cast(
             IERC4626HyperdriveOpenLongContractEvent,
             IERC4626HyperdriveOpenLongContractEvent.factory(
-                "OpenLong", w3=w3, contract_abi=abi, address=address, event_name="OpenLong"
+                "OpenLong",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="OpenLong",
             ),
         )
         self.OpenShort = cast(
             IERC4626HyperdriveOpenShortContractEvent,
             IERC4626HyperdriveOpenShortContractEvent.factory(
-                "OpenShort", w3=w3, contract_abi=abi, address=address, event_name="OpenShort"
+                "OpenShort",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="OpenShort",
             ),
         )
         self.RedeemWithdrawalShares = cast(
             IERC4626HyperdriveRedeemWithdrawalSharesContractEvent,
             IERC4626HyperdriveRedeemWithdrawalSharesContractEvent.factory(
-                "RedeemWithdrawalShares", w3=w3, contract_abi=abi, address=address, event_name="RedeemWithdrawalShares"
+                "RedeemWithdrawalShares",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="RedeemWithdrawalShares",
             ),
         )
         self.RemoveLiquidity = cast(
             IERC4626HyperdriveRemoveLiquidityContractEvent,
             IERC4626HyperdriveRemoveLiquidityContractEvent.factory(
-                "RemoveLiquidity", w3=w3, contract_abi=abi, address=address, event_name="RemoveLiquidity"
+                "RemoveLiquidity",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="RemoveLiquidity",
             ),
         )
         self.TransferSingle = cast(
             IERC4626HyperdriveTransferSingleContractEvent,
             IERC4626HyperdriveTransferSingleContractEvent.factory(
-                "TransferSingle", w3=w3, contract_abi=abi, address=address, event_name="TransferSingle"
+                "TransferSingle",
+                w3=w3,
+                contract_abi=abi,
+                address=address,
+                event_name="TransferSingle",
             ),
         )
 
@@ -2796,28 +3158,62 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "addLiquidity",
             "inputs": [
-                {"name": "_contribution", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minApr", "type": "uint256", "internalType": "uint256"},
-                {"name": "_maxApr", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_contribution",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minApr",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_maxApr",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
-            "outputs": [{"name": "lpShares", "type": "uint256", "internalType": "uint256"}],
+            "outputs": [
+                {
+                    "name": "lpShares",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                }
+            ],
             "stateMutability": "payable",
         },
         {
             "type": "function",
             "name": "balanceOf",
             "inputs": [
-                {"name": "tokenId", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "tokenId",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {"name": "owner", "type": "address", "internalType": "address"},
             ],
             "outputs": [{"name": "", "type": "uint256", "internalType": "uint256"}],
@@ -2836,8 +3232,16 @@ ierc4626hyperdrive_abi: ABI = cast(
             "inputs": [
                 {"name": "from", "type": "address", "internalType": "address"},
                 {"name": "to", "type": "address", "internalType": "address"},
-                {"name": "ids", "type": "uint256[]", "internalType": "uint256[]"},
-                {"name": "values", "type": "uint256[]", "internalType": "uint256[]"},
+                {
+                    "name": "ids",
+                    "type": "uint256[]",
+                    "internalType": "uint256[]",
+                },
+                {
+                    "name": "values",
+                    "type": "uint256[]",
+                    "internalType": "uint256[]",
+                },
             ],
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -2845,7 +3249,13 @@ ierc4626hyperdrive_abi: ABI = cast(
         {
             "type": "function",
             "name": "checkpoint",
-            "inputs": [{"name": "_checkpointTime", "type": "uint256", "internalType": "uint256"}],
+            "inputs": [
+                {
+                    "name": "_checkpointTime",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                }
+            ],
             "outputs": [],
             "stateMutability": "nonpayable",
         },
@@ -2853,17 +3263,41 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "closeLong",
             "inputs": [
-                {"name": "_maturityTime", "type": "uint256", "internalType": "uint256"},
-                {"name": "_bondAmount", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minOutput", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_maturityTime",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_bondAmount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minOutput",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
@@ -2874,17 +3308,41 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "closeShort",
             "inputs": [
-                {"name": "_maturityTime", "type": "uint256", "internalType": "uint256"},
-                {"name": "_bondAmount", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minOutput", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_maturityTime",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_bondAmount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minOutput",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
@@ -2900,25 +3358,55 @@ ierc4626hyperdrive_abi: ABI = cast(
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 }
             ],
-            "outputs": [{"name": "proceeds", "type": "uint256", "internalType": "uint256"}],
+            "outputs": [
+                {
+                    "name": "proceeds",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                }
+            ],
             "stateMutability": "nonpayable",
         },
         {
             "type": "function",
             "name": "getCheckpoint",
-            "inputs": [{"name": "_checkpointId", "type": "uint256", "internalType": "uint256"}],
+            "inputs": [
+                {
+                    "name": "_checkpointId",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                }
+            ],
             "outputs": [
                 {
                     "name": "",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Checkpoint",
-                    "components": [{"name": "sharePrice", "type": "uint128", "internalType": "uint128"}],
+                    "components": [
+                        {
+                            "name": "sharePrice",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        }
+                    ],
                 }
             ],
             "stateMutability": "view",
@@ -2926,7 +3414,13 @@ ierc4626hyperdrive_abi: ABI = cast(
         {
             "type": "function",
             "name": "getCheckpointExposure",
-            "inputs": [{"name": "_checkpointTime", "type": "uint256", "internalType": "uint256"}],
+            "inputs": [
+                {
+                    "name": "_checkpointTime",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                }
+            ],
             "outputs": [{"name": "", "type": "int256", "internalType": "int256"}],
             "stateMutability": "view",
         },
@@ -2940,17 +3434,61 @@ ierc4626hyperdrive_abi: ABI = cast(
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.MarketState",
                     "components": [
-                        {"name": "shareReserves", "type": "uint128", "internalType": "uint128"},
-                        {"name": "bondReserves", "type": "uint128", "internalType": "uint128"},
-                        {"name": "shareAdjustment", "type": "int128", "internalType": "int128"},
-                        {"name": "zombieShareReserves", "type": "uint128", "internalType": "uint128"},
-                        {"name": "longExposure", "type": "uint128", "internalType": "uint128"},
-                        {"name": "longsOutstanding", "type": "uint128", "internalType": "uint128"},
-                        {"name": "shortsOutstanding", "type": "uint128", "internalType": "uint128"},
-                        {"name": "longAverageMaturityTime", "type": "uint128", "internalType": "uint128"},
-                        {"name": "shortAverageMaturityTime", "type": "uint128", "internalType": "uint128"},
-                        {"name": "isInitialized", "type": "bool", "internalType": "bool"},
-                        {"name": "isPaused", "type": "bool", "internalType": "bool"},
+                        {
+                            "name": "shareReserves",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "bondReserves",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "shareAdjustment",
+                            "type": "int128",
+                            "internalType": "int128",
+                        },
+                        {
+                            "name": "zombieShareReserves",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "longExposure",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "longsOutstanding",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "shortsOutstanding",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "longAverageMaturityTime",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "shortAverageMaturityTime",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "isInitialized",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "isPaused",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
                     ],
                 }
             ],
@@ -2966,26 +3504,86 @@ ierc4626hyperdrive_abi: ABI = cast(
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.PoolConfig",
                     "components": [
-                        {"name": "baseToken", "type": "address", "internalType": "contract IERC20"},
-                        {"name": "linkerFactory", "type": "address", "internalType": "address"},
-                        {"name": "linkerCodeHash", "type": "bytes32", "internalType": "bytes32"},
-                        {"name": "initialSharePrice", "type": "uint256", "internalType": "uint256"},
-                        {"name": "minimumShareReserves", "type": "uint256", "internalType": "uint256"},
-                        {"name": "minimumTransactionAmount", "type": "uint256", "internalType": "uint256"},
-                        {"name": "positionDuration", "type": "uint256", "internalType": "uint256"},
-                        {"name": "checkpointDuration", "type": "uint256", "internalType": "uint256"},
-                        {"name": "timeStretch", "type": "uint256", "internalType": "uint256"},
-                        {"name": "governance", "type": "address", "internalType": "address"},
-                        {"name": "feeCollector", "type": "address", "internalType": "address"},
+                        {
+                            "name": "baseToken",
+                            "type": "address",
+                            "internalType": "contract IERC20",
+                        },
+                        {
+                            "name": "linkerFactory",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "linkerCodeHash",
+                            "type": "bytes32",
+                            "internalType": "bytes32",
+                        },
+                        {
+                            "name": "initialSharePrice",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "minimumShareReserves",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "minimumTransactionAmount",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "positionDuration",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "checkpointDuration",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "timeStretch",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "governance",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "feeCollector",
+                            "type": "address",
+                            "internalType": "address",
+                        },
                         {
                             "name": "fees",
                             "type": "tuple",
                             "internalType": "struct IHyperdrive.Fees",
                             "components": [
-                                {"name": "curve", "type": "uint256", "internalType": "uint256"},
-                                {"name": "flat", "type": "uint256", "internalType": "uint256"},
-                                {"name": "governanceLP", "type": "uint256", "internalType": "uint256"},
-                                {"name": "governanceZombie", "type": "uint256", "internalType": "uint256"},
+                                {
+                                    "name": "curve",
+                                    "type": "uint256",
+                                    "internalType": "uint256",
+                                },
+                                {
+                                    "name": "flat",
+                                    "type": "uint256",
+                                    "internalType": "uint256",
+                                },
+                                {
+                                    "name": "governanceLP",
+                                    "type": "uint256",
+                                    "internalType": "uint256",
+                                },
+                                {
+                                    "name": "governanceZombie",
+                                    "type": "uint256",
+                                    "internalType": "uint256",
+                                },
                             ],
                         },
                     ],
@@ -3003,20 +3601,76 @@ ierc4626hyperdrive_abi: ABI = cast(
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.PoolInfo",
                     "components": [
-                        {"name": "shareReserves", "type": "uint256", "internalType": "uint256"},
-                        {"name": "shareAdjustment", "type": "int256", "internalType": "int256"},
-                        {"name": "zombieShareReserves", "type": "uint256", "internalType": "uint256"},
-                        {"name": "bondReserves", "type": "uint256", "internalType": "uint256"},
-                        {"name": "lpTotalSupply", "type": "uint256", "internalType": "uint256"},
-                        {"name": "sharePrice", "type": "uint256", "internalType": "uint256"},
-                        {"name": "longsOutstanding", "type": "uint256", "internalType": "uint256"},
-                        {"name": "longAverageMaturityTime", "type": "uint256", "internalType": "uint256"},
-                        {"name": "shortsOutstanding", "type": "uint256", "internalType": "uint256"},
-                        {"name": "shortAverageMaturityTime", "type": "uint256", "internalType": "uint256"},
-                        {"name": "withdrawalSharesReadyToWithdraw", "type": "uint256", "internalType": "uint256"},
-                        {"name": "withdrawalSharesProceeds", "type": "uint256", "internalType": "uint256"},
-                        {"name": "lpSharePrice", "type": "uint256", "internalType": "uint256"},
-                        {"name": "longExposure", "type": "uint256", "internalType": "uint256"},
+                        {
+                            "name": "shareReserves",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "shareAdjustment",
+                            "type": "int256",
+                            "internalType": "int256",
+                        },
+                        {
+                            "name": "zombieShareReserves",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "bondReserves",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "lpTotalSupply",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "sharePrice",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "longsOutstanding",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "longAverageMaturityTime",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "shortsOutstanding",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "shortAverageMaturityTime",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "withdrawalSharesReadyToWithdraw",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "withdrawalSharesProceeds",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "lpSharePrice",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
+                        {
+                            "name": "longExposure",
+                            "type": "uint256",
+                            "internalType": "uint256",
+                        },
                     ],
                 }
             ],
@@ -3039,8 +3693,16 @@ ierc4626hyperdrive_abi: ABI = cast(
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.WithdrawPool",
                     "components": [
-                        {"name": "readyToWithdraw", "type": "uint128", "internalType": "uint128"},
-                        {"name": "proceeds", "type": "uint128", "internalType": "uint128"},
+                        {
+                            "name": "readyToWithdraw",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
+                        {
+                            "name": "proceeds",
+                            "type": "uint128",
+                            "internalType": "uint128",
+                        },
                     ],
                 }
             ],
@@ -3050,20 +3712,42 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "initialize",
             "inputs": [
-                {"name": "_contribution", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_contribution",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {"name": "_apr", "type": "uint256", "internalType": "uint256"},
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
-            "outputs": [{"name": "lpShares", "type": "uint256", "internalType": "uint256"}],
+            "outputs": [
+                {
+                    "name": "lpShares",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                }
+            ],
             "stateMutability": "payable",
         },
         {
@@ -3071,7 +3755,11 @@ ierc4626hyperdrive_abi: ABI = cast(
             "name": "isApprovedForAll",
             "inputs": [
                 {"name": "owner", "type": "address", "internalType": "address"},
-                {"name": "spender", "type": "address", "internalType": "address"},
+                {
+                    "name": "spender",
+                    "type": "address",
+                    "internalType": "address",
+                },
             ],
             "outputs": [{"name": "", "type": "bool", "internalType": "bool"}],
             "stateMutability": "view",
@@ -3079,14 +3767,26 @@ ierc4626hyperdrive_abi: ABI = cast(
         {
             "type": "function",
             "name": "isSweepable",
-            "inputs": [{"name": "_target", "type": "address", "internalType": "address"}],
+            "inputs": [
+                {
+                    "name": "_target",
+                    "type": "address",
+                    "internalType": "address",
+                }
+            ],
             "outputs": [{"name": "", "type": "bool", "internalType": "bool"}],
             "stateMutability": "view",
         },
         {
             "type": "function",
             "name": "load",
-            "inputs": [{"name": "_slots", "type": "uint256[]", "internalType": "uint256[]"}],
+            "inputs": [
+                {
+                    "name": "_slots",
+                    "type": "uint256[]",
+                    "internalType": "uint256[]",
+                }
+            ],
             "outputs": [{"name": "", "type": "bytes32[]", "internalType": "bytes32[]"}],
             "stateMutability": "view",
         },
@@ -3108,23 +3808,55 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "openLong",
             "inputs": [
-                {"name": "_baseAmount", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minOutput", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minSharePrice", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_baseAmount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minOutput",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minSharePrice",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
             "outputs": [
-                {"name": "maturityTime", "type": "uint256", "internalType": "uint256"},
-                {"name": "bondProceeds", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "maturityTime",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "bondProceeds",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
             ],
             "stateMutability": "payable",
         },
@@ -3132,23 +3864,55 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "openShort",
             "inputs": [
-                {"name": "_bondAmount", "type": "uint256", "internalType": "uint256"},
-                {"name": "_maxDeposit", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minSharePrice", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_bondAmount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_maxDeposit",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minSharePrice",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
             "outputs": [
-                {"name": "maturityTime", "type": "uint256", "internalType": "uint256"},
-                {"name": "traderDeposit", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "maturityTime",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "traderDeposit",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
             ],
             "stateMutability": "payable",
         },
@@ -3163,9 +3927,17 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "perTokenApprovals",
             "inputs": [
-                {"name": "tokenId", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "tokenId",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {"name": "owner", "type": "address", "internalType": "address"},
-                {"name": "spender", "type": "address", "internalType": "address"},
+                {
+                    "name": "spender",
+                    "type": "address",
+                    "internalType": "address",
+                },
             ],
             "outputs": [{"name": "", "type": "uint256", "internalType": "uint256"}],
             "stateMutability": "view",
@@ -3175,9 +3947,17 @@ ierc4626hyperdrive_abi: ABI = cast(
             "name": "permitForAll",
             "inputs": [
                 {"name": "owner", "type": "address", "internalType": "address"},
-                {"name": "spender", "type": "address", "internalType": "address"},
+                {
+                    "name": "spender",
+                    "type": "address",
+                    "internalType": "address",
+                },
                 {"name": "_approved", "type": "bool", "internalType": "bool"},
-                {"name": "deadline", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "deadline",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {"name": "v", "type": "uint8", "internalType": "uint8"},
                 {"name": "r", "type": "bytes32", "internalType": "bytes32"},
                 {"name": "s", "type": "bytes32", "internalType": "bytes32"},
@@ -3189,29 +3969,63 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "pool",
             "inputs": [],
-            "outputs": [{"name": "", "type": "address", "internalType": "contract IERC4626"}],
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "address",
+                    "internalType": "contract IERC4626",
+                }
+            ],
             "stateMutability": "view",
         },
         {
             "type": "function",
             "name": "redeemWithdrawalShares",
             "inputs": [
-                {"name": "_shares", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minOutput", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_shares",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minOutput",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
             "outputs": [
-                {"name": "proceeds", "type": "uint256", "internalType": "uint256"},
-                {"name": "sharesRedeemed", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "proceeds",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharesRedeemed",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
             ],
             "stateMutability": "nonpayable",
         },
@@ -3219,22 +4033,50 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "removeLiquidity",
             "inputs": [
-                {"name": "_shares", "type": "uint256", "internalType": "uint256"},
-                {"name": "_minOutput", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "_shares",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "_minOutput",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {
                     "name": "_options",
                     "type": "tuple",
                     "internalType": "struct IHyperdrive.Options",
                     "components": [
-                        {"name": "destination", "type": "address", "internalType": "address"},
-                        {"name": "asBase", "type": "bool", "internalType": "bool"},
-                        {"name": "extraData", "type": "bytes", "internalType": "bytes"},
+                        {
+                            "name": "destination",
+                            "type": "address",
+                            "internalType": "address",
+                        },
+                        {
+                            "name": "asBase",
+                            "type": "bool",
+                            "internalType": "bool",
+                        },
+                        {
+                            "name": "extraData",
+                            "type": "bytes",
+                            "internalType": "bytes",
+                        },
                     ],
                 },
             ],
             "outputs": [
-                {"name": "baseProceeds", "type": "uint256", "internalType": "uint256"},
-                {"name": "withdrawalShares", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "baseProceeds",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "withdrawalShares",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
             ],
             "stateMutability": "nonpayable",
         },
@@ -3242,9 +4084,21 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "setApproval",
             "inputs": [
-                {"name": "tokenID", "type": "uint256", "internalType": "uint256"},
-                {"name": "operator", "type": "address", "internalType": "address"},
-                {"name": "amount", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "tokenID",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "operator",
+                    "type": "address",
+                    "internalType": "address",
+                },
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
             ],
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -3253,10 +4107,26 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "setApprovalBridge",
             "inputs": [
-                {"name": "tokenID", "type": "uint256", "internalType": "uint256"},
-                {"name": "operator", "type": "address", "internalType": "address"},
-                {"name": "amount", "type": "uint256", "internalType": "uint256"},
-                {"name": "caller", "type": "address", "internalType": "address"},
+                {
+                    "name": "tokenID",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "operator",
+                    "type": "address",
+                    "internalType": "address",
+                },
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "caller",
+                    "type": "address",
+                    "internalType": "address",
+                },
             ],
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -3265,7 +4135,11 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "setApprovalForAll",
             "inputs": [
-                {"name": "operator", "type": "address", "internalType": "address"},
+                {
+                    "name": "operator",
+                    "type": "address",
+                    "internalType": "address",
+                },
                 {"name": "approved", "type": "bool", "internalType": "bool"},
             ],
             "outputs": [],
@@ -3291,7 +4165,13 @@ ierc4626hyperdrive_abi: ABI = cast(
         {
             "type": "function",
             "name": "sweep",
-            "inputs": [{"name": "_target", "type": "address", "internalType": "contract IERC20"}],
+            "inputs": [
+                {
+                    "name": "_target",
+                    "type": "address",
+                    "internalType": "contract IERC20",
+                }
+            ],
             "outputs": [],
             "stateMutability": "nonpayable",
         },
@@ -3327,10 +4207,18 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "transferFrom",
             "inputs": [
-                {"name": "tokenID", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "tokenID",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {"name": "from", "type": "address", "internalType": "address"},
                 {"name": "to", "type": "address", "internalType": "address"},
-                {"name": "amount", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
             ],
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -3339,11 +4227,23 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "function",
             "name": "transferFromBridge",
             "inputs": [
-                {"name": "tokenID", "type": "uint256", "internalType": "uint256"},
+                {
+                    "name": "tokenID",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
                 {"name": "from", "type": "address", "internalType": "address"},
                 {"name": "to", "type": "address", "internalType": "address"},
-                {"name": "amount", "type": "uint256", "internalType": "uint256"},
-                {"name": "caller", "type": "address", "internalType": "address"},
+                {
+                    "name": "amount",
+                    "type": "uint256",
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "caller",
+                    "type": "address",
+                    "internalType": "address",
+                },
             ],
             "outputs": [],
             "stateMutability": "nonpayable",
@@ -3352,11 +4252,36 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "AddLiquidity",
             "inputs": [
-                {"name": "provider", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "lpAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "lpSharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "provider",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "lpAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "lpSharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3364,9 +4289,24 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "Approval",
             "inputs": [
-                {"name": "owner", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "spender", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "value", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "owner",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "spender",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "value",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3374,9 +4314,24 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "ApprovalForAll",
             "inputs": [
-                {"name": "account", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "operator", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "approved", "type": "bool", "indexed": False, "internalType": "bool"},
+                {
+                    "name": "account",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "operator",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "approved",
+                    "type": "bool",
+                    "indexed": False,
+                    "internalType": "bool",
+                },
             ],
             "anonymous": False,
         },
@@ -3384,12 +4339,42 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "CloseLong",
             "inputs": [
-                {"name": "trader", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "assetId", "type": "uint256", "indexed": True, "internalType": "uint256"},
-                {"name": "maturityTime", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "bondAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "trader",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "assetId",
+                    "type": "uint256",
+                    "indexed": True,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "maturityTime",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "bondAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3397,12 +4382,42 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "CloseShort",
             "inputs": [
-                {"name": "trader", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "assetId", "type": "uint256", "indexed": True, "internalType": "uint256"},
-                {"name": "maturityTime", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "bondAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "trader",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "assetId",
+                    "type": "uint256",
+                    "indexed": True,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "maturityTime",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "bondAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3410,9 +4425,24 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "CollectGovernanceFee",
             "inputs": [
-                {"name": "collector", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "baseFees", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "collector",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "baseFees",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3420,11 +4450,36 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "CreateCheckpoint",
             "inputs": [
-                {"name": "checkpointTime", "type": "uint256", "indexed": True, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "maturedShorts", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "maturedLongs", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "lpSharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "checkpointTime",
+                    "type": "uint256",
+                    "indexed": True,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "maturedShorts",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "maturedLongs",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "lpSharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3432,11 +4487,36 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "Initialize",
             "inputs": [
-                {"name": "provider", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "lpAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "apr", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "provider",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "lpAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "apr",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3444,12 +4524,42 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "OpenLong",
             "inputs": [
-                {"name": "trader", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "assetId", "type": "uint256", "indexed": True, "internalType": "uint256"},
-                {"name": "maturityTime", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "bondAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "trader",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "assetId",
+                    "type": "uint256",
+                    "indexed": True,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "maturityTime",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "bondAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3457,12 +4567,42 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "OpenShort",
             "inputs": [
-                {"name": "trader", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "assetId", "type": "uint256", "indexed": True, "internalType": "uint256"},
-                {"name": "maturityTime", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "bondAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "trader",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "assetId",
+                    "type": "uint256",
+                    "indexed": True,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "maturityTime",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "bondAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3470,10 +4610,30 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "RedeemWithdrawalShares",
             "inputs": [
-                {"name": "provider", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "withdrawalShareAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "provider",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "withdrawalShareAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3481,12 +4641,42 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "RemoveLiquidity",
             "inputs": [
-                {"name": "provider", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "lpAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "baseAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "sharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "withdrawalShareAmount", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "lpSharePrice", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "provider",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "lpAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "baseAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "sharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "withdrawalShareAmount",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "lpSharePrice",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3494,11 +4684,36 @@ ierc4626hyperdrive_abi: ABI = cast(
             "type": "event",
             "name": "TransferSingle",
             "inputs": [
-                {"name": "operator", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "from", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "to", "type": "address", "indexed": True, "internalType": "address"},
-                {"name": "id", "type": "uint256", "indexed": False, "internalType": "uint256"},
-                {"name": "value", "type": "uint256", "indexed": False, "internalType": "uint256"},
+                {
+                    "name": "operator",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "from",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "to",
+                    "type": "address",
+                    "indexed": True,
+                    "internalType": "address",
+                },
+                {
+                    "name": "id",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
+                {
+                    "name": "value",
+                    "type": "uint256",
+                    "indexed": False,
+                    "internalType": "uint256",
+                },
             ],
             "anonymous": False,
         },
@@ -3512,17 +4727,39 @@ ierc4626hyperdrive_abi: ABI = cast(
         {
             "type": "error",
             "name": "CallFailed",
-            "inputs": [{"name": "underlyingError", "type": "bytes4", "internalType": "bytes4"}],
+            "inputs": [
+                {
+                    "name": "underlyingError",
+                    "type": "bytes4",
+                    "internalType": "bytes4",
+                }
+            ],
         },
         {"type": "error", "name": "EndIndexTooLarge", "inputs": []},
         {"type": "error", "name": "ExpiredDeadline", "inputs": []},
         {"type": "error", "name": "FeeTooHigh", "inputs": []},
-        {"type": "error", "name": "FixedPointMath_InvalidExponent", "inputs": []},
+        {
+            "type": "error",
+            "name": "FixedPointMath_InvalidExponent",
+            "inputs": [],
+        },
         {"type": "error", "name": "FixedPointMath_InvalidInput", "inputs": []},
         {"type": "error", "name": "FixedPointMath_NegativeInput", "inputs": []},
-        {"type": "error", "name": "FixedPointMath_NegativeOrZeroInput", "inputs": []},
-        {"type": "error", "name": "HyperdriveDeployerAlreadyAdded", "inputs": []},
-        {"type": "error", "name": "HyperdriveDeployerIndexMismatch", "inputs": []},
+        {
+            "type": "error",
+            "name": "FixedPointMath_NegativeOrZeroInput",
+            "inputs": [],
+        },
+        {
+            "type": "error",
+            "name": "HyperdriveDeployerAlreadyAdded",
+            "inputs": [],
+        },
+        {
+            "type": "error",
+            "name": "HyperdriveDeployerIndexMismatch",
+            "inputs": [],
+        },
         {"type": "error", "name": "HyperdriveDeployerNotAdded", "inputs": []},
         {"type": "error", "name": "InputLengthMismatch", "inputs": []},
         {"type": "error", "name": "InsufficientLiquidity", "inputs": []},
@@ -3545,7 +4782,13 @@ ierc4626hyperdrive_abi: ABI = cast(
         {
             "type": "error",
             "name": "InvalidRecipient",
-            "inputs": [{"name": "recipient", "type": "address", "internalType": "address"}],
+            "inputs": [
+                {
+                    "name": "recipient",
+                    "type": "address",
+                    "internalType": "address",
+                }
+            ],
         },
         {"type": "error", "name": "InvalidShareReserves", "inputs": []},
         {"type": "error", "name": "InvalidSignature", "inputs": []},
@@ -3566,8 +4809,16 @@ ierc4626hyperdrive_abi: ABI = cast(
         {"type": "error", "name": "PoolAlreadyInitialized", "inputs": []},
         {"type": "error", "name": "QueryOutOfRange", "inputs": []},
         {"type": "error", "name": "RestrictedZeroAddress", "inputs": []},
-        {"type": "error", "name": "ReturnData", "inputs": [{"name": "data", "type": "bytes", "internalType": "bytes"}]},
-        {"type": "error", "name": "ShareReservesDeltaExceedsBondReservesDelta", "inputs": []},
+        {
+            "type": "error",
+            "name": "ReturnData",
+            "inputs": [{"name": "data", "type": "bytes", "internalType": "bytes"}],
+        },
+        {
+            "type": "error",
+            "name": "ShareReservesDeltaExceedsBondReservesDelta",
+            "inputs": [],
+        },
         {"type": "error", "name": "TransferFailed", "inputs": []},
         {"type": "error", "name": "Unauthorized", "inputs": []},
         {"type": "error", "name": "UnexpectedAssetId", "inputs": []},
