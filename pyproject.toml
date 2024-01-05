@@ -21,12 +21,29 @@ max-line-length = "120"
 line-length = "120"
 extend-exclude = "\\.ipynb"
 
-[tool.pylint]
-exclude = ["hyperdrive", ".venv", ".vscode", "docs", "pypechain_types"]
-
-[tool.pylance]
-exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
+[tool.pylint.MASTER]
+ignore = [
+  "hyperdrive",
+  ".venv",
+  ".vscode",
+  "docs",
+  "pypechain_types"
+]
+notes = ["FIXME"]
+max-line-length = 120
+ignore-docstrings = 'no'
+ignore-imports = 'no'
+disable='duplicate-code'
+extension-pkg-allow-list="hyperdrivepy"
 
 [tool.pyright]
-exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
+include = ["crates/hyperdrivepy"]
+exclude = [
+  "hyperdrive",
+  ".venv",
+  ".vscode",
+  "docs",
+  "**/pypechain_types",
+  "**/__pycache__"
+]
 reportMissingImports = false

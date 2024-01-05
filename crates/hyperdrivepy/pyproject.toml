@@ -12,8 +12,5 @@ classifiers = [
 requires = ["setuptools", "wheel", "setuptools-rust"]
 build-backend = "setuptools.build_meta"
 
-[tool.pylint]
-extension-pkg-allow-list="hyperdrivepy"
-
 [tool.setuptools.packages.find]
 where = ["python", "src"]

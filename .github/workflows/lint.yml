@@ -66,12 +66,7 @@ jobs:
 
       - name: run pylint
         run: |
-          files="${{ steps.list_files.outputs.files }}"
-          if [ -n "$files" ]; then
-            pylint --rcfile=.pylintrc $files
-          else
-            echo "No Python files found."
-          fi
+          pylint --rcfile=pyproject.toml crates/hyperdrivepy/*.py
 
       - name: run pyright
         run: |

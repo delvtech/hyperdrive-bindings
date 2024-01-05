@@ -3,6 +3,7 @@
 # pylint: disable=invalid-name
 # We do not define the number of instance attributes
 # pylint: disable=too-many-instance-attributes
+# pylint: disable=too-few-public-methods
 from __future__ import annotations
 
 from dataclasses import dataclass
