@@ -22,7 +22,7 @@ line-length = "120"
 extend-exclude = "\\.ipynb"
 
 [tool.pylint]
-exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
+exclude = ["hyperdrive", ".venv", ".vscode", "docs", "pypechain_types"]
 
 [tool.pylance]
 exclude = ["hyperdrive", ".venv", ".vscode", "docs"]
