@@ -43,15 +43,6 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn get_long_amount(&self, base_amount: &str) -> PyResult<String> {
-        let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
-        })?);
-        let result_fp = self.state.get_long_amount(base_amount_fp);
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
     pub fn get_spot_price(&self) -> PyResult<String> {
         let result_fp = self.state.get_spot_price();
         let result = U256::from(result_fp).to_string();
@@ -64,7 +55,37 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn get_short_deposit(
+    pub fn calculate_open_long(&self, base_amount: &str) -> PyResult<String> {
+        let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
+        })?);
+        let result_fp = self.state.calculate_open_long(base_amount_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_close_long(
+        &self,
+        bond_amount: &str,
+        normalized_time_remaining: &str,
+    ) -> PyResult<String> {
+        let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
+        })?);
+        let normalized_time_remaining_fp =
+            FixedPoint::from(U256::from_dec_str(normalized_time_remaining).map_err(|_| {
+                PyErr::new::<PyValueError, _>(
+                    "Failed to convert normalized_time_remaining string to U256",
+                )
+            })?);
+        let result_fp = self
+            .state
+            .calculate_close_long(bond_amount_fp, normalized_time_remaining_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_open_short(
         &self,
         short_amount: &str,
         spot_price: &str,
@@ -82,8 +103,42 @@ impl HyperdriveState {
             })?);
         let result_fp = self
             .state
-            .get_short_deposit(short_amount_fp, spot_price_fp, open_share_price_fp)
+            .calculate_open_short(short_amount_fp, spot_price_fp, open_share_price_fp)
             .unwrap();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_close_short(
+        &self,
+        bond_amount: &str,
+        open_share_price: &str,
+        close_share_price: &str,
+        normalized_time_remaining: &str,
+    ) -> PyResult<String> {
+        let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
+        })?);
+        let open_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
+            })?);
+        let close_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(close_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert close_share_price string to U256")
+            })?);
+        let normalized_time_remaining_fp =
+            FixedPoint::from(U256::from_dec_str(normalized_time_remaining).map_err(|_| {
+                PyErr::new::<PyValueError, _>(
+                    "Failed to convert normalized_time_remaining string to U256",
+                )
+            })?);
+        let result_fp = self.state.calculate_close_short(
+            bond_amount_fp,
+            open_share_price_fp,
+            close_share_price_fp,
+            normalized_time_remaining_fp,
+        );
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -128,24 +183,6 @@ impl HyperdriveState {
         let result_fp = self
             .state
             .calculate_shares_out_given_bonds_in_down(amount_in_fp);
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn calculate_max_buy(&self) -> PyResult<String> {
-        let result_fp = self.state.calculate_max_buy();
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn calculate_max_sell(&self, minimum_share_reserves: &str) -> PyResult<String> {
-        let minimum_share_reserves_fp =
-            FixedPoint::from(U256::from_dec_str(minimum_share_reserves).map_err(|_| {
-                PyErr::new::<PyValueError, _>(
-                    "Failed to convert minimum_share_reserves string to U256",
-                )
-            })?);
-        let result_fp = self.state.calculate_max_sell(minimum_share_reserves_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -214,6 +251,20 @@ impl HyperdriveState {
             maybe_conservative_price_fp,
             maybe_max_iterations,
         );
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_present_value(&self, current_block_timestamp: &str) -> PyResult<String> {
+        let current_block_timestamp_int =
+            U256::from_dec_str(current_block_timestamp).map_err(|_| {
+                PyErr::new::<PyValueError, _>(
+                    "Failed to convert current_block_timestamp string to U256",
+                )
+            })?;
+        let result_fp = self
+            .state
+            .calculate_present_value(current_block_timestamp_int);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }

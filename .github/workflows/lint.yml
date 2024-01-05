@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: "v0.3.0"
+          ref: "v0.4.0"
           path: "./hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
@@ -66,12 +66,7 @@ jobs:
 
       - name: run pylint
         run: |
-          files="${{ steps.list_files.outputs.files }}"
-          if [ -n "$files" ]; then
-            pylint --rcfile=.pylintrc $files
-          else
-            echo "No Python files found."
-          fi
+          pylint --rcfile=pyproject.toml crates/hyperdrivepy/*.py
 
       - name: run pyright
         run: |

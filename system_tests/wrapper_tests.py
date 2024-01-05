@@ -1,7 +1,7 @@
 """Tests for hyperdrive_math.rs wrappers"""
 import hyperdrivepy
 import pytest
-from hyperdrivepy.pypechain_types.IHyperdriveTypes import Fees, PoolConfig, PoolInfo
+from hyperdrivepy.pypechain_types.IERC4626HyperdriveTypes import Fees, PoolConfig, PoolInfo
 
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
@@ -10,19 +10,19 @@ POOL_CONFIG = PoolConfig(
     initialSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18
-    precisionThreshold=1 * 10**14,
     positionDuration=604_800,
     checkpointDuration=86_400,
     timeStretch=1 * 10**17,  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
     feeCollector="0xfedcba0987654321fedcba0987654321fedcba09",
-    fees=Fees(curve=0, flat=0, governance=0),
+    fees=Fees(curve=0, flat=0, governanceLP=0, governanceZombie=0),
 )
 
 
 POOL_INFO = PoolInfo(
     shareReserves=1_000_000 * 10**18,
     shareAdjustment=0,
+    zombieShareReserves=0,
     bondReserves=2_000_000 * 10**18,
     lpTotalSupply=3_000_000 * 10**18,
     sharePrice=1 * 10**18,
@@ -151,40 +151,49 @@ def test_calculate_shares_out_given_bonds_in_down():
     assert int(out) > 0
 
 
-def test_calculate_max_buy():
-    """Test calculate_max_buy."""
-    out = hyperdrivepy.calculate_max_buy(POOL_CONFIG, POOL_INFO)
-    assert int(out) > 0
-
-
-def test_calculate_max_sell():
-    """Test calculate_max_buy."""
-    minimum_share_reserves = str(10 * 10**18)
-    out = hyperdrivepy.calculate_max_sell(POOL_CONFIG, POOL_INFO, minimum_share_reserves)
-    assert int(out) > 0
-
-
-def test_get_long_amount():
-    """Test for get_long_amount."""
+def test_calculate_open_long():
+    """Test for calculate_open_long."""
     base_amount = str(500 * 10**18)
-    long_amount = hyperdrivepy.get_long_amount(POOL_CONFIG, POOL_INFO, base_amount)
+    long_amount = hyperdrivepy.calculate_open_long(POOL_CONFIG, POOL_INFO, base_amount)
     assert int(long_amount) > 0
 
 
-def test_get_short_deposit():
-    """Test for get_long_amount."""
+def test_calculate_close_long():
+    """Test for calculate_close_long."""
+    bond_amount = str(500 * 10**18)
+    normalized_time_remaining = str(9 * 10**17)
+    shares_returned = hyperdrivepy.calculate_close_long(POOL_CONFIG, POOL_INFO, bond_amount, normalized_time_remaining)
+    assert int(shares_returned) > 0
+
+
+def test_calculate_open_short():
+    """Test for calculate_open_short."""
     short_amount = str(50 * 10**18)
     spot_price = hyperdrivepy.get_spot_price(POOL_CONFIG, POOL_INFO)
     open_share_price = str(9 * 10**17)
-    base_required = hyperdrivepy.get_short_deposit(POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price)
+    base_required = hyperdrivepy.calculate_open_short(
+        POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price
+    )
     assert int(base_required) > 0
-    base_required_default_share_price = hyperdrivepy.get_short_deposit(
+    base_required_default_share_price = hyperdrivepy.calculate_open_short(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, None
     )
     assert int(base_required_default_share_price) > 0
-    assert base_required_default_share_price == hyperdrivepy.get_short_deposit(
+    assert base_required_default_share_price == hyperdrivepy.calculate_open_short(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, "0"
     )
+
+
+def test_calculate_close_short():
+    """Test for calculate_close_short."""
+    short_amount = str(50 * 10**18)
+    open_share_price = str(8 * 10**17)
+    close_share_price = str(9 * 10**17)
+    normalized_time_remaining = str(9 * 10**17)
+    shares_received = hyperdrivepy.calculate_close_short(
+        POOL_CONFIG, POOL_INFO, short_amount, open_share_price, close_share_price, normalized_time_remaining
+    )
+    assert int(shares_received) > 0
 
 
 def test_max_long():
@@ -275,3 +284,10 @@ def test_max_short_fail_conversion():
             conservative_price,
             max_iterations,
         )
+
+
+def test_calculate_present_value():
+    """Test calculate_present_value."""
+    current_block_timestamp = str(1000)
+    present_value = hyperdrivepy.calculate_present_value(POOL_CONFIG, POOL_INFO, current_block_timestamp)
+    assert int(present_value) > 0

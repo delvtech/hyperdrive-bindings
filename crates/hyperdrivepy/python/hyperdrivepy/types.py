@@ -3,6 +3,7 @@
 # pylint: disable=invalid-name
 # We do not define the number of instance attributes
 # pylint: disable=too-many-instance-attributes
+# pylint: disable=too-few-public-methods
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -15,7 +16,8 @@ class Fees:
 
     curve: str
     flat: str
-    governance: str
+    governanceLP: str
+    governanceZombie: str
 
 
 @dataclass
@@ -28,7 +30,6 @@ class PoolConfig:
     initialSharePrice: str
     minimumShareReserves: str
     minimumTransactionAmount: str
-    precisionThreshold: str
     positionDuration: str
     checkpointDuration: str
     timeStretch: str
@@ -43,6 +44,7 @@ class PoolInfo:
 
     shareReserves: str
     shareAdjustment: str
+    zombieShareReserves: str
     bondReserves: str
     lpTotalSupply: str
     sharePrice: str
@@ -84,7 +86,8 @@ class FeesType(Protocol):
 
     curve: int
     flat: int
-    governance: int
+    governanceLP: int
+    governanceZombie: int
 
 
 class PoolConfigType(Protocol):
@@ -96,7 +99,6 @@ class PoolConfigType(Protocol):
     initialSharePrice: int
     minimumShareReserves: int
     minimumTransactionAmount: int
-    precisionThreshold: int
     positionDuration: int
     checkpointDuration: int
     timeStretch: int
@@ -111,6 +113,7 @@ class PoolInfoType(Protocol):
 
     shareReserves: int
     shareAdjustment: int
+    zombieShareReserves: int
     lpTotalSupply: int
     sharePrice: int
     longsOutstanding: int

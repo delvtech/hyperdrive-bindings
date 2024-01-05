@@ -34,10 +34,10 @@ To install the Python package `hyperdrivepy`, which wraps `hyperdrive-rs`, you n
 ## Build Types
 
 PoolInfo and PoolConfig are passed into many of the functions.
-These are built from the hyperdrive abi json with pypechain.
+These are built from the Hyperdrive abi json with pypechain.
 From the hyperdrive-sdk project root, run:
 
 ```shell
 pip install --upgrade -r requirements-dev.txt
-pypechain hyperdrive/out/IHyperdrive.sol/IHyperdrive.json --output_dir crates/hyperdrive-sdk/python/hyperdrivepy/pypechain_types
+pypechain --line_length 120 --output_dir crates/hyperdrivepy/python/hyperdrivepy/pypechain_types hyperdrive/out/IERC4626Hyperdrive.sol/
 ```
