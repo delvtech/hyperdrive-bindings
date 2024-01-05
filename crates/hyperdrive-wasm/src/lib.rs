@@ -18,7 +18,8 @@ const FEES: &'static str = r#"
 interface Fees {
     curve: string;
     flat: string;
-    governance: string;
+    governanceLP: string;
+    governanceZombie: string;
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -36,7 +37,6 @@ interface PoolConfig {
     fees: Fees,
     linkerFactory: string,
     linkerCodeHash: string,
-    precisionThreshold: string,
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -55,6 +55,7 @@ interface PoolInfo {
     withdrawalSharesProceeds: string,
     lpSharePrice: string,
     longExposure: string,
+    zombieShareReserves: string,
 }
 "#;
 
@@ -124,8 +125,7 @@ pub fn getMaxShort(
         .to_string()
 }
 
-/// Gets the number of bonds received when opening a long for a given base
-/// amount.
+/// Gets the long amount that will be opened for a given base amount.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -141,11 +141,10 @@ pub fn calcOpenLong(poolInfo: &PoolInfo, poolConfig: &PoolConfig, baseAmount: St
     });
     let base_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
-    _state.get_long_amount(base_amount).to_string()
+    _state.calculate_open_long(base_amount).to_string()
 }
 
-/// Gets the amount of base the trader will need to deposit for a short of
-/// a given number of bonds.
+/// Gets the amount of base the trader will need to deposit for a short of a given size.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -164,13 +163,12 @@ pub fn calcOpenShort(poolInfo: &PoolInfo, poolConfig: &PoolConfig, shortAmount: 
     let spot_price = _state.get_spot_price();
 
     _state
-        .get_short_deposit(short_amount, spot_price, fixed!(0))
+        .calculate_open_short(short_amount, spot_price, fixed!(0))
         .unwrap()
         .to_string()
 }
 
-/// Get the max amount of base tokens that can be spent on a long position
-/// given the current state of the pool.
+/// Gets the max long that can be opened given a budget.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -207,7 +205,7 @@ pub fn getMaxLong(
         .to_string()
 }
 
-/// Get the price of a single long token given the current state of the pool.
+/// Gets the pool's spot price, i.e. the price to open a long of 1.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -238,66 +236,12 @@ pub fn getSpotRate(poolInfo: &PoolInfo, poolConfig: &PoolConfig) -> String {
     _state.get_spot_rate().to_string()
 }
 
-/// Gets the long amount that will be opened for a given base amount.
-///
-/// @param poolInfo - The current state of the pool
-///
-/// @param poolConfig - The pool's configuration
-///
-/// @param baseAmount - The amount of base tokens to open a long for
-#[wasm_bindgen(skip_jsdoc)]
-pub fn getLongAmount(poolInfo: &PoolInfo, poolConfig: &PoolConfig, baseAmount: String) -> String {
-    utils::set_panic_hook();
-    let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
-    });
-
-    _state
-        .get_long_amount(U256::from_dec_str(&baseAmount).unwrap())
-        .to_string()
-}
-
-/// Gets the amount of base the trader will need to deposit for a short of a
-/// given size.
-///
-/// @param poolInfo - The current state of the pool
-///
-/// @param poolConfig - The pool's configuration
-///
-/// @param shortAmount - The amount of longs to short
-///
-/// @param openSharePrice - The open share price of the pool's current
-/// checkpoint
-#[wasm_bindgen(skip_jsdoc)]
-pub fn getShortDeposit(
-    poolInfo: &PoolInfo,
-    poolConfig: &PoolConfig,
-    shortAmount: String,
-    spotPrice: String,
-    openSharePrice: String,
-) -> String {
-    utils::set_panic_hook();
-    let _state = State::from(&WasmState {
-        info: serde_wasm_bindgen::from_value(poolInfo.into()).unwrap(),
-        config: serde_wasm_bindgen::from_value(poolConfig.into()).unwrap(),
-    });
-
-    _state
-        .get_short_deposit(
-            FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap()),
-            FixedPoint::from(I256::from_raw(U256::from_dec_str(&spotPrice).unwrap())),
-            FixedPoint::from(I256::from_raw(U256::from_dec_str(&openSharePrice).unwrap())),
-        )
-        .unwrap()
-        .to_string()
-}
-
 #[derive(Serialize, Deserialize)]
 pub struct WasmFees {
     pub curve: String,
     pub flat: String,
-    pub governance: String,
+    pub governanceLP: String,
+    pub governanceZombie: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -314,7 +258,6 @@ pub struct WasmPoolConfig {
     pub fees: WasmFees,
     pub linkerFactory: String,
     pub linkerCodeHash: String,
-    pub precisionThreshold: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -332,6 +275,7 @@ pub struct WasmPoolInfo {
     pub withdrawalSharesProceeds: String,
     pub lpSharePrice: String,
     pub longExposure: String,
+    pub zombieShareReserves: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -350,7 +294,10 @@ impl From<&WasmState> for State {
                 fees: _Fees {
                     curve: U256::from_dec_str(&wasm_state.config.fees.curve).unwrap(),
                     flat: U256::from_dec_str(&wasm_state.config.fees.flat).unwrap(),
-                    governance: U256::from_dec_str(&wasm_state.config.fees.governance).unwrap(),
+                    governance_lp: U256::from_dec_str(&wasm_state.config.fees.governanceLP)
+                        .unwrap(),
+                    governance_zombie: U256::from_dec_str(&wasm_state.config.fees.governanceZombie)
+                        .unwrap(),
                 },
                 initial_share_price: U256::from_dec_str(&wasm_state.config.initialSharePrice)
                     .unwrap(),
@@ -368,8 +315,6 @@ impl From<&WasmState> for State {
                 linker_code_hash: hex::decode(&wasm_state.config.linkerCodeHash)
                     .unwrap()
                     .try_into()
-                    .unwrap(),
-                precision_threshold: U256::from_dec_str(&wasm_state.config.precisionThreshold)
                     .unwrap(),
             },
             info: _PoolInfo {
@@ -398,6 +343,8 @@ impl From<&WasmState> for State {
                     &wasm_state.info.withdrawalSharesReadyToWithdraw,
                 )
                 .unwrap(),
+                zombie_share_reserves: U256::from_dec_str(&wasm_state.info.zombieShareReserves)
+                    .unwrap(),
             },
         }
     }
