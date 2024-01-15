@@ -4,7 +4,7 @@ const ZERO_ADDRESS = '0x'.padEnd(42, '0');
 // const MAX_U256 = '0x'.padEnd(66, 'F');
 
 // const MAX_BUDGET = BigInt(MAX_U256).toString();
-const mockPoolInfo = {
+const examplePoolInfo = {
   shareReserves: '10000000000000000000000000',
   shareAdjustment: '0',
   zombieShareReserves: '0',
@@ -20,7 +20,7 @@ const mockPoolInfo = {
   lpSharePrice: '1000000000000000000',
   longExposure: '0',
 };
-const mockPoolConfig = {
+const examplePoolConfig = {
   baseToken: ZERO_ADDRESS,
   governance: ZERO_ADDRESS,
   feeCollector: ZERO_ADDRESS,
@@ -43,15 +43,21 @@ const mockPoolConfig = {
 async function main() {
   hyperdriveWasm.initSync(hyperdriveWasm.wasmBuffer);
 
-  const spotRate = hyperdriveWasm.getSpotRate(mockPoolInfo, mockPoolConfig);
+  const spotRate = hyperdriveWasm.getSpotRate(
+    examplePoolInfo,
+    examplePoolConfig
+  );
   console.log('spotRate:', spotRate);
 
-  const spotPrice = hyperdriveWasm.getSpotPrice(mockPoolInfo, mockPoolConfig);
+  const spotPrice = hyperdriveWasm.getSpotPrice(
+    examplePoolInfo,
+    examplePoolConfig
+  );
   console.log('spotPrice:', spotPrice);
 
   const baseAmountRequired = hyperdriveWasm.calcOpenShort(
-    mockPoolInfo,
-    mockPoolConfig,
+    examplePoolInfo,
+    examplePoolConfig,
     (10e18).toString()
   );
   console.log('baseAmountRequired:', baseAmountRequired);

@@ -1,4 +1,7 @@
 #!/bin/bash
+original_dir=$(pwd)
+cd $(dirname $0)/..
+
 set -ex
 
 rm -rf pkg
@@ -30,3 +33,6 @@ mv package.temp.json package.json
 
 # Create a tarball of the package
 npm pack
+
+# Move back to the original directory
+cd $original_dir
