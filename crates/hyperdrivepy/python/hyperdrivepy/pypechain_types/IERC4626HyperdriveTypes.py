@@ -44,15 +44,16 @@ class MarketState:
 
     shareReserves: int
     bondReserves: int
-    shareAdjustment: int
-    zombieShareReserves: int
     longExposure: int
     longsOutstanding: int
+    shareAdjustment: int
     shortsOutstanding: int
     longAverageMaturityTime: int
     shortAverageMaturityTime: int
     isInitialized: bool
     isPaused: bool
+    zombieBaseProceeds: uint112
+    zombieShareReserves: int
 
 
 @dataclass
@@ -89,6 +90,7 @@ class PoolInfo:
 
     shareReserves: int
     shareAdjustment: int
+    zombieBaseProceeds: int
     zombieShareReserves: int
     bondReserves: int
     lpTotalSupply: int
