@@ -1,18 +1,18 @@
 use ethers::core::types::{I256, U256};
 use fixed_point::FixedPoint;
 
-use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::PyErr;
+use pyo3::{exceptions::PyValueError, ffi::PyOS_InitInterrupts};
 
 use hyperdrive_math::{
-    calculate_bonds_given_shares_and_rate as rs_calculate_bonds_given_shares_and_rate,
+    calculate_initial_bond_reserves as rs_calculate_initial_bond_reserves,
     get_effective_share_reserves as rs_get_effective_share_reserves,
     get_time_stretch as rs_get_time_stretch,
 };
 
 #[pyfunction]
-pub fn calculate_bonds_given_shares_and_rate(
+pub fn calculate_initial_bond_reserves(
     effective_share_reserves: &str,
     initial_share_price: &str,
     apr: &str,
@@ -40,7 +40,7 @@ pub fn calculate_bonds_given_shares_and_rate(
     let time_stretch_fp = FixedPoint::from(U256::from_dec_str(time_stretch).map_err(|_| {
         PyErr::new::<PyValueError, _>("Failed to convert time_stretch string to U256")
     })?);
-    let result_fp = rs_calculate_bonds_given_shares_and_rate(
+    let result_fp = rs_calculate_initial_bond_reserves(
         effective_share_reserves_fp,
         initial_share_price_fp,
         apr_fp,
@@ -68,12 +68,16 @@ pub fn get_effective_share_reserves(
 }
 
 #[pyfunction]
-pub fn get_time_stretch(rate: &str) -> PyResult<String> {
+pub fn get_time_stretch(rate: &str, position_duration: &str) -> PyResult<String> {
     let rate_fp = FixedPoint::from(
         U256::from_dec_str(rate)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert rate string to U256"))?,
     );
-    let result_fp = rs_get_time_stretch(rate_fp);
+    let position_duration_fp = FixedPoint::from(
+        U256::from_dec_str(position_duration)
+            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert rate string to U256"))?,
+    );
+    let result_fp = rs_get_time_stretch(rate_fp, position_duration_fp);
     let result = U256::from(result_fp).to_string();
     return Ok(result);
 }
