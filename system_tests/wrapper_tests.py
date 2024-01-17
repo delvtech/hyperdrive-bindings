@@ -22,6 +22,7 @@ POOL_CONFIG = PoolConfig(
 POOL_INFO = PoolInfo(
     shareReserves=1_000_000 * 10**18,
     shareAdjustment=0,
+    zombieBaseProceeds=0,
     zombieShareReserves=0,
     bondReserves=2_000_000 * 10**18,
     lpTotalSupply=3_000_000 * 10**18,

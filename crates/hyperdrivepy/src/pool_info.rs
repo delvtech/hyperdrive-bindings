@@ -16,6 +16,7 @@ impl FromPyObject<'_> for PyPoolInfo {
     fn extract(ob: &PyAny) -> PyResult<Self> {
         let share_reserves = extract_u256_from_attr(ob, "shareReserves")?;
         let share_adjustment = extract_i256_from_attr(ob, "shareAdjustment")?;
+        let zombie_base_proceeds = extract_u256_from_attr(ob, "zombieBaseProceeds")?;
         let zombie_share_reserves = extract_u256_from_attr(ob, "zombieShareReserves")?;
         let bond_reserves = extract_u256_from_attr(ob, "bondReserves")?;
         let lp_total_supply = extract_u256_from_attr(ob, "lpTotalSupply")?;
@@ -33,6 +34,7 @@ impl FromPyObject<'_> for PyPoolInfo {
         let pool_info = PoolInfo {
             share_reserves,
             share_adjustment,
+            zombie_base_proceeds,
             zombie_share_reserves,
             bond_reserves,
             lp_total_supply,

@@ -44,6 +44,7 @@ class PoolInfo:
 
     shareReserves: str
     shareAdjustment: str
+    zombieBaseProceeds: str
     zombieShareReserves: str
     bondReserves: str
     lpTotalSupply: str
@@ -113,6 +114,7 @@ class PoolInfoType(Protocol):
 
     shareReserves: int
     shareAdjustment: int
+    zombieBaseProceeds: int
     zombieShareReserves: int
     lpTotalSupply: int
     sharePrice: int
