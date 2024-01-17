@@ -49,13 +49,13 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: 'v0.4.0'
+          ref: 'v0.5.0'
           path: './hyperdrive'
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
       - name: build hyperdrive-wasm
         working-directory: crates/hyperdrive-wasm
-        run: sh build.sh
+        run: sh scripts/build.sh
 
       - name: publish hyperdrive-wasm
         if: github.event_name == 'release'
