@@ -5,8 +5,10 @@ mod short;
 mod types;
 mod utils;
 
+use ethers::types::U256;
 use hyperdrive_math::State;
 use types::{JsPoolConfig, JsPoolInfo};
+use utils::set_panic_hook;
 use wasm_bindgen::prelude::*;
 
 /// Gets the pool's spot price, i.e. the price to open a long of 1.
@@ -16,12 +18,13 @@ use wasm_bindgen::prelude::*;
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getSpotPrice(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
-    utils::set_panic_hook();
+    set_panic_hook();
     let state = State {
         config: poolConfig.into(),
         info: poolInfo.into(),
     };
-    state.get_spot_price().to_string()
+    let result_fp = state.get_spot_price();
+    U256::from(result_fp).to_string()
 }
 
 /// Gets the pool's fixed APR, i.e. the fixed rate a user locks in when they
@@ -32,10 +35,11 @@ pub fn getSpotPrice(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String 
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getSpotRate(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
-    utils::set_panic_hook();
+    set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    state.get_spot_rate().to_string()
+    let result_fp = state.get_spot_rate();
+    U256::from(result_fp).to_string()
 }

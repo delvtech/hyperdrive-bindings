@@ -25,7 +25,9 @@ pub fn calcOpenLong(
     };
     let base_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
-    state.calculate_open_long(base_amount).to_string()
+    let result_fp = state.calculate_open_long(base_amount);
+
+    U256::from(result_fp).to_string()
 }
 
 /// Gets the max long that can be opened given a budget.
@@ -56,11 +58,11 @@ pub fn getMaxLong(
     let _budget = U256::from_dec_str(&budget).unwrap();
     let checkpoint_exposure: I256 = I256::from_dec_str(&checkpointExposure).unwrap();
 
-    state
-        .get_max_long(
-            _budget,
-            checkpoint_exposure,
-            maybeMaxIterations.map(|x| x.into()),
-        )
-        .to_string()
+    let result_fp = state.get_max_long(
+        _budget,
+        checkpoint_exposure,
+        maybeMaxIterations.map(|x| x.into()),
+    );
+
+    U256::from(result_fp).to_string()
 }

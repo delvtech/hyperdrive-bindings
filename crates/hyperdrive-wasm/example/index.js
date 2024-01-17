@@ -1,9 +1,9 @@
 import * as hyperdriveWasm from '@delvtech/hyperdrive-wasm';
 
 const ZERO_ADDRESS = '0x'.padEnd(42, '0');
-// const MAX_U256 = '0x'.padEnd(66, 'F');
+const MAX_U256 = '0x'.padEnd(66, 'F');
+const MAX_BUDGET = BigInt(MAX_U256).toString();
 
-// const MAX_BUDGET = BigInt(MAX_U256).toString();
 const examplePoolInfo = {
   shareReserves: '10000000000000000000000000',
   shareAdjustment: '0',
@@ -49,18 +49,26 @@ async function main() {
   );
   console.log('spotRate:', spotRate);
 
+  const maxLong = hyperdriveWasm.getMaxLong(
+    examplePoolInfo,
+    examplePoolConfig,
+    MAX_BUDGET,
+    '90844806244066488'
+  );
+  console.log('maxLong:', maxLong);
+
+  const baseForMaxLong = hyperdriveWasm.calcOpenLong(
+    examplePoolInfo,
+    examplePoolConfig,
+    maxLong
+  );
+  console.log('baseForMaxLong:', baseForMaxLong);
+
   const spotPrice = hyperdriveWasm.getSpotPrice(
     examplePoolInfo,
     examplePoolConfig
   );
   console.log('spotPrice:', spotPrice);
-
-  const baseAmountRequired = hyperdriveWasm.calcOpenShort(
-    examplePoolInfo,
-    examplePoolConfig,
-    (10e18).toString()
-  );
-  console.log('baseAmountRequired:', baseAmountRequired);
 }
 
 main();

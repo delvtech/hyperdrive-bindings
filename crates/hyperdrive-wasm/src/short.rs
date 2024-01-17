@@ -28,10 +28,11 @@ pub fn calcOpenShort(
 
     let spot_price = state.get_spot_price();
 
-    state
+    let result_fp = state
         .calculate_open_short(short_amount, spot_price, fixed!(0))
-        .unwrap()
-        .to_string()
+        .unwrap();
+
+    U256::from(result_fp).to_string()
 }
 
 /// Get the max amount of longs that can be shorted given the current state of
@@ -77,13 +78,13 @@ pub fn getMaxShort(
         .as_ref()
         .map(|price_str| FixedPoint::from(U256::from_dec_str(price_str).unwrap()));
 
-    state
-        .get_max_short(
-            _budget,
-            open_share_price,
-            checkpoint_exposure,
-            _maybe_conservative_price,
-            maybeMaxIterations.map(|x| x.into()),
-        )
-        .to_string()
+    let result_fp = state.get_max_short(
+        _budget,
+        open_share_price,
+        checkpoint_exposure,
+        _maybe_conservative_price,
+        maybeMaxIterations.map(|x| x.into()),
+    );
+
+    U256::from(result_fp).to_string()
 }
