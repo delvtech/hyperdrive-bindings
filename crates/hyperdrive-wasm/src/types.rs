@@ -1,5 +1,3 @@
-#![allow(non_snake_case)]
-
 use ethers::core::types::{Address, I256, U256};
 use hyperdrive_wrappers::wrappers::i_hyperdrive::{Fees, PoolConfig, PoolInfo};
 use serde::{Deserialize, Serialize};
