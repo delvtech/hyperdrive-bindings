@@ -7,6 +7,7 @@ const MAX_BUDGET = BigInt(MAX_U256).toString();
 const examplePoolInfo = {
   shareReserves: '10000000000000000000000000',
   shareAdjustment: '0',
+  zombieBaseProceeds: '0',
   zombieShareReserves: '0',
   bondReserves: '10217899519533796120000000',
   lpTotalSupply: '9999990000000000000000000',

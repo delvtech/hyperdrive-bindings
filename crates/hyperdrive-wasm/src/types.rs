@@ -49,6 +49,7 @@ interface JsPoolInfo {
     withdrawalSharesProceeds: string,
     lpSharePrice: string,
     longExposure: string,
+    zombieBaseProceeds: string,
     zombieShareReserves: string,
 }
 "#;
@@ -106,6 +107,7 @@ pub struct StringPoolInfo {
     pub withdrawalSharesProceeds: String,
     pub lpSharePrice: String,
     pub longExposure: String,
+    pub zombieBaseProceeds: String,
     pub zombieShareReserves: String,
 }
 
@@ -133,6 +135,7 @@ impl From<&JsPoolInfo> for PoolInfo {
                 &js_pool_info.withdrawalSharesReadyToWithdraw,
             )
             .unwrap(),
+            zombie_base_proceeds: U256::from_dec_str(&js_pool_info.zombieBaseProceeds).unwrap(),
             zombie_share_reserves: U256::from_dec_str(&js_pool_info.zombieShareReserves).unwrap(),
         }
     }
