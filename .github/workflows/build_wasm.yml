@@ -55,7 +55,7 @@ jobs:
 
       - name: build hyperdrive-wasm
         working-directory: crates/hyperdrive-wasm
-        run: sh build.sh
+        run: sh scripts/build.sh
 
       - name: publish hyperdrive-wasm
         if: github.event_name == 'release'
