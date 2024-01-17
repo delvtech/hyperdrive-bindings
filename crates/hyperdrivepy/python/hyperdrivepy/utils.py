@@ -41,6 +41,7 @@ def _serialize_pool_info(pool_info: types.PoolInfoType) -> types.PoolInfo:
     return types.PoolInfo(
         shareReserves=str(pool_info.shareReserves),
         shareAdjustment=str(pool_info.shareAdjustment),
+        zombieBaseProceeds=str(pool_info.zombieBaseProceeds),
         zombieShareReserves=str(pool_info.zombieShareReserves),
         bondReserves=str(pool_info.bondReserves),
         lpTotalSupply=str(pool_info.lpTotalSupply),

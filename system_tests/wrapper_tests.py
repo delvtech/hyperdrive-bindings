@@ -10,7 +10,7 @@ POOL_CONFIG = PoolConfig(
     initialSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18
-    positionDuration=604_800,
+    positionDuration=60 * 60 * 24 * 365,  # 1 year
     checkpointDuration=86_400,
     timeStretch=1 * 10**17,  # 0.1e18
     governance="0xabcdef1234567890abcdef1234567890abcdef12",
@@ -22,6 +22,7 @@ POOL_CONFIG = PoolConfig(
 POOL_INFO = PoolInfo(
     shareReserves=1_000_000 * 10**18,
     shareAdjustment=0,
+    zombieBaseProceeds=0,
     zombieShareReserves=0,
     bondReserves=2_000_000 * 10**18,
     lpTotalSupply=3_000_000 * 10**18,
@@ -88,6 +89,7 @@ def test_get_time_stretch():
     """test get_time_stretch."""
     time_stretch = hyperdrivepy.get_time_stretch(
         hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
+        str(POOL_CONFIG.positionDuration),
     )
     assert time_stretch is not None, "Failed to get time_stretch."
     assert isinstance(time_stretch, str), "Expected time_stretch to be a string."
@@ -105,13 +107,13 @@ def test_get_effective_share_reserves():
     assert int(effective_share_reserves) > 0, "Expected effective_share_reserves to be > 0."
 
 
-def test_calculate_bonds_given_shares_and_rate():
-    """Test calculate_bonds_given_shares_and_rate."""
+def test_calculate_initial_bond_reserves():
+    """Test calculate_initial_bond_reserves."""
     effective_share_reserves = hyperdrivepy.get_effective_share_reserves(
         str(POOL_INFO.shareReserves),
         str(POOL_INFO.shareAdjustment),
     )
-    bonds = hyperdrivepy.calculate_bonds_given_shares_and_rate(
+    bonds = hyperdrivepy.calculate_initial_bond_reserves(
         effective_share_reserves,
         str(POOL_CONFIG.initialSharePrice),
         hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
