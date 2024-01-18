@@ -89,7 +89,15 @@ def test_get_time_stretch():
     """test get_time_stretch."""
     time_stretch = hyperdrivepy.get_time_stretch(
         hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
-        str(POOL_CONFIG.positionDuration),
+        str(60 * 60 * 24 * 365),  # 1 year
+    )
+    assert time_stretch is not None, "Failed to get time_stretch."
+    assert isinstance(time_stretch, str), "Expected time_stretch to be a string."
+    assert float(time_stretch) > 0, "Expected time_stretch to be > 0."
+
+    time_stretch = hyperdrivepy.get_time_stretch(
+        hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
+        str(60 * 60 * 24 * 30),  # ~1 month
     )
     assert time_stretch is not None, "Failed to get time_stretch."
     assert isinstance(time_stretch, str), "Expected time_stretch to be a string."
