@@ -13,12 +13,14 @@ def get_time_stretch(rate: str, position_duration: str) -> str:
 
     Arguments
     ---------
-    rate : str (FixedPoint)
+    rate: str (FixedPoint)
         The pool's spot rate (aka apr, or fixed rate).
+    position_duration: str(FixedPoint)
+        The amount of time before a trade matures.
 
     Returns
     -------
-    time_stretch : str (FixedPoint)
+    time_stretch: str (FixedPoint)
         The time stretch parameter (tau).
     """
     return rust_module.get_time_stretch(rate, position_duration)
@@ -35,14 +37,14 @@ def get_effective_share_reserves(
 
     Arguments
     ---------
-    share_reserves : str (FixedPoint)
+    share_reserves: str (FixedPoint)
         The pool's share reserves.
-    share_adjustment : str (I256)
+    share_adjustment: str (I256)
         The zeta factor for adjusting share reserves.
 
     Returns
     -------
-    effective_share_reserves : str (FixedPoint)
+    effective_share_reserves: str (FixedPoint)
         The adjusted share reserves, accounting for the zeta factor.
     """
     return rust_module.get_effective_share_reserves(share_reserves, share_adjustment)
@@ -65,22 +67,22 @@ def calculate_initial_bond_reserves(
 
     Arguments
     ---------
-    effective_share_reserves : str (FixedPoint)
+    effective_share_reserves: str (FixedPoint)
         The pool's effective share reserves. The effective share
         reserves are a modified version of the share reserves
         used when pricing trades.
-    initial_share_price : str (FixedPoint)
+    initial_share_price: str (FixedPoint)
         The pool's initial share price.
-    apr : str (FixedPoint)
+    apr: str (FixedPoint)
         The pool's APR.
-    position_duration : str (FixedPoint)
+    position_duration: str (FixedPoint)
         The amount of time until maturity in seconds.
-    time_stretch : str (FixedPoint)
+    time_stretch: str (FixedPoint)
         The time stretch parameter (tau).
 
     Returns
     -------
-    bond_reserves : str (FixedPoint)
+    bond_reserves: str (FixedPoint)
         The bond reserves (without adjustment) that make
         the pool have a specified APR.
     """
