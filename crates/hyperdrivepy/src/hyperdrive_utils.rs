@@ -3,7 +3,7 @@ use fixed_point::FixedPoint;
 
 use pyo3::prelude::*;
 use pyo3::PyErr;
-use pyo3::{exceptions::PyValueError, ffi::PyOS_InitInterrupts};
+use pyo3::exceptions::PyValueError;
 
 use hyperdrive_math::{
     calculate_initial_bond_reserves as rs_calculate_initial_bond_reserves,
