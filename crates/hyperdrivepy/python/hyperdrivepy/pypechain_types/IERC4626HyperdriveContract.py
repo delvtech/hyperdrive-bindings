@@ -9,6 +9,8 @@ https://github.com/delvtech/pypechain"""
 # contracts control how many attributes and arguments we have in generated code
 # pylint: disable=too-many-instance-attributes
 # pylint: disable=too-many-arguments
+# pylint: disable=line-too-long
+# pylint: disable=too-few-public-methods
 
 # we don't need else statement if the other conditionals all have return,
 # but it's easier to generate
