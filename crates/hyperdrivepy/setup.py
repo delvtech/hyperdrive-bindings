@@ -1,4 +1,5 @@
 """Entry point for installing hyperdrive math python package"""
+
 from setuptools import setup
 from setuptools_rust import Binding, RustExtension
 

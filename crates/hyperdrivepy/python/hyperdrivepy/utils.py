@@ -1,4 +1,5 @@
 """Helper functions for the wrappers."""
+
 # pylint: disable=no-name-in-module
 from . import hyperdrivepy as rust_module  # type: ignore
 from . import types

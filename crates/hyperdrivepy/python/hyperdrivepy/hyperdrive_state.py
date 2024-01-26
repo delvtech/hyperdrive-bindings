@@ -1,4 +1,5 @@
 """Python wrapper for the rust hyperdrive_math::State module."""
+
 from __future__ import annotations
 
 from . import types

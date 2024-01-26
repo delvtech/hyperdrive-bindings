@@ -1,4 +1,5 @@
 """Python wrapper for the rust hyperdrive_math::utils module."""
+
 from __future__ import annotations
 
 # pylint: disable=no-name-in-module

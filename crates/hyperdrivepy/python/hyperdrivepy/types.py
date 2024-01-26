@@ -1,4 +1,5 @@
 """Types for the hyperdrive contract."""
+
 # contracts have PascalCase names
 # pylint: disable=invalid-name
 # We do not define the number of instance attributes
