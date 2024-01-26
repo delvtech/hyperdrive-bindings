@@ -89,7 +89,7 @@ impl HyperdriveState {
         &self,
         short_amount: &str,
         spot_price: &str,
-        open_share_price: &str,
+        open_vault_share_price: &str,
     ) -> PyResult<String> {
         let short_amount_fp = FixedPoint::from(U256::from_dec_str(short_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert short_amount string to U256")
@@ -97,13 +97,13 @@ impl HyperdriveState {
         let spot_price_fp = FixedPoint::from(U256::from_dec_str(spot_price).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert spot_price string to U256")
         })?);
-        let open_share_price_fp =
-            FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
+        let open_vault_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(open_vault_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert open_vault_share_price string to U256")
             })?);
         let result_fp = self
             .state
-            .calculate_open_short(short_amount_fp, spot_price_fp, open_share_price_fp)
+            .calculate_open_short(short_amount_fp, spot_price_fp, open_vault_share_price_fp)
             .unwrap();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
@@ -112,20 +112,20 @@ impl HyperdriveState {
     pub fn calculate_close_short(
         &self,
         bond_amount: &str,
-        open_share_price: &str,
-        close_share_price: &str,
+        open_vault_share_price: &str,
+        close_vault_share_price: &str,
         normalized_time_remaining: &str,
     ) -> PyResult<String> {
         let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
         })?);
-        let open_share_price_fp =
-            FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
+        let open_vault_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(open_vault_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert open_vault_share_price string to U256")
             })?);
-        let close_share_price_fp =
-            FixedPoint::from(U256::from_dec_str(close_share_price).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert close_share_price string to U256")
+        let close_vault_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(close_vault_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert close_vault_share_price string to U256")
             })?);
         let normalized_time_remaining_fp =
             FixedPoint::from(U256::from_dec_str(normalized_time_remaining).map_err(|_| {
@@ -135,8 +135,8 @@ impl HyperdriveState {
             })?);
         let result_fp = self.state.calculate_close_short(
             bond_amount_fp,
-            open_share_price_fp,
-            close_share_price_fp,
+            open_vault_share_price_fp,
+            close_vault_share_price_fp,
             normalized_time_remaining_fp,
         );
         let result = U256::from(result_fp).to_string();
@@ -217,7 +217,7 @@ impl HyperdriveState {
     pub fn get_max_short(
         &self,
         budget: &str,
-        open_share_price: &str,
+        open_vault_share_price: &str,
         checkpoint_exposure: &str,
         maybe_conservative_price: Option<&str>,
         maybe_max_iterations: Option<usize>,
@@ -225,9 +225,9 @@ impl HyperdriveState {
         let budget_fp = FixedPoint::from(U256::from_dec_str(budget).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
         })?);
-        let open_share_price_fp =
-            FixedPoint::from(U256::from_dec_str(open_share_price).map_err(|_| {
-                PyErr::new::<PyValueError, _>("Failed to convert open_share_price string to U256")
+        let open_vault_share_price_fp =
+            FixedPoint::from(U256::from_dec_str(open_vault_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>("Failed to convert open_vault_share_price string to U256")
             })?);
         let checkpoint_exposure_i = I256::from_dec_str(checkpoint_exposure).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
@@ -246,7 +246,7 @@ impl HyperdriveState {
         };
         let result_fp = self.state.get_max_short(
             budget_fp,
-            open_share_price_fp,
+            open_vault_share_price_fp,
             checkpoint_exposure_i,
             maybe_conservative_price_fp,
             maybe_max_iterations,
