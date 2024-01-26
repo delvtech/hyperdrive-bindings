@@ -39,5 +39,5 @@ From the hyperdrive-sdk project root, run:
 
 ```shell
 pip install --upgrade -r requirements-dev.txt
-pypechain --line_length 120 --output_dir crates/hyperdrivepy/python/hyperdrivepy/pypechain_types hyperdrive/out/IERC4626Hyperdrive.sol/
+pypechain --line-length 120 --output-dir crates/hyperdrivepy/python/hyperdrivepy/pypechain_types hyperdrive/out/IERC4626Hyperdrive.sol/
 ```
