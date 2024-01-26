@@ -20,7 +20,7 @@ impl FromPyObject<'_> for PyPoolConfig {
         let base_token = extract_address_from_attr(ob, "baseToken")?;
         let linker_factory = extract_address_from_attr(ob, "linkerFactory")?;
         let linker_code_hash = extract_bytes32_from_attr(ob, "linkerCodeHash")?;
-        let initial_share_price = extract_u256_from_attr(ob, "initialSharePrice")?;
+        let initial_vault_share_price = extract_u256_from_attr(ob, "initialVaultSharePrice")?;
         let minimum_share_reserves = extract_u256_from_attr(ob, "minimumShareReserves")?;
         let minimum_transaction_amount = extract_u256_from_attr(ob, "minimumTransactionAmount")?;
         let position_duration = extract_u256_from_attr(ob, "positionDuration")?;
@@ -34,7 +34,7 @@ impl FromPyObject<'_> for PyPoolConfig {
             base_token,
             linker_factory,
             linker_code_hash,
-            initial_share_price,
+            initial_vault_share_price: initial_vault_share_price,
             minimum_share_reserves,
             minimum_transaction_amount,
             position_duration,

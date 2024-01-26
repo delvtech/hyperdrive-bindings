@@ -27,7 +27,7 @@ class PoolConfig:
     baseToken: str
     linkerFactory: str
     linkerCodeHash: str
-    initialSharePrice: str
+    initialVaultSharePrice: str
     minimumShareReserves: str
     minimumTransactionAmount: str
     positionDuration: str
@@ -48,7 +48,7 @@ class PoolInfo:
     zombieShareReserves: str
     bondReserves: str
     lpTotalSupply: str
-    sharePrice: str
+    vaultSharePrice: str
     longsOutstanding: str
     longAverageMaturityTime: str
     shortsOutstanding: str
@@ -63,7 +63,7 @@ class PoolInfo:
 class CheckpointType(Protocol):
     """Checkpoint struct."""
 
-    sharePrice: int
+    vaultSharePrice: int
     longExposure: int
 
 
@@ -97,7 +97,7 @@ class PoolConfigType(Protocol):
     baseToken: str
     linkerFactory: str
     linkerCodeHash: bytes
-    initialSharePrice: int
+    initialVaultSharePrice: int
     minimumShareReserves: int
     minimumTransactionAmount: int
     positionDuration: int
@@ -117,7 +117,7 @@ class PoolInfoType(Protocol):
     zombieBaseProceeds: int
     zombieShareReserves: int
     lpTotalSupply: int
-    sharePrice: int
+    vaultSharePrice: int
     longsOutstanding: int
     longAverageMaturityTime: int
     shortsOutstanding: int

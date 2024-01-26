@@ -20,7 +20,7 @@ impl FromPyObject<'_> for PyPoolInfo {
         let zombie_share_reserves = extract_u256_from_attr(ob, "zombieShareReserves")?;
         let bond_reserves = extract_u256_from_attr(ob, "bondReserves")?;
         let lp_total_supply = extract_u256_from_attr(ob, "lpTotalSupply")?;
-        let share_price = extract_u256_from_attr(ob, "sharePrice")?;
+        let vault_share_price = extract_u256_from_attr(ob, "vaultSharePrice")?;
         let longs_outstanding = extract_u256_from_attr(ob, "longsOutstanding")?;
         let long_average_maturity_time = extract_u256_from_attr(ob, "longAverageMaturityTime")?;
         let shorts_outstanding = extract_u256_from_attr(ob, "shortsOutstanding")?;
@@ -38,7 +38,7 @@ impl FromPyObject<'_> for PyPoolInfo {
             zombie_share_reserves,
             bond_reserves,
             lp_total_supply,
-            share_price,
+            vault_share_price,
             longs_outstanding,
             long_average_maturity_time,
             shorts_outstanding,

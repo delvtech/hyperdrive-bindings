@@ -7,7 +7,7 @@ POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
     linkerFactory="0x1234567890abcdef1234567890abcdef12345678",
     linkerCodeHash=bytes(32),
-    initialSharePrice=1 * 10**18,  # 1e18
+    initialVaultSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18
     positionDuration=60 * 60 * 24 * 365,  # 1 year
@@ -26,7 +26,7 @@ POOL_INFO = PoolInfo(
     zombieShareReserves=0,
     bondReserves=2_000_000 * 10**18,
     lpTotalSupply=3_000_000 * 10**18,
-    sharePrice=1 * 10**18,
+    vaultSharePrice=1 * 10**18,
     longsOutstanding=0,
     longAverageMaturityTime=0,
     shortsOutstanding=0,
@@ -123,7 +123,7 @@ def test_calculate_initial_bond_reserves():
     )
     bonds = hyperdrivepy.calculate_initial_bond_reserves(
         effective_share_reserves,
-        str(POOL_CONFIG.initialSharePrice),
+        str(POOL_CONFIG.initialVaultSharePrice),
         hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
         str(POOL_CONFIG.positionDuration),
         str(POOL_CONFIG.timeStretch),

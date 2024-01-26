@@ -20,7 +20,7 @@ def _serialize_pool_config(
         baseToken=str(pool_config.baseToken),
         linkerFactory=str(pool_config.linkerFactory),
         linkerCodeHash=pool_config.linkerCodeHash.hex(),  # bytes to string in hex format
-        initialSharePrice=str(pool_config.initialSharePrice),
+        initialVaultSharePrice=str(pool_config.initialVaultSharePrice),
         minimumShareReserves=str(pool_config.minimumShareReserves),
         minimumTransactionAmount=str(pool_config.minimumTransactionAmount),
         positionDuration=str(pool_config.positionDuration),
@@ -45,7 +45,7 @@ def _serialize_pool_info(pool_info: types.PoolInfoType) -> types.PoolInfo:
         zombieShareReserves=str(pool_info.zombieShareReserves),
         bondReserves=str(pool_info.bondReserves),
         lpTotalSupply=str(pool_info.lpTotalSupply),
-        sharePrice=str(pool_info.sharePrice),
+        vaultSharePrice=str(pool_info.vaultSharePrice),
         longsOutstanding=str(pool_info.longsOutstanding),
         longAverageMaturityTime=str(pool_info.longAverageMaturityTime),
         shortsOutstanding=str(pool_info.shortsOutstanding),
