@@ -1,4 +1,5 @@
 """Python wrapper for the rust hyperdrive_math::utils module."""
+
 from __future__ import annotations
 
 # pylint: disable=no-name-in-module
@@ -52,7 +53,7 @@ def get_effective_share_reserves(
 
 def calculate_initial_bond_reserves(
     effective_share_reserves: str,
-    initial_share_price: str,
+    initial_vault_share_price: str,
     apr: str,
     position_duration: str,
     time_stretch: str,
@@ -71,7 +72,7 @@ def calculate_initial_bond_reserves(
         The pool's effective share reserves. The effective share
         reserves are a modified version of the share reserves
         used when pricing trades.
-    initial_share_price: str (FixedPoint)
+    initial_vault_share_price: str (FixedPoint)
         The pool's initial share price.
     apr: str (FixedPoint)
         The pool's APR.
@@ -87,5 +88,5 @@ def calculate_initial_bond_reserves(
         the pool have a specified APR.
     """
     return rust_module.calculate_initial_bond_reserves(
-        effective_share_reserves, initial_share_price, apr, position_duration, time_stretch
+        effective_share_reserves, initial_vault_share_price, apr, position_duration, time_stretch
     )

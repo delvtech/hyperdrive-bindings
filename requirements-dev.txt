@@ -1,4 +1,4 @@
-black
+black==24.*
 build
 cibuildwheel
 jinja2

@@ -1,13 +1,14 @@
 """Tests for hyperdrive_math.rs wrappers"""
+
 import hyperdrivepy
 import pytest
-from hyperdrivepy.pypechain_types.IERC4626HyperdriveTypes import Fees, PoolConfig, PoolInfo
+from hyperdrivepy.pypechain_types import Fees, PoolConfig, PoolInfo
 
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
     linkerFactory="0x1234567890abcdef1234567890abcdef12345678",
     linkerCodeHash=bytes(32),
-    initialSharePrice=1 * 10**18,  # 1e18
+    initialVaultSharePrice=1 * 10**18,  # 1e18
     minimumShareReserves=1 * 10**17,  # 0.1e18
     minimumTransactionAmount=1 * 10**16,  # 0.001e18
     positionDuration=60 * 60 * 24 * 365,  # 1 year
@@ -26,7 +27,7 @@ POOL_INFO = PoolInfo(
     zombieShareReserves=0,
     bondReserves=2_000_000 * 10**18,
     lpTotalSupply=3_000_000 * 10**18,
-    sharePrice=1 * 10**18,
+    vaultSharePrice=1 * 10**18,
     longsOutstanding=0,
     longAverageMaturityTime=0,
     shortsOutstanding=0,
@@ -123,7 +124,7 @@ def test_calculate_initial_bond_reserves():
     )
     bonds = hyperdrivepy.calculate_initial_bond_reserves(
         effective_share_reserves,
-        str(POOL_CONFIG.initialSharePrice),
+        str(POOL_CONFIG.initialVaultSharePrice),
         hyperdrivepy.get_spot_rate(POOL_CONFIG, POOL_INFO),
         str(POOL_CONFIG.positionDuration),
         str(POOL_CONFIG.timeStretch),
@@ -180,16 +181,16 @@ def test_calculate_open_short():
     """Test for calculate_open_short."""
     short_amount = str(50 * 10**18)
     spot_price = hyperdrivepy.get_spot_price(POOL_CONFIG, POOL_INFO)
-    open_share_price = str(9 * 10**17)
+    open_vault_share_price = str(9 * 10**17)
     base_required = hyperdrivepy.calculate_open_short(
-        POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_share_price
+        POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_vault_share_price
     )
     assert int(base_required) > 0
-    base_required_default_share_price = hyperdrivepy.calculate_open_short(
+    base_required_default_vault_share_price = hyperdrivepy.calculate_open_short(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, None
     )
-    assert int(base_required_default_share_price) > 0
-    assert base_required_default_share_price == hyperdrivepy.calculate_open_short(
+    assert int(base_required_default_vault_share_price) > 0
+    assert base_required_default_vault_share_price == hyperdrivepy.calculate_open_short(
         POOL_CONFIG, POOL_INFO, short_amount, spot_price, "0"
     )
 
@@ -197,11 +198,11 @@ def test_calculate_open_short():
 def test_calculate_close_short():
     """Test for calculate_close_short."""
     short_amount = str(50 * 10**18)
-    open_share_price = str(8 * 10**17)
-    close_share_price = str(9 * 10**17)
+    open_vault_share_price = str(8 * 10**17)
+    close_vault_share_price = str(9 * 10**17)
     normalized_time_remaining = str(9 * 10**17)
     shares_received = hyperdrivepy.calculate_close_short(
-        POOL_CONFIG, POOL_INFO, short_amount, open_share_price, close_share_price, normalized_time_remaining
+        POOL_CONFIG, POOL_INFO, short_amount, open_vault_share_price, close_vault_share_price, normalized_time_remaining
     )
     assert int(shares_received) > 0
 
@@ -237,7 +238,7 @@ def test_max_short():
     """Test get_max_short."""
     # test using the state directly
     budget = str(int(10 * 10**18))  # 10k base
-    open_share_price = str(int(1 * 10**18))  # 1 base
+    open_vault_share_price = str(int(1 * 10**18))  # 1 base
     checkpoint_exposure = str(0)
     conservative_price = None
     max_iterations = 20
@@ -245,7 +246,7 @@ def test_max_short():
         POOL_CONFIG,
         POOL_INFO,
         budget,
-        open_share_price,
+        open_vault_share_price,
         checkpoint_exposure,
         conservative_price,
         max_iterations,
@@ -255,7 +256,7 @@ def test_max_short():
 
 def test_max_short_fail_conversion():
     """Test get_max_short."""
-    open_share_price = str(int(1 * 10**18))  # 1 base
+    open_vault_share_price = str(int(1 * 10**18))  # 1 base
     checkpoint_exposure = str(0)
     conservative_price = None
     max_iterations = 20
@@ -266,7 +267,7 @@ def test_max_short_fail_conversion():
             POOL_CONFIG,
             POOL_INFO,
             budget,
-            open_share_price,
+            open_vault_share_price,
             checkpoint_exposure,
             conservative_price,
             max_iterations,
@@ -277,19 +278,19 @@ def test_max_short_fail_conversion():
             POOL_CONFIG,
             POOL_INFO,
             budget,
-            open_share_price,
+            open_vault_share_price,
             checkpoint_exposure,
             conservative_price,
             max_iterations,
         )
     budget = "10000000000000000000000"  # 10k base
-    open_share_price = "asdf"
-    with pytest.raises(ValueError, match="Failed to convert open_share_price string to U256"):
+    open_vault_share_price = "asdf"
+    with pytest.raises(ValueError, match="Failed to convert open_vault_share_price string to U256"):
         hyperdrivepy.get_max_short(
             POOL_CONFIG,
             POOL_INFO,
             budget,
-            open_share_price,
+            open_vault_share_price,
             checkpoint_exposure,
             conservative_price,
             max_iterations,

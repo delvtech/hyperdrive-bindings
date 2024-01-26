@@ -1,10 +1,11 @@
 """Entry point for installing hyperdrive math python package"""
+
 from setuptools import setup
 from setuptools_rust import Binding, RustExtension
 
 setup(
     name="hyperdrivepy",
-    version="0.5.1",
+    version="0.6.0",
     packages=["hyperdrivepy"],
     package_dir={"": "python"},
     rust_extensions=[

@@ -3,7 +3,7 @@ use fixed_point::FixedPoint;
 
 use pyo3::prelude::*;
 use pyo3::PyErr;
-use pyo3::{exceptions::PyValueError, ffi::PyOS_InitInterrupts};
+use pyo3::exceptions::PyValueError;
 
 use hyperdrive_math::{
     calculate_initial_bond_reserves as rs_calculate_initial_bond_reserves,
@@ -14,7 +14,7 @@ use hyperdrive_math::{
 #[pyfunction]
 pub fn calculate_initial_bond_reserves(
     effective_share_reserves: &str,
-    initial_share_price: &str,
+    initial_vault_share_price: &str,
     apr: &str,
     position_duration: &str,
     time_stretch: &str,
@@ -25,9 +25,9 @@ pub fn calculate_initial_bond_reserves(
                 "Failed to convert effective_share_reserves string to U256",
             )
         })?);
-    let initial_share_price_fp =
-        FixedPoint::from(U256::from_dec_str(initial_share_price).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert initial_share_price string to U256")
+    let initial_vault_share_price_fp =
+        FixedPoint::from(U256::from_dec_str(initial_vault_share_price).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert initial_vault_share_price string to U256")
         })?);
     let apr_fp = FixedPoint::from(
         U256::from_dec_str(apr)
@@ -42,7 +42,7 @@ pub fn calculate_initial_bond_reserves(
     })?);
     let result_fp = rs_calculate_initial_bond_reserves(
         effective_share_reserves_fp,
-        initial_share_price_fp,
+        initial_vault_share_price_fp,
         apr_fp,
         position_duration_fp,
         time_stretch_fp,

@@ -42,7 +42,7 @@ pub fn calcOpenShort(
 ///
 /// @param poolConfig - The pool's configuration
 ///
-/// @param openSharePrice - The open share price of the pool's current
+/// @param openVaultSharePrice - The open share price of the pool's current
 /// checkpoint
 ///
 /// @param checkpointExposure - The exposure of the pool's current checkpoint
@@ -59,7 +59,7 @@ pub fn getMaxShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     budget: String,
-    openSharePrice: String,
+    openVaultSharePrice: String,
     checkpointExposure: String,
     maybeConservativePrice: Option<String>,
     maybeMaxIterations: Option<u8>,
@@ -72,7 +72,7 @@ pub fn getMaxShort(
     let _budget = U256::from_dec_str(&budget).unwrap();
     let checkpoint_exposure: I256 =
         I256::from_raw(U256::from_dec_str(&checkpointExposure).unwrap());
-    let open_share_price: I256 = I256::from_raw(U256::from_dec_str(&openSharePrice).unwrap());
+    let open_vault_share_price: I256 = I256::from_raw(U256::from_dec_str(&openVaultSharePrice).unwrap());
 
     let _maybe_conservative_price: Option<FixedPoint> = maybeConservativePrice
         .as_ref()
@@ -80,7 +80,7 @@ pub fn getMaxShort(
 
     let result_fp = state.get_max_short(
         _budget,
-        open_share_price,
+        open_vault_share_price,
         checkpoint_exposure,
         _maybe_conservative_price,
         maybeMaxIterations.map(|x| x.into()),

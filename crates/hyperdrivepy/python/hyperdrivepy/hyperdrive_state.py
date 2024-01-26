@@ -1,4 +1,5 @@
 """Python wrapper for the rust hyperdrive_math::State module."""
+
 from __future__ import annotations
 
 from . import types
@@ -76,7 +77,7 @@ def get_solvency(
     Returns
     -------
     str (FixedPoint)
-        solvency = share_reserves - long_exposure / share_price - minimum_share_reserves
+        solvency = share_reserves - long_exposure / vault_share_price - minimum_share_reserves
     """
     return _get_interface(pool_config, pool_info).get_solvency()
 
@@ -187,7 +188,7 @@ def calculate_open_short(
     pool_info: types.PoolInfoType,
     short_amount: str,
     spot_price: str,
-    open_share_price: str | None = None,
+    open_vault_share_price: str | None = None,
 ) -> str:
     """Gets the amount of base the trader will need to deposit for a short of a given size.
 
@@ -203,7 +204,7 @@ def calculate_open_short(
         The amount to of bonds to short.
     spot_price: str (FixedPoint)
         The pool's current price for bonds.
-    open_share_price: str (FixedPoint) | None, optional
+    open_vault_share_price: str (FixedPoint) | None, optional
         Optionally provide the open share price for the short.
         If this is not provided or is None, then we will use the pool's current share price.
 
@@ -212,19 +213,19 @@ def calculate_open_short(
     str (FixedPoint)
         The amount of base required to short the bonds (aka the "max loss").
     """
-    if open_share_price is None:
+    if open_vault_share_price is None:
         # the underlying rust code uses current market share price if this is 0
         # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
-        open_share_price = "0"
-    return _get_interface(pool_config, pool_info).calculate_open_short(short_amount, spot_price, open_share_price)
+        open_vault_share_price = "0"
+    return _get_interface(pool_config, pool_info).calculate_open_short(short_amount, spot_price, open_vault_share_price)
 
 
 def calculate_close_short(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     bond_amount: str,
-    open_share_price: str,
-    close_share_price: str,
+    open_vault_share_price: str,
+    close_vault_share_price: str,
     normalized_time_remaining: str,
 ) -> str:
     """Gets the amount of shares the trader will receive from closing a short.
@@ -239,9 +240,9 @@ def calculate_close_short(
         Includes attributes like reserve levels and share prices.
     bond_amount: str (FixedPoint)
         The amount to of bonds provided.
-    open_share_price: str (FixedPoint)
+    open_vault_share_price: str (FixedPoint)
         The share price when the short was opened.
-    close_share_price: str (FixedPoint)
+    close_vault_share_price: str (FixedPoint)
         The share price when the short was closed.
     normalized_time_remaining: str (FixedPoint)
         The time remaining before the short reaches maturity, normalized such that 0 is at opening and 1 is at maturity.
@@ -252,7 +253,7 @@ def calculate_close_short(
         The amount of shares the trader will receive for closing the short.
     """
     return _get_interface(pool_config, pool_info).calculate_close_short(
-        bond_amount, open_share_price, close_share_price, normalized_time_remaining
+        bond_amount, open_vault_share_price, close_vault_share_price, normalized_time_remaining
     )
 
 
@@ -318,7 +319,7 @@ def get_max_short(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     budget: str,
-    open_share_price: str,
+    open_vault_share_price: str,
     checkpoint_exposure: str,
     maybe_conservative_price: str | None,
     maybe_max_iterations: int | None,
@@ -335,7 +336,7 @@ def get_max_short(
         Includes attributes like reserve levels and share prices.
     budget: str (FixedPoint)
         The account budget in base for making a short.
-    open_share_price: str (FixedPoint)
+    open_vault_share_price: str (FixedPoint)
         The share price of underlying vault.
     checkpoint_exposure: str (FixedPoint)
         The net exposure for the given checkpoint.
@@ -351,7 +352,7 @@ def get_max_short(
     """
     return _get_interface(pool_config, pool_info).get_max_short(
         budget,
-        open_share_price,
+        open_vault_share_price,
         checkpoint_exposure,
         maybe_conservative_price,
         maybe_max_iterations,

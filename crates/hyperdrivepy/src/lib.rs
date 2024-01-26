@@ -14,10 +14,9 @@ pub use hyperdrive_utils::{
 };
 pub use pool_config::PyPoolConfig;
 pub use pool_info::PyPoolInfo;
-pub use utils::*;
 
 /// Get the share reserves after subtracting the adjustment used for
-/// A pyO3 wrapper for the hyperdrie_math crate.
+/// A pyO3 wrapper for the hyperdrive_math crate.
 #[pymodule]
 #[pyo3(name = "hyperdrivepy")]
 fn hyperdrivepy(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
