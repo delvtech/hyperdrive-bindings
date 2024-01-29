@@ -578,6 +578,33 @@ class IERC4626HyperdriveIsApprovedForAllContractFunction(ContractFunction):
         return cast(bool, rename_returned_types(structs, return_types, raw_values))
 
 
+class IERC4626HyperdriveIsPauserContractFunction(ContractFunction):
+    """ContractFunction for the isPauser method."""
+
+    def __call__(self, account: str) -> IERC4626HyperdriveIsPauserContractFunction:  # type: ignore
+        clone = super().__call__(dataclass_to_tuple(account))
+        self.kwargs = clone.kwargs
+        self.args = clone.args
+        return self
+
+    def call(
+        self,
+        transaction: TxParams | None = None,
+        block_identifier: BlockIdentifier = "latest",
+        state_override: CallOverride | None = None,
+        ccip_read_enabled: bool | None = None,
+    ) -> bool:
+        """returns bool."""
+        # Define the expected return types from the smart contract call
+
+        return_types = bool
+
+        # Call the function
+
+        raw_values = super().call(transaction, block_identifier, state_override, ccip_read_enabled)
+        return cast(bool, rename_returned_types(structs, return_types, raw_values))
+
+
 class IERC4626HyperdriveLoadContractFunction(ContractFunction):
     """ContractFunction for the load method."""
 
@@ -1152,6 +1179,33 @@ class IERC4626HyperdriveTarget3ContractFunction(ContractFunction):
         return cast(str, rename_returned_types(structs, return_types, raw_values))
 
 
+class IERC4626HyperdriveTarget4ContractFunction(ContractFunction):
+    """ContractFunction for the target4 method."""
+
+    def __call__(self) -> IERC4626HyperdriveTarget4ContractFunction:  # type: ignore
+        clone = super().__call__()
+        self.kwargs = clone.kwargs
+        self.args = clone.args
+        return self
+
+    def call(
+        self,
+        transaction: TxParams | None = None,
+        block_identifier: BlockIdentifier = "latest",
+        state_override: CallOverride | None = None,
+        ccip_read_enabled: bool | None = None,
+    ) -> str:
+        """returns str."""
+        # Define the expected return types from the smart contract call
+
+        return_types = str
+
+        # Call the function
+
+        raw_values = super().call(transaction, block_identifier, state_override, ccip_read_enabled)
+        return cast(str, rename_returned_types(structs, return_types, raw_values))
+
+
 class IERC4626HyperdriveTotalSupplyContractFunction(ContractFunction):
     """ContractFunction for the totalSupply method."""
 
@@ -1299,6 +1353,8 @@ class IERC4626HyperdriveContractFunctions(ContractFunctions):
 
     isApprovedForAll: IERC4626HyperdriveIsApprovedForAllContractFunction
 
+    isPauser: IERC4626HyperdriveIsPauserContractFunction
+
     load: IERC4626HyperdriveLoadContractFunction
 
     name: IERC4626HyperdriveNameContractFunction
@@ -1340,6 +1396,8 @@ class IERC4626HyperdriveContractFunctions(ContractFunctions):
     target2: IERC4626HyperdriveTarget2ContractFunction
 
     target3: IERC4626HyperdriveTarget3ContractFunction
+
+    target4: IERC4626HyperdriveTarget4ContractFunction
 
     totalSupply: IERC4626HyperdriveTotalSupplyContractFunction
 
@@ -1509,6 +1567,14 @@ class IERC4626HyperdriveContractFunctions(ContractFunctions):
             decode_tuples=decode_tuples,
             function_identifier="isApprovedForAll",
         )
+        self.isPauser = IERC4626HyperdriveIsPauserContractFunction.factory(
+            "isPauser",
+            w3=w3,
+            contract_abi=abi,
+            address=address,
+            decode_tuples=decode_tuples,
+            function_identifier="isPauser",
+        )
         self.load = IERC4626HyperdriveLoadContractFunction.factory(
             "load",
             w3=w3,
@@ -1676,6 +1742,14 @@ class IERC4626HyperdriveContractFunctions(ContractFunctions):
             address=address,
             decode_tuples=decode_tuples,
             function_identifier="target3",
+        )
+        self.target4 = IERC4626HyperdriveTarget4ContractFunction.factory(
+            "target4",
+            w3=w3,
+            contract_abi=abi,
+            address=address,
+            decode_tuples=decode_tuples,
+            function_identifier="target4",
         )
         self.totalSupply = IERC4626HyperdriveTotalSupplyContractFunction.factory(
             "totalSupply",
@@ -2547,6 +2621,82 @@ class IERC4626HyperdriveOpenShortContractEvent(ContractEvent):
         )
 
 
+class IERC4626HyperdrivePauseStatusUpdatedContractEvent(ContractEvent):
+    """ContractEvent for PauseStatusUpdated."""
+
+    # super() get_logs and create_filter methods are generic, while our version adds values & types
+    # pylint: disable=arguments-differ
+
+    # @combomethod destroys return types, so we are redefining functions as both class and instance
+    # pylint: disable=function-redefined
+
+    # pylint: disable=useless-parent-delegation
+    def __init__(self, *argument_names: tuple[str]) -> None:
+        super().__init__(*argument_names)
+
+    def get_logs(  # type: ignore
+        self: "IERC4626HyperdrivePauseStatusUpdatedContractEvent",
+        argument_filters: dict[str, Any] | None = None,
+        fromBlock: BlockIdentifier | None = None,
+        toBlock: BlockIdentifier | None = None,
+        block_hash: HexBytes | None = None,
+    ) -> Iterable[EventData]:
+        return cast(
+            Iterable[EventData],
+            super().get_logs(
+                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+            ),
+        )
+
+    @classmethod
+    def get_logs(  # type: ignore
+        cls: Type["IERC4626HyperdrivePauseStatusUpdatedContractEvent"],
+        argument_filters: dict[str, Any] | None = None,
+        fromBlock: BlockIdentifier | None = None,
+        toBlock: BlockIdentifier | None = None,
+        block_hash: HexBytes | None = None,
+    ) -> Iterable[EventData]:
+        return cast(
+            Iterable[EventData],
+            super().get_logs(
+                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, block_hash=block_hash
+            ),
+        )
+
+    def create_filter(  # type: ignore
+        self: "IERC4626HyperdrivePauseStatusUpdatedContractEvent",
+        *,  # PEP 3102
+        argument_filters: dict[str, Any] | None = None,
+        fromBlock: BlockIdentifier | None = None,
+        toBlock: BlockIdentifier = "latest",
+        address: ChecksumAddress | None = None,
+        topics: Sequence[Any] | None = None,
+    ) -> LogFilter:
+        return cast(
+            LogFilter,
+            super().create_filter(
+                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+            ),
+        )
+
+    @classmethod
+    def create_filter(  # type: ignore
+        cls: Type["IERC4626HyperdrivePauseStatusUpdatedContractEvent"],
+        *,  # PEP 3102
+        argument_filters: dict[str, Any] | None = None,
+        fromBlock: BlockIdentifier | None = None,
+        toBlock: BlockIdentifier = "latest",
+        address: ChecksumAddress | None = None,
+        topics: Sequence[Any] | None = None,
+    ) -> LogFilter:
+        return cast(
+            LogFilter,
+            super().create_filter(
+                argument_filters=argument_filters, fromBlock=fromBlock, toBlock=toBlock, address=address, topics=topics
+            ),
+        )
+
+
 class IERC4626HyperdrivePauserUpdatedContractEvent(ContractEvent):
     """ContractEvent for PauserUpdated."""
 
@@ -2876,6 +3026,8 @@ class IERC4626HyperdriveContractEvents(ContractEvents):
 
     OpenShort: IERC4626HyperdriveOpenShortContractEvent
 
+    PauseStatusUpdated: IERC4626HyperdrivePauseStatusUpdatedContractEvent
+
     PauserUpdated: IERC4626HyperdrivePauserUpdatedContractEvent
 
     RedeemWithdrawalShares: IERC4626HyperdriveRedeemWithdrawalSharesContractEvent
@@ -2955,6 +3107,12 @@ class IERC4626HyperdriveContractEvents(ContractEvents):
             IERC4626HyperdriveOpenShortContractEvent,
             IERC4626HyperdriveOpenShortContractEvent.factory(
                 "OpenShort", w3=w3, contract_abi=abi, address=address, event_name="OpenShort"
+            ),
+        )
+        self.PauseStatusUpdated = cast(
+            IERC4626HyperdrivePauseStatusUpdatedContractEvent,
+            IERC4626HyperdrivePauseStatusUpdatedContractEvent.factory(
+                "PauseStatusUpdated", w3=w3, contract_abi=abi, address=address, event_name="PauseStatusUpdated"
             ),
         )
         self.PauserUpdated = cast(
@@ -3289,6 +3447,13 @@ ierc4626hyperdrive_abi: ABI = cast(
         },
         {
             "type": "function",
+            "name": "isPauser",
+            "inputs": [{"name": "_account", "type": "address", "internalType": "address"}],
+            "outputs": [{"name": "", "type": "bool", "internalType": "bool"}],
+            "stateMutability": "view",
+        },
+        {
+            "type": "function",
             "name": "load",
             "inputs": [{"name": "_slots", "type": "uint256[]", "internalType": "uint256[]"}],
             "outputs": [{"name": "", "type": "bytes32[]", "internalType": "bytes32[]"}],
@@ -3529,6 +3694,13 @@ ierc4626hyperdrive_abi: ABI = cast(
         },
         {
             "type": "function",
+            "name": "target4",
+            "inputs": [],
+            "outputs": [{"name": "", "type": "address", "internalType": "address"}],
+            "stateMutability": "view",
+        },
+        {
+            "type": "function",
             "name": "totalSupply",
             "inputs": [{"name": "id", "type": "uint256", "internalType": "uint256"}],
             "outputs": [{"name": "", "type": "uint256", "internalType": "uint256"}],
@@ -3691,6 +3863,12 @@ ierc4626hyperdrive_abi: ABI = cast(
         },
         {
             "type": "event",
+            "name": "PauseStatusUpdated",
+            "inputs": [{"name": "isPaused", "type": "bool", "indexed": False, "internalType": "bool"}],
+            "anonymous": False,
+        },
+        {
+            "type": "event",
             "name": "PauserUpdated",
             "inputs": [{"name": "newPauser", "type": "address", "indexed": True, "internalType": "address"}],
             "anonymous": False,
@@ -3733,8 +3911,10 @@ ierc4626hyperdrive_abi: ABI = cast(
         },
         {"type": "error", "name": "BatchInputLengthMismatch", "inputs": []},
         {"type": "error", "name": "BelowMinimumContribution", "inputs": []},
+        {"type": "error", "name": "DecreasedPresentValueWhenAddingLiquidity", "inputs": []},
         {"type": "error", "name": "ExpInvalidExponent", "inputs": []},
         {"type": "error", "name": "ExpiredDeadline", "inputs": []},
+        {"type": "error", "name": "InsufficientBalance", "inputs": []},
         {
             "type": "error",
             "name": "InsufficientLiquidity",
@@ -3744,14 +3924,10 @@ ierc4626hyperdrive_abi: ABI = cast(
         },
         {"type": "error", "name": "InvalidApr", "inputs": []},
         {"type": "error", "name": "InvalidBaseToken", "inputs": []},
-        {"type": "error", "name": "InvalidCheckpointDuration", "inputs": []},
         {"type": "error", "name": "InvalidCheckpointTime", "inputs": []},
         {"type": "error", "name": "InvalidERC20Bridge", "inputs": []},
-        {"type": "error", "name": "InvalidFeeAmounts", "inputs": []},
         {"type": "error", "name": "InvalidFeeDestination", "inputs": []},
         {"type": "error", "name": "InvalidInitialVaultSharePrice", "inputs": []},
-        {"type": "error", "name": "InvalidMinimumShareReserves", "inputs": []},
-        {"type": "error", "name": "InvalidPositionDuration", "inputs": []},
         {"type": "error", "name": "InvalidShareReserves", "inputs": []},
         {"type": "error", "name": "InvalidSignature", "inputs": []},
         {"type": "error", "name": "InvalidTimestamp", "inputs": []},
