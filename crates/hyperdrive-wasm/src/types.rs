@@ -18,7 +18,7 @@ interface JsFees {
 const JS_POOL_CONFIG: &'static str = r#"
 interface JsPoolConfig {
     baseToken: string,
-    initialSharePrice: string,
+    initialVaultSharePrice: string,
     minimumShareReserves: string,
     minimumTransactionAmount: string,
     positionDuration: string,
@@ -38,7 +38,7 @@ interface JsPoolInfo {
     shareAdjustment: string,
     bondReserves: string,
     lpTotalSupply: string,
-    sharePrice: string,
+    vaultSharePrice: string,
     longsOutstanding: string,
     longAverageMaturityTime: string,
     shortsOutstanding: string,
@@ -77,7 +77,7 @@ pub struct StringFees {
 #[derive(Serialize, Deserialize)]
 pub struct StringPoolConfig {
     pub baseToken: String,
-    pub initialSharePrice: String,
+    pub initialVaultSharePrice: String,
     pub minimumShareReserves: String,
     pub minimumTransactionAmount: String,
     pub positionDuration: String,
@@ -96,7 +96,7 @@ pub struct StringPoolInfo {
     pub shareAdjustment: String,
     pub bondReserves: String,
     pub lpTotalSupply: String,
-    pub sharePrice: String,
+    pub vaultSharePrice: String,
     pub longsOutstanding: String,
     pub longAverageMaturityTime: String,
     pub shortsOutstanding: String,
@@ -118,7 +118,7 @@ impl From<&JsPoolInfo> for PoolInfo {
             share_adjustment: I256::from_dec_str(&js_pool_info.shareAdjustment).unwrap(),
             bond_reserves: U256::from_dec_str(&js_pool_info.bondReserves).unwrap(),
             long_exposure: U256::from_dec_str(&js_pool_info.longExposure).unwrap(),
-            share_price: U256::from_dec_str(&js_pool_info.sharePrice).unwrap(),
+            vault_share_price: U256::from_dec_str(&js_pool_info.vaultSharePrice).unwrap(),
             longs_outstanding: U256::from_dec_str(&js_pool_info.longsOutstanding).unwrap(),
             shorts_outstanding: U256::from_dec_str(&js_pool_info.shortsOutstanding).unwrap(),
             long_average_maturity_time: U256::from_dec_str(&js_pool_info.longAverageMaturityTime)
@@ -154,7 +154,7 @@ impl From<&JsPoolConfig> for PoolConfig {
                 governance_zombie: U256::from_dec_str(&js_pool_config.fees.governanceZombie)
                     .unwrap(),
             },
-            initial_share_price: U256::from_dec_str(&js_pool_config.initialSharePrice).unwrap(),
+            initial_vault_share_price: U256::from_dec_str(&js_pool_config.initialVaultSharePrice).unwrap(),
             minimum_share_reserves: U256::from_dec_str(&js_pool_config.minimumShareReserves)
                 .unwrap(),
             minimum_transaction_amount: U256::from_dec_str(
