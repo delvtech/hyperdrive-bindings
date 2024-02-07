@@ -1,5 +1,5 @@
 use crate::{extract_i256_from_attr, extract_u256_from_attr};
-use hyperdrive_wrappers::wrappers::i_hyperdrive::PoolInfo;
+use hyperdrive_wrappers::wrappers::ihyperdrive::PoolInfo;
 use pyo3::prelude::*;
 
 pub struct PyPoolInfo {
