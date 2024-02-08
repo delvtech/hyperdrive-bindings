@@ -1,5 +1,5 @@
 use ethers::core::types::{Address, H256, I256, U256};
-use hyperdrive_wrappers::wrappers::i_hyperdrive::Fees;
+use hyperdrive_wrappers::wrappers::ihyperdrive::Fees;
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
