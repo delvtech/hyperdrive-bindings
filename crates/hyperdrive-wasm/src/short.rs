@@ -71,7 +71,7 @@ pub fn getMaxShort(
     };
     let _budget = U256::from_dec_str(&budget).unwrap();
     let checkpoint_exposure: I256 =
-        I256::from_raw(I256::from_dec_str(&checkpointExposure).unwrap());
+        I256::from_dec_str(&checkpointExposure).unwrap();
     let open_vault_share_price: I256 = I256::from_raw(U256::from_dec_str(&openVaultSharePrice).unwrap());
 
     let _maybe_conservative_price: Option<FixedPoint> = maybeConservativePrice
