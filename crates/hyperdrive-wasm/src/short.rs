@@ -110,10 +110,74 @@ pub fn getOpenShortCurveFees(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _shortAmount= U256::from_dec_str(&shortAmount).unwrap();
+    let _shortAmount = U256::from_dec_str(&shortAmount).unwrap();
     let _spotPrice = U256::from_dec_str(&spotPrice).unwrap();
 
     let result_fp = state.open_short_curve_fee(_shortAmount, _spotPrice);
+
+    U256::from(result_fp).to_string()
+}
+
+/// Gets the spot price after opening the short on the YieldSpace curve and
+/// before calculating the fees.
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param bondAmount - The number of bonds to short
+#[wasm_bindgen(skip_jsdoc)]
+pub fn calcSpotPriceAfterShort(
+    poolInfo: &JsPoolInfo,
+    poolConfig: &JsPoolConfig,
+    bondAmount: String,
+) -> String {
+    set_panic_hook();
+    let state = State {
+        info: poolInfo.into(),
+        config: poolConfig.into(),
+    };
+    let _bondAmount = U256::from_dec_str(&bondAmount).unwrap();
+
+    let result_fp = state.get_spot_price_after_short(_bondAmount);
+
+    U256::from(result_fp).to_string()
+}
+
+/// Gets the amount of shares the trader will receive after fees for closing a
+/// short
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param bondAmount - The amount of bonds to close
+///
+/// @param openVaultSharePrice - The vault share price at the checkpoint when the position was opened
+///
+/// @param closeVaultSharePrice - The current vault share price, or if the position has matured, the vault share price from the closing checkpoint
+/// 
+/// @param normalizedTimeRemaining - 0 for mature bonds, 1 for not matured bonds
+#[wasm_bindgen(skip_jsdoc)]
+pub fn calcCloseShort(
+    poolInfo: &JsPoolInfo,
+    poolConfig: &JsPoolConfig,
+    bondAmount: String,
+    openVaultShartPrice: String,
+    closeVaultSharePrice: String,
+    normalizedTimeRemaining: String,
+) -> String {
+    set_panic_hook();
+    let state = State {
+        info: poolInfo.into(),
+        config: poolConfig.into(),
+    };
+    let _bondAmount = U256::from_dec_str(&bondAmount).unwrap();
+    let _openVaultSharePrice = U256::from_dec_str(&openVaultSharePrice).unwrap()
+    let _closeVaultSharePrice = U256::from_dec_str(&closeVaultSharePrice).unwrap()
+    let _normalizedTimeRemaining = U256::from_dec_str(&normalizedTimeRemaining).unwrap();
+
+    let result_fp = state.calculate_close_short(_bondAmount, _openVaultSharePrice, _closeVaultSharePrice, _normalizedTimeRemaining);
 
     U256::from(result_fp).to_string()
 }
