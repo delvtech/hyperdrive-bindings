@@ -173,8 +173,8 @@ pub fn calcCloseShort(
         config: poolConfig.into(),
     };
     let _bondAmount = U256::from_dec_str(&bondAmount).unwrap();
-    let _openVaultSharePrice = U256::from_dec_str(&openVaultSharePrice).unwrap()
-    let _closeVaultSharePrice = U256::from_dec_str(&closeVaultSharePrice).unwrap()
+    let _openVaultSharePrice = U256::from_dec_str(&openVaultSharePrice).unwrap();
+    let _closeVaultSharePrice = U256::from_dec_str(&closeVaultSharePrice).unwrap();
     let _normalizedTimeRemaining = U256::from_dec_str(&normalizedTimeRemaining).unwrap();
 
     let result_fp = state.calculate_close_short(_bondAmount, _openVaultSharePrice, _closeVaultSharePrice, _normalizedTimeRemaining);
