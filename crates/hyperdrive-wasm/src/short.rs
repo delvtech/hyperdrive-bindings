@@ -137,7 +137,8 @@ pub fn calcSpotPriceAfterShort(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _bondAmount = U256::from_dec_str(&bondAmount).unwrap();
+    let _bondAmount: FixedPoint = FixedPoint::from(U256::from_dec_str(&bondAmount).unwrap());
+
 
     let result_fp = state.get_spot_price_after_short(_bondAmount);
 
