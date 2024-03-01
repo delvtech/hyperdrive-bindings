@@ -110,8 +110,8 @@ pub fn getOpenShortCurveFees(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _shortAmount = U256::from_dec_str(&shortAmount).unwrap();
-    let _spotPrice = U256::from_dec_str(&spotPrice).unwrap();
+    let _shortAmount: FixedPoint = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
+    let _spotPrice: FixedPoint = FixedPoint::from(U256::from_dec_str(&spotPrice).unwrap());
 
     let result_fp = state.open_short_curve_fee(_shortAmount, _spotPrice);
 
@@ -163,7 +163,7 @@ pub fn calcCloseShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: String,
-    openVaultShartPrice: String,
+    openVaultSharePrice: String,
     closeVaultSharePrice: String,
     normalizedTimeRemaining: String,
 ) -> String {

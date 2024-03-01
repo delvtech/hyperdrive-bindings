@@ -85,7 +85,8 @@ pub fn getOpenLongCurveFees(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _baseAmount = U256::from_dec_str(&baseAmount).unwrap();
+
+    let _baseAmount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
     let result_fp = state.open_long_curve_fees(_baseAmount);
 
@@ -111,7 +112,7 @@ pub fn calcSpotPriceAfterLong(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _baseAmount = U256::from_dec_str(&baseAmount).unwrap();
+    let _baseAmount: FixedPoint = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
     let result_fp = state.get_spot_price_after_long(_baseAmount);
 
