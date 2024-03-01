@@ -66,3 +66,28 @@ pub fn getMaxLong(
 
     U256::from(result_fp).to_string()
 }
+
+/// Gets the curve fee paid by longs for a given base amount.
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param baseAmount - The amount of base tokens to spend
+#[wasm_bindgen(skip_jsdoc)]
+pub fn getOpenLongCurveFees(
+    poolInfo: &JsPoolInfo,
+    poolConfig: &JsPoolConfig,
+    baseAmount: String,
+) -> String {
+    set_panic_hook();
+    let state = State {
+        info: poolInfo.into(),
+        config: poolConfig.into(),
+    };
+    let _baseAmount = U256::from_dec_str(&baseAmount).unwrap();
+
+    let result_fp = state.open_long_curve_fees(_baseAmount);
+
+    U256::from(result_fp).to_string()
+}
