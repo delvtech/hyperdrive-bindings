@@ -173,7 +173,7 @@ def calculate_close_long(
     bond_amount: str (FixedPoint)
         The amount of bonds to sell.
     normalized_time_remaining: str (FixedPoint)
-        The time remaining before the long reaches maturity, normalized such that 0 is at opening and 1 is at maturity.
+        The time remaining before the long reaches maturity, normalized such that 1 is at opening and 0 is at maturity.
 
     Returns
     -------
@@ -245,7 +245,7 @@ def calculate_close_short(
     close_vault_share_price: str (FixedPoint)
         The share price when the short was closed.
     normalized_time_remaining: str (FixedPoint)
-        The time remaining before the short reaches maturity, normalized such that 0 is at opening and 1 is at maturity.
+        The time remaining before the short reaches maturity, normalized such that 1 is at opening and 0 is at maturity.
 
     Returns
     -------
