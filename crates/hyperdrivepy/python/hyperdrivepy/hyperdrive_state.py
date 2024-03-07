@@ -387,7 +387,7 @@ def calculate_bonds_out_given_shares_in_down(
     return _get_interface(pool_config, pool_info).calculate_bonds_out_given_shares_in_down(amount_in)
 
 
-def calculate_shares_in_given_bonds_out_up(
+def calculate_shares_in_given_bonds_out_up_safe(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     amount_in: str,
@@ -412,7 +412,7 @@ def calculate_shares_in_given_bonds_out_up(
     str (FixedPoint)
         The amount of shares in to reach the target.
     """
-    return _get_interface(pool_config, pool_info).calculate_shares_in_given_bonds_out_up(amount_in)
+    return _get_interface(pool_config, pool_info).calculate_shares_in_given_bonds_out_up_safe(amount_in)
 
 
 def calculate_shares_in_given_bonds_out_down(
