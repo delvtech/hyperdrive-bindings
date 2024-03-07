@@ -142,7 +142,7 @@ def test_calculate_bonds_out_given_shares_in_down():
 
 
 def test_calculate_shares_in_given_bonds_out_up():
-    """Test calculate_shares_in_given_bonds_out_up_safe."""
+    """Test calculate_shares_in_given_bonds_out_up."""
     amount_in = str(1_000 * 10**18)
     out = hyperdrivepy.calculate_shares_in_given_bonds_out_up(POOL_CONFIG, POOL_INFO, amount_in)
     assert int(out) > 0
