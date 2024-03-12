@@ -7,6 +7,7 @@ authors = [
     { name = "Sheng Lundquist", email = "sheng@delv.tech" },
 ]
 requires-python = ">=3.7"
+readme = "README.md"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

@@ -7,6 +7,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+readme = "README.md"
 
 [build-system]
 requires = ["setuptools", "wheel", "setuptools-rust"]
