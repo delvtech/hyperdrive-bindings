@@ -60,6 +60,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: cibw-wheels-linux
           path: ./wheelhouse/*.whl
 
   build-cibuildwheels:
@@ -132,6 +133,7 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v3
         with:
+          name: cibw-wheels-${{ matrix.buildplat[0]}}-${{ matrix.buildplat[1] }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   build-sdist:
