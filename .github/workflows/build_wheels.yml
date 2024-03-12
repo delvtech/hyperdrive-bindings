@@ -149,7 +149,7 @@ jobs:
           path: dist/*.tar.gz
 
   upload_pypi:
-    needs: [build-linux, build-cibuildwheels, build_sdist, detect-changes]
+    needs: [build-linux, build-cibuildwheels, build-sdist, detect-changes]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
