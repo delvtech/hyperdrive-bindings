@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         # macos-13 is an intel runner, macos-14 is apple silicon
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, macos-13, macos-14]
         python-version: [cp310]
 
     steps:
@@ -59,21 +59,12 @@ jobs:
 
       - name: install python dependencies
         run: python -m pip install --upgrade pip && python -m pip install --upgrade -r requirements-dev.txt
-
+      
       - name: build wheels
-        uses: pypa/cibuildwheel@v2.16.5
-        env:
-          CIBW_BUILD: "${{ matrix.python-version }}-*"
-          CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
-          CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
-          CIBW_ARCHS_LINUX: auto
-          CIBW_ARCHS_MACOS: x86_64 arm64
-          CIBW_BEFORE_ALL_OSX: >
-              curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
-              rustup show &&
-              rustup target add aarch64-apple-darwin &&
-              rustup target add x86_64-apple-darwin
-          CIBW_BUILD_VERBOSITY: 1
+        run: |
+          python -m pip install pipx
+          cd crates/hyperdrivepy
+          pipx run cibuildwheel
         with:
           output-dir: wheelhouse
           package-dir: crates/hyperdrivepy

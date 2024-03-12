@@ -14,3 +14,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["python", "src"]
+
+[tool.cibuildwheel]
+build-frontend = "build"
+skip = ["cp36-*", "*-musllinux_*", "pp*"]
+archs = ["auto64"]
+before-all = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+environment = { PRODUCTION_MODE="yes", PATH="$PATH:$HOME/.cargo/bin", PIP_NO_CLEAN="yes" }
