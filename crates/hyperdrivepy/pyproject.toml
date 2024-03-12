@@ -7,6 +7,11 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/delvtech/hyperdrive-sdk"
+Issues = "https://github.com/delvtech/hyperdrive-sdk/issues"
 
 [build-system]
 requires = ["setuptools", "wheel", "setuptools-rust"]
