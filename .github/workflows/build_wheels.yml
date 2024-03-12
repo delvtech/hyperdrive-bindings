@@ -14,10 +14,14 @@ jobs:
     with:
       pattern: ^crates/hyperdrivepy/
     
+  # TODO combine this with cibuildwheels
   build-linux:
     needs: detect-changes
-    # Run only if changes are detected
-    # if: needs.detect-changes.outputs.changed == 'true'
+    # Run in PRs if changes are detected
+    # Run on main if version has changed
+    # if: >
+    #   needs.detect-changes.outputs.changed == 'true' || 
+    #   (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.detect-changes.outputs.version_changed == 'true')
     name: build on linux
     runs-on: ubuntu-latest
     steps:
@@ -58,15 +62,18 @@ jobs:
         run: source scripts/build_python.sh
 
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-linux
           path: ./wheelhouse/*.whl
 
   build-cibuildwheels:
     needs: detect-changes
-    # Run only if changes are detected
-    # if: needs.detect-changes.outputs.changed == 'true'
+    # Run in PRs if changes are detected
+    # Run on main if version has changed
+    # if: >
+    #   needs.detect-changes.outputs.changed == 'true' || 
+    #   (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.detect-changes.outputs.version_changed == 'true')
     name: Build on ${{ matrix.buildplat[0] }}-${{ matrix.buildplat[1] }}
     runs-on: ${{ matrix.buildplat[0] }}
     strategy:
@@ -131,7 +138,7 @@ jobs:
           package-dir: crates/hyperdrivepy
 
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.buildplat[0]}}-${{ matrix.buildplat[1] }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
@@ -145,10 +152,10 @@ jobs:
       - name: Build sdist
         run: pipx run build crates/hyperdrivepy --sdist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: cibw-sdist
-          path: dist/*.tar.gz
+          path: crates/hyperdrivepy/dist/*.tar.gz
 
   upload_pypi:
     needs: [build-linux, build-cibuildwheels, build-sdist, detect-changes]
@@ -156,9 +163,8 @@ jobs:
     environment: pypi
     permissions:
       id-token: write
-    # if: github.event_name == 'release' && github.event.action == 'published' && needs.detect-changes.outputs.version_changed == 'true'
-    # or, alternatively, upload to PyPI on every tag starting with 'v' (remove on: release above to use this)
-    # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    # Upload only if on main and version has changed
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.detect-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/download-artifact@v4
         with:
