@@ -1,4 +1,4 @@
-name: build macos and windows wheels
+name: build wheels
 
 on:
   push:
