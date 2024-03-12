@@ -36,11 +36,7 @@ jobs:
           else
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
-            - name: Check for version changes
-        id: check
 
-      - name: Check for version changes
-        run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             # For PRs, compare PR head against base branch
             OLD_VERSION=$(git show ${{ github.event.pull_request.base.sha }}:${{ inputs.file_path }} | grep '^version = ' | cut -d '"' -f 2)
