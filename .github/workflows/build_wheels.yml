@@ -65,9 +65,6 @@ jobs:
           python -m pip install pipx
           cd crates/hyperdrivepy
           pipx run cibuildwheel
-        with:
-          output-dir: wheelhouse
-          package-dir: crates/hyperdrivepy
 
       - name: upload artifacts
         uses: actions/upload-artifact@v3
