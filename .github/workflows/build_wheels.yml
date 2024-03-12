@@ -14,76 +14,20 @@ jobs:
     with:
       pattern: ^crates/hyperdrivepy/
     
-  # TODO combine this with cibuildwheels
-  build-linux:
+  build-wheels:
     needs: detect-changes
-    # Run in PRs if changes are detected
     # Run on main if version has changed
     # if: >
-    #   needs.detect-changes.outputs.changed == 'true' || 
-    #   (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.detect-changes.outputs.version_changed == 'true')
-    name: build on linux
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          token: ${{github.token}}
-
-      - name: setup rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
-      - name: setup foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: nightly
-
-      - name: set up python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-          cache: "pip"
-          token: ${{github.token}}
-
-      - name: set up pip
-        run: python -m pip install --upgrade pip
-
-      - name: check out hyperdrive
-        uses: actions/checkout@master
-        with:
-          repository: delvtech/hyperdrive
-          ref: "v0.9.0"
-          path: "./hyperdrive"
-          ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
-
-      - name: build hyperdrivepy
-        shell: bash
-        run: source scripts/build_python.sh
-
-      - name: upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-linux
-          path: ./wheelhouse/*.whl
-
-  build-cibuildwheels:
-    needs: detect-changes
-    # Run in PRs if changes are detected
-    # Run on main if version has changed
-    # if: >
-    #   needs.detect-changes.outputs.changed == 'true' || 
-    #   (github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.detect-changes.outputs.version_changed == 'true')
-    name: Build on ${{ matrix.buildplat[0] }}-${{ matrix.buildplat[1] }}
-    runs-on: ${{ matrix.buildplat[0] }}
+    #   github.event_name == 'push' && 
+    #   github.ref == 'refs/heads/main' 
+    #   && needs.detect-changes.outputs.version_changed == 'true'
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        buildplat:
-          - [macos-12, macosx_x86_64]
-          - [macos-12, macosx_arm64]
-          #- [macos-12, macosx_universal2]
-          - [windows-2019, win_amd64]
+        os:
+          - [ubuntu-latest, macos-12, windows-2019]
         python-version: [cp310]
 
     steps:
@@ -126,6 +70,11 @@ jobs:
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
           CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_BEFORE_ALL_LINUX: >
+            curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
+            rustup show &&
+            curl -L https://foundry.paradigm.xyz | sh &&
+            foundryup
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
@@ -140,12 +89,17 @@ jobs:
       - name: upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.buildplat[0]}}-${{ matrix.buildplat[1] }}-${{ strategy.job-index }}
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   build-sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
+    # Run on main if version has changed
+    # if: >
+    #   github.event_name == 'push' && 
+    #   github.ref == 'refs/heads/main' 
+    #   && needs.detect-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/checkout@v3
 
@@ -158,13 +112,16 @@ jobs:
           path: crates/hyperdrivepy/dist/*.tar.gz
 
   upload_pypi:
-    needs: [build-linux, build-cibuildwheels, build-sdist, detect-changes]
+    needs: [build-wheels, build-sdist, detect-changes]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       id-token: write
-    # Upload only if on main and version has changed
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.detect-changes.outputs.version_changed == 'true'
+    # Run on main if version has changed
+    # if: >
+    #   github.event_name == 'push' && 
+    #   github.ref == 'refs/heads/main' 
+    #   && needs.detect-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/download-artifact@v4
         with:
