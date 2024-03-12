@@ -14,10 +14,10 @@ jobs:
     with:
       pattern: ^crates/hyperdrivepy/
 
-  build:
+  build_wheels:
     needs: detect-changes
     # Run only if changes are detected
-    if: needs.detect-changes.outputs.changed == 'true'
+    # if: needs.detect-changes.outputs.changed == 'true'
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -69,11 +69,9 @@ jobs:
           CIBW_ARCHS_LINUX: auto
           CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_BEFORE_ALL_MACOS: >
-            curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
-            rustup show &&
-            rustup target add aarch64-apple-darwin &&
-            curl -L https://foundry.paradigm.xyz | sh &&
-            foundryup
+            source scripts/build_python.sh
+          CIBW_BEFORE_ALL_LINUX: >
+            source scripts/build_python.sh
           CIBW_BUILD_VERBOSITY: 1
         with:
           output-dir: wheelhouse
