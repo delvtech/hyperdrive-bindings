@@ -64,7 +64,7 @@ jobs:
             echo "installing rust" &&
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             echo "installing foundry" &&
-            curl -L https://foundry.paradigm.xyz | sh &&
+            curl -L https://foundry.paradigm.xyz | bash &&
             foundryup
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
