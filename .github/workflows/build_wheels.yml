@@ -76,8 +76,8 @@ jobs:
           CIBW_BEFORE_ALL_LINUX: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
-            ln -s /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive ../../hyperdrive &&
-            ls -l /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive ../../hyperdrive
+            ln -s /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive /project/hyperdrive &&
+            ls -l /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive /project/hyperdrive
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
