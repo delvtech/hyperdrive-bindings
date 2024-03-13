@@ -73,7 +73,8 @@ jobs:
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
             curl -L https://foundry.paradigm.xyz | sh &&
-            foundryup
+            foundryup &&
+            ln -s /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive ./hyperdrive
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
