@@ -1,17 +1,16 @@
+[![license: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-lightgrey)](http://www.apache.org/licenses/LICENSE-2.0)
+[![DELV - Terms of Service](https://img.shields.io/badge/DELV-Terms_of_Service-orange)](https://elementfi.s3.us-east-2.amazonaws.com/element-finance-terms-of-service.pdf)
+
 # Hyperdrive-SDK
 
-Hyperdrive is an automated market maker that enables fixed-rate markets to be built on top of arbitrary yield sources.
+[Hyperdrive](https://hyperdrive.delv.tech) is an automated market maker that enables fixed-rate markets to be built on top of arbitrary yield sources.
 
 This repo contains hyperdrivepy and hyperdrive-wasm, which are Rust-powered Python and WASM packages for simulating the Hyperdrive AMM.
 
-## Disclaimer
+## Hyperdrivepy local install
 
-The language used in this codebase is for coding convenience only, and is not
-intended to, and does not, have any particular legal or regulatory significance.
-
-## Install
-
-This repo must include a simulation link to the hyperdrive-rust source code. From the `hyperdrive-sdk` project root, run:
+For a local installation, this repo must include a simulation link to the hyperdrive-rust source code.
+From the `hyperdrive-sdk` project root, run:
 
 ```shell
 git clone git@github.com:delvtech/hyperdrive.git ../hyperdrive
@@ -41,3 +40,18 @@ From the hyperdrive-sdk project root, run:
 pip install --upgrade -r requirements-dev.txt
 pypechain --line-length 120 --output-dir crates/hyperdrivepy/python/hyperdrivepy/pypechain_types hyperdrive/out/IERC4626Hyperdrive.sol/
 ```
+
+## Disclaimer
+
+This project is a work-in-progress.
+The language used in this code and documentation is not intended to, and does not, have any particular financial, legal, or regulatory significance.
+
+---
+
+Copyright © 2024  DELV
+
+Licensed under the Apache License, Version 2.0 (the "OSS License").
+
+By accessing or using this code, you signify that you have read, understand and agree to be bound by and to comply with the [OSS License](http://www.apache.org/licenses/LICENSE-2.0) and [DELV's Terms of Service](https://elementfi.s3.us-east-2.amazonaws.com/element-finance-terms-of-service.pdf). If you do not agree to those terms, you are prohibited from accessing or using this code.
+
+Unless required by applicable law or agreed to in writing, software distributed under the OSS License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the OSS License and the DELV Terms of Service for the specific language governing permissions and limitations.
