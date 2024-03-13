@@ -68,16 +68,13 @@ jobs:
         env:
           CIBW_BUILD: "${{ matrix.python-version }}-*"
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
+          CIBW_ENVIRONMENT_LINUX: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:/host$HOME/.foundry/bin:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
           CIBW_ARCHS_MACOS: x86_64 arm64
-          # In the linux build, cibuildwheel uses the /project/... dir in a container, 
-          # whereas we checkout the repo to /home/runner/... 
-          # hence, we softlink the repo through the host file system (mounted on /host)
           CIBW_BEFORE_ALL_LINUX: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
-            ln -s /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive /project/hyperdrive &&
-            ls -l /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive /project/hyperdrive
+            which forge
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
