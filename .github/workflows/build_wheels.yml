@@ -59,11 +59,10 @@ jobs:
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
           CIBW_ARCHS_MACOS: x86_64 arm64
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
           CIBW_BEFORE_ALL_LINUX: >
-            echo "installing rust" &&
+            apt-get install -y 
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
-            echo "installing foundry" &&
             curl -L https://foundry.paradigm.xyz | bash &&
             foundryup
           CIBW_BEFORE_ALL_MACOS: >
