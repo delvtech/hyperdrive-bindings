@@ -26,7 +26,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-12]
+        #os: [ubuntu-latest, macos-12]
+        os: [ubuntu-latest]
         python-version: [cp310]
 
     steps:
@@ -69,12 +70,14 @@ jobs:
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
           CIBW_ARCHS_MACOS: x86_64 arm64
+          # In the linux build, cibuildwheel uses the /project/... dir in a container, 
+          # whereas we checkout the repo to /home/runner/... 
+          # hence, we softlink the repo through the host file system (mounted on /host)
           CIBW_BEFORE_ALL_LINUX: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
-            curl -L https://foundry.paradigm.xyz | sh &&
-            foundryup &&
-            ln -s /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive ./hyperdrive
+            ln -s /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive ../../hyperdrive &&
+            ls -l /host/home/runner/work/hyperdrive-sdk/hyperdrive-sdk/hyperdrive ../../hyperdrive
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
