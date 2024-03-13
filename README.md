@@ -9,8 +9,6 @@ This repo contains hyperdrivepy and hyperdrive-wasm, which are Rust-powered Pyth
 
 ## Hyperdrivepy local install
 
-The `hyperdrivepy` can be installed quickly via `pip install hyperdrivepy`.
-
 For a local installation, this repo must include a simulation link to the hyperdrive-rust source code.
 From the `hyperdrive-sdk` project root, run:
 
