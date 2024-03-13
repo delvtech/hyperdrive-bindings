@@ -9,18 +9,18 @@ on:
       - main
 
 jobs:
-  detect-changes:
-    uses: ./.github/workflows/check_diff.yml
+  detect-version-changes:
+    uses: ./.github/workflows/check_version.yml
     with:
-      pattern: ^crates/hyperdrivepy/
+      file_path: crates/hyperdrivepy/pyproject.toml
     
   build-wheels:
-    needs: detect-changes
+    needs: detect-version-changes
     # Run on main if version has changed
     # if: >
     #   github.event_name == 'push' && 
     #   github.ref == 'refs/heads/main' 
-    #   && needs.detect-changes.outputs.version_changed == 'true'
+    #   && needs.detect-version-changes.outputs.version_changed == 'true'
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -99,7 +99,7 @@ jobs:
     # if: >
     #   github.event_name == 'push' && 
     #   github.ref == 'refs/heads/main' 
-    #   && needs.detect-changes.outputs.version_changed == 'true'
+    #   && needs.detect-version-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/checkout@v3
 
@@ -112,7 +112,7 @@ jobs:
           path: crates/hyperdrivepy/dist/*.tar.gz
 
   upload_pypi:
-    needs: [build-wheels, build-sdist, detect-changes]
+    needs: [build-wheels, build-sdist, detect-version-changes]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -121,7 +121,7 @@ jobs:
     # if: >
     #   github.event_name == 'push' && 
     #   github.ref == 'refs/heads/main' 
-    #   && needs.detect-changes.outputs.version_changed == 'true'
+    #   && needs.detect-version-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/download-artifact@v4
         with:
