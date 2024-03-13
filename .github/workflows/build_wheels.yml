@@ -57,15 +57,14 @@ jobs:
         env:
           CIBW_BUILD: "${{ matrix.python-version }}-*"
           CIBW_ENVIRONMENT: 'PATH="$HOME/.cargo/bin:$HOME/.foundry/bin:$HOME/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
-          CIBW_ENVIRONMENT_LINUX: 'PATH="/host/home/runner/.cargo/bin:/host/home/runner/.foundry/bin:/host/home/runner/.cargo/env:$PATH" CARGO_TERM_COLOR="always"'
           CIBW_ENVIRONMENT_WINDOWS: 'PATH="$UserProfile\.cargo\bin;$UserProfile\.foundry\bin;$UserProfile\.cargo\env;$PATH"'
           CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
           CIBW_BEFORE_ALL_LINUX: >
-            yum install glibc-devel &&
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
             curl -L https://foundry.paradigm.xyz | sh &&
-            $HOME/.foundry/bin/foundryup
+            foundryup
           CIBW_BEFORE_ALL_MACOS: >
             curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
             rustup show &&
