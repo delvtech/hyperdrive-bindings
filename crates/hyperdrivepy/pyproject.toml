@@ -10,12 +10,15 @@ classifiers = [
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://github.com/delvtech/hyperdrive-sdk"
-Issues = "https://github.com/delvtech/hyperdrive-sdk/issues"
-
-[build-system]
-requires = ["setuptools", "wheel", "setuptools-rust"]
-build-backend = "setuptools.build_meta"
+Homepage = "https://github.com/delvtech/hyperdrive-bindings"
+Issues = "https://github.com/delvtech/hyperdrive-bindings/issues"
 
 [tool.setuptools.packages.find]
 where = ["python", "src"]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
+
+[build-system]
+requires = ["setuptools", "wheel", "setuptools-rust", "maturin>=1.5"]
+build-backend = "maturin"

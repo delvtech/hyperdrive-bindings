@@ -10,8 +10,12 @@ requires-python = ">=3.7"
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://github.com/delvtech/hyperdrive-sdk"
-Issues = "https://github.com/delvtech/hyperdrive-sdk/issues"
+Homepage = "https://github.com/delvtech/hyperdrive-bindings"
+Issues = "https://github.com/delvtech/hyperdrive-bindings/issues"
+
+[build-system]
+requires = ["setuptools", "wheel", "setuptools-rust", "maturin"]
+build-backend = "maturin"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
