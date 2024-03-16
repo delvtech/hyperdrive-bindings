@@ -14,10 +14,7 @@ jobs:
   build-wheels-linux:
     needs: detect-version-changes
     # Run on main if version has changed
-    if: >
-      github.event_name == 'push' && 
-      github.ref == 'refs/heads/main' &&
-      needs.detect-version-changes.outputs.version_changed == 'true'
+    if: needs.detect-version-changes.outputs.version_changed == 'true'
     name: build on linux
     runs-on: ubuntu-latest
     steps:
@@ -66,10 +63,7 @@ jobs:
   build-wheels-cibw:
     needs: detect-version-changes
     # Run on main if version has changed
-    if: >
-      github.event_name == 'push' && 
-      github.ref == 'refs/heads/main' &&
-      needs.detect-version-changes.outputs.version_changed == 'true'
+    if: needs.detect-version-changes.outputs.version_changed == 'true'
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -129,10 +123,7 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     # Run on main if version has changed
-    if: >
-      github.event_name == 'push' && 
-      github.ref == 'refs/heads/main' &&
-      needs.detect-version-changes.outputs.version_changed == 'true'
+    if: needs.detect-version-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/checkout@v3
 
@@ -151,11 +142,7 @@ jobs:
     permissions:
       id-token: write
     # Run on main if version has changed
-    if: >
-      github.event_name == 'push' && 
-      github.ref == 'refs/heads/main' &&
-      needs.detect-version-changes.outputs.version_changed == 'true'
-    
+    if: needs.detect-version-changes.outputs.version_changed == 'true'
     steps:
       - uses: actions/download-artifact@v4
         with:
