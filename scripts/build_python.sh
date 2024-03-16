@@ -18,4 +18,4 @@ python setup.py bdist_wheel
 echo "repair built wheel to be manylinux into wheelhouse"
 # wheelhouse is in the package root
 mkdir ../../wheelhouse 
-auditwheel repair dist/hyperdrivepy-*-linux_x86_64.whl -w ../../wheelhouse --plat manylinux_2_28_x86_64
+auditwheel repair dist/hyperdrivepy-*-linux_x86_64.whl -w ../../wheelhouse --plat manylinux_2_34_x86_64
