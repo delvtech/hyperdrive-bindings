@@ -1,12 +1,17 @@
 [project]
 name = "hyperdrivepy"
-version = "0.9.0"
+version = "0.9.1"
 authors = [
     { name = "Dylan Paiton", email = "dylan@delv.tech" },
     { name = "Matthew Brown", email = "matt@delv.tech" },
     { name = "Sheng Lundquist", email = "sheng@delv.tech" },
 ]
 requires-python = ">=3.7"
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/delvtech/hyperdrive-bindings"
+Issues = "https://github.com/delvtech/hyperdrive-bindings/issues"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

@@ -1,12 +1,17 @@
 [project]
 name = "hyperdrivepy"
-version = "0.9.0"
+version = "0.9.1"
 requires-python = ">=3.7"
 classifiers = [
   "Programming Language :: Rust",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/delvtech/hyperdrive-bindings"
+Issues = "https://github.com/delvtech/hyperdrive-bindings/issues"
 
 [build-system]
 requires = ["setuptools", "wheel", "setuptools-rust"]

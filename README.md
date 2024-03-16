@@ -1,16 +1,18 @@
 [![license: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-lightgrey)](http://www.apache.org/licenses/LICENSE-2.0)
 [![DELV - Terms of Service](https://img.shields.io/badge/DELV-Terms_of_Service-orange)](https://elementfi.s3.us-east-2.amazonaws.com/element-finance-terms-of-service.pdf)
 
-# Hyperdrive-SDK
+# Hyperdrive-bindings
 
 [Hyperdrive](https://hyperdrive.delv.tech) is an automated market maker that enables fixed-rate markets to be built on top of arbitrary yield sources.
 
 This repo contains hyperdrivepy and hyperdrive-wasm, which are Rust-powered Python and WASM packages for simulating the Hyperdrive AMM.
 
-## Hyperdrivepy local install
+## Hyperdrivepy install
+
+Hyperdrivepy can be installed via pip: `python -m pip install hyperdrivepy`
 
 For a local installation, this repo must include a simulation link to the hyperdrive-rust source code.
-From the `hyperdrive-sdk` project root, run:
+From the `hyperdrive-bindings` project root, run:
 
 ```shell
 git clone git@github.com:delvtech/hyperdrive.git ../hyperdrive
@@ -34,7 +36,7 @@ To install the Python package `hyperdrivepy`, which wraps `hyperdrive-rs`, you n
 
 PoolInfo and PoolConfig are passed into many of the functions.
 These are built from the Hyperdrive abi json with pypechain.
-From the hyperdrive-sdk project root, run:
+From the hyperdrive-bindings project root, run:
 
 ```shell
 pip install --upgrade -r requirements-dev.txt
