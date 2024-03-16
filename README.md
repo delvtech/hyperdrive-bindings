@@ -7,7 +7,9 @@
 
 This repo contains hyperdrivepy and hyperdrive-wasm, which are Rust-powered Python and WASM packages for simulating the Hyperdrive AMM.
 
-## Hyperdrivepy local install
+## Hyperdrivepy install
+
+Hyperdrivepy can be installed via pip: `python -m pip install hyperdrivepy`
 
 For a local installation, this repo must include a simulation link to the hyperdrive-rust source code.
 From the `hyperdrive-bindings` project root, run:
