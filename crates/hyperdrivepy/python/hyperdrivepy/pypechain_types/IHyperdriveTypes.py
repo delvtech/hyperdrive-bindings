@@ -80,6 +80,7 @@ class PoolConfig:
     timeStretch: int
     governance: str
     feeCollector: str
+    sweepCollector: str
     fees: Fees
 
 
