@@ -36,6 +36,7 @@ class PoolConfig:
     timeStretch: str
     governance: str
     feeCollector: str
+    sweepCollector: str
     fees: Fees
 
 
@@ -106,6 +107,7 @@ class PoolConfigType(Protocol):
     timeStretch: int
     governance: str
     feeCollector: str
+    sweepCollector: str
     # TODO: nested Protocol types do not play well with dataclasses.  use 'or Any' for now.
     fees: FeesType | Any
 

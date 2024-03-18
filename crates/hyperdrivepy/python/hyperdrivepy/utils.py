@@ -29,6 +29,7 @@ def _serialize_pool_config(
         timeStretch=str(pool_config.timeStretch),
         governance=str(pool_config.governance),
         feeCollector=str(pool_config.feeCollector),
+        sweepCollector=str(pool_config.sweepCollector),
         fees=types.Fees(
             curve=str(pool_config.fees.curve),
             flat=str(pool_config.fees.flat),

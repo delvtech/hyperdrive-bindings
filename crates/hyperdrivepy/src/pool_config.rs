@@ -28,13 +28,14 @@ impl FromPyObject<'_> for PyPoolConfig {
         let time_stretch = extract_u256_from_attr(ob, "timeStretch")?;
         let governance = extract_address_from_attr(ob, "governance")?;
         let fee_collector = extract_address_from_attr(ob, "feeCollector")?;
+        let sweep_collector = extract_address_from_attr(ob, "sweepCollector")?;
         let fees = extract_fees_from_attr(ob, "fees")?;
 
         let pool_config = PoolConfig {
             base_token,
             linker_factory,
             linker_code_hash,
-            initial_vault_share_price: initial_vault_share_price,
+            initial_vault_share_price,
             minimum_share_reserves,
             minimum_transaction_amount,
             position_duration,
@@ -42,6 +43,7 @@ impl FromPyObject<'_> for PyPoolConfig {
             time_stretch,
             governance,
             fee_collector,
+            sweep_collector,
             fees,
         };
 
