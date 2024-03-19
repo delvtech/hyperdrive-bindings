@@ -85,6 +85,7 @@ pub struct StringPoolConfig {
     pub timeStretch: String,
     pub governance: String,
     pub feeCollector: String,
+    pub sweepCollector: String,
     pub fees: StringFees,
     pub linkerFactory: String,
     pub linkerCodeHash: String,
@@ -145,6 +146,7 @@ impl From<&JsPoolConfig> for PoolConfig {
             serde_wasm_bindgen::from_value(pool_config.into()).unwrap();
         PoolConfig {
             base_token: Address::from_str(&js_pool_config.baseToken).unwrap(),
+            sweep_collector: Address::from_str(&js_pool_config.sweepCollector).unwrap(),
             governance: Address::from_str(&js_pool_config.governance).unwrap(),
             fee_collector: Address::from_str(&js_pool_config.feeCollector).unwrap(),
             fees: Fees {
@@ -154,7 +156,8 @@ impl From<&JsPoolConfig> for PoolConfig {
                 governance_zombie: U256::from_dec_str(&js_pool_config.fees.governanceZombie)
                     .unwrap(),
             },
-            initial_vault_share_price: U256::from_dec_str(&js_pool_config.initialVaultSharePrice).unwrap(),
+            initial_vault_share_price: U256::from_dec_str(&js_pool_config.initialVaultSharePrice)
+                .unwrap(),
             minimum_share_reserves: U256::from_dec_str(&js_pool_config.minimumShareReserves)
                 .unwrap(),
             minimum_transaction_amount: U256::from_dec_str(

@@ -27,6 +27,25 @@ pub fn getSpotPrice(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String 
     U256::from(result_fp).to_string()
 }
 
+/// Gets the pool's idle liquidity in base
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+#[wasm_bindgen(skip_jsdoc)]
+pub fn getIdleShareReservesInBase(
+    poolInfo: &JsPoolInfo,
+    poolConfig: &JsPoolConfig,
+) -> String {
+    set_panic_hook();
+    let state = State {
+        config: poolConfig.into(),
+        info: poolInfo.into(),
+    };
+    let result_fp = state.calculate_idle_share_reserves_in_base();
+    U256::from(result_fp).to_string()
+}
+
 /// Gets the pool's fixed APR, i.e. the fixed rate a user locks in when they
 /// open a long.
 ///
