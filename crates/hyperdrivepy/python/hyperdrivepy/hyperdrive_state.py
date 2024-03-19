@@ -495,3 +495,26 @@ def calculate_present_value(
         The present value of all LP capital in the pool.
     """
     return _get_interface(pool_config, pool_info).calculate_present_value(current_block_timestamp)
+
+
+def calculate_idle_share_reserves_in_base(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+) -> str:
+    """Calculates the idle share reserves in base of the pool.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The idle share reserves in base of the pool.
+    """
+    return _get_interface(pool_config, pool_info).calculate_idle_share_reserves_in_base()

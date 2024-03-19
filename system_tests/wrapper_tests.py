@@ -303,3 +303,9 @@ def test_calculate_present_value():
     current_block_timestamp = str(1000)
     present_value = hyperdrivepy.calculate_present_value(POOL_CONFIG, POOL_INFO, current_block_timestamp)
     assert int(present_value) > 0
+
+
+def test_calculate_idle_share_reserves_in_base():
+    """Test calculate_idle_share_reserves_in_base."""
+    idle_share_reserves = hyperdrivepy.calculate_idle_share_reserves_in_base(POOL_CONFIG, POOL_INFO)
+    assert int(idle_share_reserves) > 0

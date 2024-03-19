@@ -269,4 +269,12 @@ impl HyperdriveState {
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
+
+    pub fn calculate_idle_share_reserves_in_base(&self) -> PyResult<String> {
+        let result_fp = self
+            .state
+            .calculate_idle_share_reserves_in_base();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
 }
