@@ -17,6 +17,6 @@
     "webpack-dev-server": "^4.15.1"
   },
   "dependencies": {
-    "@delvtech/hyperdrive-wasm": "file:delvtech-hyperdrive-wasm-0.8.0.tgz"
+    "@delvtech/hyperdrive-wasm": "file:delvtech-hyperdrive-wasm-0.9.0.tgz"
   }
 }
