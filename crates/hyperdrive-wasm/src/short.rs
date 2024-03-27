@@ -2,7 +2,6 @@ use crate::utils::set_panic_hook;
 use crate::{JsPoolConfig, JsPoolInfo};
 use ethers::types::{I256, U256};
 use fixed_point::FixedPoint;
-use fixed_point_macros::fixed;
 use hyperdrive_math::State;
 use wasm_bindgen::prelude::*;
 
@@ -13,23 +12,29 @@ use wasm_bindgen::prelude::*;
 /// @param poolConfig - The pool's configuration
 ///
 /// @param shortAmount - The amount of bonds to short
+///
+/// @param openVaultSharePrice - The vault share price at the start of the checkpoint
 #[wasm_bindgen(skip_jsdoc)]
 pub fn calcOpenShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     shortAmount: String,
+    openVaultSharePrice: String,
 ) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let short_amount: FixedPoint = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
+    let short_amount = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
 
     let spot_price = state.get_spot_price();
 
+    let openVaultSharePriceFixedPoint =
+        FixedPoint::from(U256::from_dec_str(&openVaultSharePrice).unwrap());
+
     let result_fp = state
-        .calculate_open_short(short_amount, spot_price, fixed!(0))
+        .calculate_open_short(short_amount, spot_price, openVaultSharePriceFixedPoint)
         .unwrap();
 
     U256::from(result_fp).to_string()
@@ -70,9 +75,9 @@ pub fn getMaxShort(
         config: poolConfig.into(),
     };
     let _budget = U256::from_dec_str(&budget).unwrap();
-    let checkpoint_exposure: I256 =
-        I256::from_dec_str(&checkpointExposure).unwrap();
-    let open_vault_share_price: I256 = I256::from_raw(U256::from_dec_str(&openVaultSharePrice).unwrap());
+    let checkpoint_exposure: I256 = I256::from_dec_str(&checkpointExposure).unwrap();
+    let open_vault_share_price: I256 =
+        I256::from_raw(U256::from_dec_str(&openVaultSharePrice).unwrap());
 
     let _maybe_conservative_price: Option<FixedPoint> = maybeConservativePrice
         .as_ref()
@@ -139,7 +144,6 @@ pub fn calcSpotPriceAfterShort(
     };
     let _bondAmount = FixedPoint::from(U256::from_dec_str(&bondAmount).unwrap());
 
-
     let result_fp = state.get_spot_price_after_short(_bondAmount);
 
     U256::from(result_fp).to_string()
@@ -157,7 +161,7 @@ pub fn calcSpotPriceAfterShort(
 /// @param openVaultSharePrice - The vault share price at the checkpoint when the position was opened
 ///
 /// @param closeVaultSharePrice - The current vault share price, or if the position has matured, the vault share price from the closing checkpoint
-/// 
+///
 /// @param normalizedTimeRemaining - 0 for mature bonds, 1 for not matured bonds
 #[wasm_bindgen(skip_jsdoc)]
 pub fn calcCloseShort(
@@ -178,7 +182,12 @@ pub fn calcCloseShort(
     let _closeVaultSharePrice = U256::from_dec_str(&closeVaultSharePrice).unwrap();
     let _normalizedTimeRemaining = U256::from_dec_str(&normalizedTimeRemaining).unwrap();
 
-    let result_fp = state.calculate_close_short(_bondAmount, _openVaultSharePrice, _closeVaultSharePrice, _normalizedTimeRemaining);
+    let result_fp = state.calculate_close_short(
+        _bondAmount,
+        _openVaultSharePrice,
+        _closeVaultSharePrice,
+        _normalizedTimeRemaining,
+    );
 
     U256::from(result_fp).to_string()
 }
