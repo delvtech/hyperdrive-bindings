@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@delvtech/hyperdrive-wasm@file:delvtech-hyperdrive-wasm-0.5.0.tgz":
-  version "0.5.0"
-  resolved "file:delvtech-hyperdrive-wasm-0.5.0.tgz"
-  integrity sha512-15IAqWt3hKn43k0jZccJA0KsdWHdf0fehV8rVAotNXn7fD+AkJ5CyyC8UURsSg0yQbZ+CRgFMexoxLgI3VeiCA==
+"@delvtech/hyperdrive-wasm@file:delvtech-hyperdrive-wasm-0.9.0.tgz":
+  version "0.9.0"
+  resolved "file:delvtech-hyperdrive-wasm-0.9.0.tgz"
+  integrity sha512-PlypSekWUGarjnjPssDmA9rNdXVZazyICwe0jJLaoA/AKZIsCKLxx2MJC0LxHB1oCLqDfYSDodSyTa4VCAIIsg==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.7"
