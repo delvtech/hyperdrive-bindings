@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@delvtech/hyperdrive-wasm@file:delvtech-hyperdrive-wasm-0.9.0.tgz":
+"@delvtech/hyperdrive-wasm@file:delvtech-hyperdrive-wasm-0.9.1.tgz":
   version "0.9.0"
   resolved "file:delvtech-hyperdrive-wasm-0.9.0.tgz"
   integrity sha512-PlypSekWUGarjnjPssDmA9rNdXVZazyICwe0jJLaoA/AKZIsCKLxx2MJC0LxHB1oCLqDfYSDodSyTa4VCAIIsg==
