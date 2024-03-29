@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: "v0.10.1"
+          ref: "v0.11.0"
           path: "./hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
@@ -82,7 +82,7 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: "v0.10.1"
+          ref: "v0.11.0"
           path: "./hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
