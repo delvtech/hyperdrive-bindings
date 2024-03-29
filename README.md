@@ -40,7 +40,7 @@ From the hyperdrive-bindings project root, run:
 
 ```shell
 pip install --upgrade -r requirements-dev.txt
-pypechain --line-length 120 --output-dir crates/hyperdrivepy/python/hyperdrivepy/pypechain_types hyperdrive/out/IERC4626Hyperdrive.sol/
+pypechain --line-length 120 --output-dir crates/hyperdrivepy/python/hyperdrivepy/pypechain_types hyperdrive/out/IHyperdrive.sol/
 ```
 
 ## Disclaimer

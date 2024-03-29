@@ -26,6 +26,7 @@ class PoolConfig:
     """Static configuration for the hyperdrive contract. Set at deploy time."""
 
     baseToken: str
+    vaultSharesToken: str
     linkerFactory: str
     linkerCodeHash: str
     initialVaultSharePrice: str
@@ -97,6 +98,7 @@ class PoolConfigType(Protocol):
     """PoolConfig struct."""
 
     baseToken: str
+    vaultSharesToken: str
     linkerFactory: str
     linkerCodeHash: bytes
     initialVaultSharePrice: int

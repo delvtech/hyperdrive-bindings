@@ -18,6 +18,7 @@ impl PyPoolConfig {
 impl FromPyObject<'_> for PyPoolConfig {
     fn extract(ob: &PyAny) -> PyResult<Self> {
         let base_token = extract_address_from_attr(ob, "baseToken")?;
+        let vault_shares_token= extract_address_from_attr(ob, "vaultSharesToken")?;
         let linker_factory = extract_address_from_attr(ob, "linkerFactory")?;
         let linker_code_hash = extract_bytes32_from_attr(ob, "linkerCodeHash")?;
         let initial_vault_share_price = extract_u256_from_attr(ob, "initialVaultSharePrice")?;
@@ -33,6 +34,7 @@ impl FromPyObject<'_> for PyPoolConfig {
 
         let pool_config = PoolConfig {
             base_token,
+            vault_shares_token,
             linker_factory,
             linker_code_hash,
             initial_vault_share_price,

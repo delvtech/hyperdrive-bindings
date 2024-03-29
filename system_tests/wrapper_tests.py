@@ -6,6 +6,7 @@ from hyperdrivepy.pypechain_types import Fees, PoolConfig, PoolInfo
 
 POOL_CONFIG = PoolConfig(
     baseToken="0x1234567890abcdef1234567890abcdef12345678",
+    vaultSharesToken="0x1234567890abcdef1234567890abcdef12345678",
     linkerFactory="0x1234567890abcdef1234567890abcdef12345678",
     linkerCodeHash=bytes(32),
     initialVaultSharePrice=1 * 10**18,  # 1e18
