@@ -19,6 +19,7 @@ def _serialize_pool_config(
 ) -> types.PoolConfig:
     return types.PoolConfig(
         baseToken=str(pool_config.baseToken),
+        vaultSharesToken=str(pool_config.vaultSharesToken),
         linkerFactory=str(pool_config.linkerFactory),
         linkerCodeHash=pool_config.linkerCodeHash.hex(),  # bytes to string in hex format
         initialVaultSharePrice=str(pool_config.initialVaultSharePrice),
