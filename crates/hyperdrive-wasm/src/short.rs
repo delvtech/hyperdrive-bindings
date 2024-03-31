@@ -104,7 +104,7 @@ pub fn getMaxShort(
 ///
 /// @param spotPrice - The spot price of the pool
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getOpenShortCurveFees(
+pub fn getOpenShortCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     shortAmount: String,
