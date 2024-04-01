@@ -41,6 +41,7 @@ const examplePoolConfig = {
   linkerCodeHash: "0x".padEnd(66, "0"),
   linkerFactory: ZERO_ADDRESS,
   sweepCollector: ZERO_ADDRESS,
+  vaultSharesToken: ZERO_ADDRESS,
 };
 
 async function main() {
