@@ -22,17 +22,16 @@ pub fn getOpenShortCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     shortAmount: String,
-    spotPrice: String,
 ) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _shortAmount = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
-    let _spotPrice = FixedPoint::from(U256::from_dec_str(&spotPrice).unwrap());
+    let short_amount = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
+    let spot_price = state.get_spot_price();
 
-    let result_fp = state.open_short_curve_fee(_shortAmount, _spotPrice);
+    let result_fp = state.open_short_curve_fee(short_amount, spot_price);
 
     U256::from(result_fp).to_string()
 }
