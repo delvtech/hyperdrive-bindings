@@ -1,4 +1,5 @@
 use ethers::types::U256;
+use fixed_point::FixedPoint;
 use hyperdrive_math::State;
 use wasm_bindgen::prelude::wasm_bindgen;
 
@@ -16,23 +17,29 @@ use crate::{
 ///
 /// @param bondAmount - The amount of bonds to close
 ///
-/// @param normalizedTimeRemaining - 0 for mature bonds, 1 for not matured bonds
+/// @param maturityTime - The maturity timestamp of the short (in seconds)
+///
+/// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
 pub fn calcCloseLong(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    bondAmount: String,
-    normalizedTimeRemaining: String,
+    bondAmount: &str,
+    maturityTime: &str,
+    currentTime: &str,
 ) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _bondAmount = U256::from_dec_str(&bondAmount).unwrap();
-    let _normalizedTimeRemaining = U256::from_dec_str(&normalizedTimeRemaining).unwrap();
+    let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
+    let normalized_time_remaining = state.time_remaining_scaled(
+        U256::from_dec_str(currentTime).unwrap(),
+        U256::from_dec_str(maturityTime).unwrap(),
+    );
 
-    let result_fp = state.calculate_close_long(_bondAmount, _normalizedTimeRemaining);
+    let result_fp = state.calculate_close_long(bond_amount, normalized_time_remaining);
 
     U256::from(result_fp).to_string()
 }

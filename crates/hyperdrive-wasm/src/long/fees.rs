@@ -19,7 +19,7 @@ use crate::{
 pub fn getOpenLongCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    baseAmount: String,
+    baseAmount: &str,
 ) -> String {
     set_panic_hook();
     let state = State {
@@ -27,7 +27,7 @@ pub fn getOpenLongCurveFee(
         config: poolConfig.into(),
     };
 
-    let base_amount = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
+    let base_amount = FixedPoint::from(U256::from_dec_str(baseAmount).unwrap());
 
     let result_fp = state.open_long_curve_fees(base_amount);
 
@@ -84,13 +84,13 @@ pub fn getCloseLongCurveFee(
         config: poolConfig.into(),
     };
 
-    let bond_amount = U256::from_dec_str(bondAmount).unwrap();
+    let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
     let normalized_time_remaining = state.time_remaining_scaled(
         U256::from_dec_str(currentTime).unwrap(),
         U256::from_dec_str(maturityTime).unwrap(),
     );
 
-    let result_fp = state.close_long_curve_fee(bond_amount.into(), normalized_time_remaining);
+    let result_fp = state.close_long_curve_fee(bond_amount, normalized_time_remaining);
 
     U256::from(result_fp).to_string()
 }
@@ -120,13 +120,13 @@ pub fn getCloseLongFlatFee(
         config: poolConfig.into(),
     };
 
-    let bond_amount = U256::from_dec_str(bondAmount).unwrap();
+    let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
     let normalized_time_remaining = state.time_remaining_scaled(
         U256::from_dec_str(currentTime).unwrap(),
         U256::from_dec_str(maturityTime).unwrap(),
     );
 
-    let result_fp = state.close_long_flat_fee(bond_amount.into(), normalized_time_remaining);
+    let result_fp = state.close_long_flat_fee(bond_amount, normalized_time_remaining);
 
     U256::from(result_fp).to_string()
 }

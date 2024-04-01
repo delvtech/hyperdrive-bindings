@@ -14,30 +14,27 @@ use crate::{
 ///
 /// @param poolConfig - The pool's configuration
 ///
-/// @param shortAmount - The amount of bonds to short
+/// @param bondAmount - The amount of bonds to short
 ///
 /// @param openVaultSharePrice - The vault share price at the start of the checkpoint
 #[wasm_bindgen(skip_jsdoc)]
 pub fn calcOpenShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    shortAmount: String,
-    openVaultSharePrice: String,
+    bondAmount: &str,
+    openVaultSharePrice: &str,
 ) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let short_amount = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
-
+    let short_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
+    let open_vault_share_price = FixedPoint::from(U256::from_dec_str(openVaultSharePrice).unwrap());
     let spot_price = state.get_spot_price();
 
-    let openVaultSharePriceFixedPoint =
-        FixedPoint::from(U256::from_dec_str(&openVaultSharePrice).unwrap());
-
     let result_fp = state
-        .calculate_open_short(short_amount, spot_price, openVaultSharePriceFixedPoint)
+        .calculate_open_short(short_amount, spot_price, open_vault_share_price)
         .unwrap();
 
     U256::from(result_fp).to_string()
@@ -55,16 +52,16 @@ pub fn calcOpenShort(
 pub fn calcSpotPriceAfterShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    bondAmount: String,
+    bondAmount: &str,
 ) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _bondAmount = FixedPoint::from(U256::from_dec_str(&bondAmount).unwrap());
+    let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
 
-    let result_fp = state.get_spot_price_after_short(_bondAmount);
+    let result_fp = state.get_spot_price_after_short(bond_amount);
 
     U256::from(result_fp).to_string()
 }

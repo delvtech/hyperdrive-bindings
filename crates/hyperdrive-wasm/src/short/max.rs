@@ -31,9 +31,9 @@ use crate::{
 pub fn getMaxShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    budget: String,
-    openVaultSharePrice: String,
-    checkpointExposure: String,
+    budget: &str,
+    openVaultSharePrice: &str,
+    checkpointExposure: &str,
     maybeConservativePrice: Option<String>,
     maybeMaxIterations: Option<u8>,
 ) -> String {
@@ -42,10 +42,11 @@ pub fn getMaxShort(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _budget = U256::from_dec_str(&budget).unwrap();
-    let checkpoint_exposure: I256 = I256::from_dec_str(&checkpointExposure).unwrap();
+    let _budget = U256::from_dec_str(budget).unwrap();
+    let checkpoint_exposure: I256 = I256::from_dec_str(checkpointExposure).unwrap();
+    // TODO: Why is from_raw used here?
     let open_vault_share_price: I256 =
-        I256::from_raw(U256::from_dec_str(&openVaultSharePrice).unwrap());
+        I256::from_raw(U256::from_dec_str(openVaultSharePrice).unwrap());
 
     let _maybe_conservative_price: Option<FixedPoint> = maybeConservativePrice
         .as_ref()

@@ -23,8 +23,8 @@ use crate::{
 pub fn getMaxLong(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    budget: String,
-    checkpointExposure: String,
+    budget: &str,
+    checkpointExposure: &str,
     maybeMaxIterations: Option<u8>,
 ) -> String {
     set_panic_hook();

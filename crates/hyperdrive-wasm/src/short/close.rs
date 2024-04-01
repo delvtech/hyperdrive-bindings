@@ -14,7 +14,7 @@ use crate::{
 ///
 /// @param poolConfig - The pool's configuration
 ///
-/// @param bondAmount - The amount of bonds to close
+/// @param bondAmount - The number of short bonds to close
 ///
 /// @param openVaultSharePrice - The vault share price at the checkpoint when the position was opened
 ///
@@ -25,26 +25,26 @@ use crate::{
 pub fn calcCloseShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
-    bondAmount: String,
-    openVaultSharePrice: String,
-    closeVaultSharePrice: String,
-    normalizedTimeRemaining: String,
+    bondAmount: &str,
+    openVaultSharePrice: &str,
+    closeVaultSharePrice: &str,
+    normalizedTimeRemaining: &str,
 ) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let _bondAmount = U256::from_dec_str(&bondAmount).unwrap();
-    let _openVaultSharePrice = U256::from_dec_str(&openVaultSharePrice).unwrap();
-    let _closeVaultSharePrice = U256::from_dec_str(&closeVaultSharePrice).unwrap();
-    let _normalizedTimeRemaining = U256::from_dec_str(&normalizedTimeRemaining).unwrap();
+    let bond_amount = U256::from_dec_str(bondAmount).unwrap();
+    let open_vault_share_price = U256::from_dec_str(openVaultSharePrice).unwrap();
+    let close_vault_share_price = U256::from_dec_str(closeVaultSharePrice).unwrap();
+    let normalized_time_remaining = U256::from_dec_str(normalizedTimeRemaining).unwrap();
 
     let result_fp = state.calculate_close_short(
-        _bondAmount,
-        _openVaultSharePrice,
-        _closeVaultSharePrice,
-        _normalizedTimeRemaining,
+        bond_amount,
+        open_vault_share_price,
+        close_vault_share_price,
+        normalized_time_remaining,
     );
 
     U256::from(result_fp).to_string()
