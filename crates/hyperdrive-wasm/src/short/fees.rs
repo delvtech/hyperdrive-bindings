@@ -67,6 +67,10 @@ pub fn getOpenShortGovernanceFee(
 /// @param poolConfig - The pool's configuration
 ///
 /// @param shortAmount - The number of bonds to short
+/// 
+/// @param maturityTime - The maturity timestamp of the short (in seconds)
+/// 
+/// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getCloseShortCurveFee(
     poolInfo: &JsPoolInfo,
@@ -98,6 +102,10 @@ pub fn getCloseShortCurveFee(
 /// @param poolConfig - The pool's configuration
 ///
 /// @param shortAmount - The number of bonds to short
+/// 
+/// @param maturityTime - The maturity timestamp of the short (in seconds)
+/// 
+/// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getCloseShortFlatFee(
     poolInfo: &JsPoolInfo,
