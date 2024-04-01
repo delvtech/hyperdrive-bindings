@@ -60,3 +60,64 @@ pub fn getOpenShortGovernanceFee(
     U256::from(result_fp).to_string()
 }
 
+/// Gets the curve fee paid by the trader when they close a short.
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param shortAmount - The number of bonds to short
+#[wasm_bindgen(skip_jsdoc)]
+pub fn getCloseShortCurveFee(
+    poolInfo: &JsPoolInfo,
+    poolConfig: &JsPoolConfig,
+    shortAmount: &str,
+    maturityTime: &str,
+    currentTime: &str,
+) -> String {
+    set_panic_hook();
+    let state = State {
+        info: poolInfo.into(),
+        config: poolConfig.into(),
+    };
+    let short_amount = FixedPoint::from(U256::from_dec_str(shortAmount).unwrap());
+    let normalized_time_remaining = state.time_remaining_scaled(
+        U256::from_dec_str(currentTime).unwrap(),
+        U256::from_dec_str(maturityTime).unwrap(),
+    );
+
+    let result_fp = state.close_short_curve_fee(short_amount, normalized_time_remaining);
+
+    U256::from(result_fp).to_string()
+}
+
+/// Gets the flat fee paid by the trader when they close a short.
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param shortAmount - The number of bonds to short
+#[wasm_bindgen(skip_jsdoc)]
+pub fn getCloseShortFlatFee(
+    poolInfo: &JsPoolInfo,
+    poolConfig: &JsPoolConfig,
+    shortAmount: &str,
+    maturityTime: &str,
+    currentTime: &str,
+) -> String {
+    set_panic_hook();
+    let state = State {
+        info: poolInfo.into(),
+        config: poolConfig.into(),
+    };
+    let short_amount = FixedPoint::from(U256::from_dec_str(&shortAmount).unwrap());
+    let normalized_time_remaining = state.time_remaining_scaled(
+        U256::from_dec_str(currentTime).unwrap(),
+        U256::from_dec_str(maturityTime).unwrap(),
+    );
+
+    let result_fp = state.close_short_flat_fee(short_amount, normalized_time_remaining);
+
+    U256::from(result_fp).to_string()
+}
