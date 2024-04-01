@@ -89,6 +89,7 @@ pub struct StringPoolConfig {
     pub fees: StringFees,
     pub linkerFactory: String,
     pub linkerCodeHash: String,
+    pub vaultSharesToken: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -172,6 +173,7 @@ impl From<&JsPoolConfig> for PoolConfig {
                 .unwrap()
                 .try_into()
                 .unwrap(),
+            vault_shares_token: Address::from_str(&js_pool_config.vaultSharesToken).unwrap(),
         }
     }
 }
