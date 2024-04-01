@@ -15,8 +15,6 @@ use crate::{
 /// @param poolConfig - The pool's configuration
 ///
 /// @param shortAmount - The number of bonds to short
-///
-/// @param spotPrice - The spot price of the pool
 #[wasm_bindgen(skip_jsdoc)]
 pub fn getOpenShortCurveFee(
     poolInfo: &JsPoolInfo,

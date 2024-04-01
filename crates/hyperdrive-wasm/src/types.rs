@@ -26,9 +26,11 @@ interface JsPoolConfig {
     timeStretch: string,
     governance: string,
     feeCollector: string,
+    sweepCollector: string,
     fees: Fees,
     linkerFactory: string,
     linkerCodeHash: string,
+    vaultSharesToken: string,
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
