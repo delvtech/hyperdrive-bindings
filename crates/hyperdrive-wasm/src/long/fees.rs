@@ -8,7 +8,7 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Gets the curve fee paid by longs for a given base amount.
+/// Gets the curve fee paid by traders when they open a long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -27,9 +27,9 @@ pub fn getOpenLongCurveFees(
         config: poolConfig.into(),
     };
 
-    let _baseAmount = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
+    let base_amount = FixedPoint::from(U256::from_dec_str(&baseAmount).unwrap());
 
-    let result_fp = state.open_long_curve_fees(_baseAmount);
+    let result_fp = state.open_long_curve_fees(base_amount);
 
     U256::from(result_fp).to_string()
 }
