@@ -67,7 +67,7 @@ pub fn getOpenLongGovernanceFee(
 ///
 /// @param bondAmount - The amount of bonds to close
 ///
-/// @param maturityTime - The maturity timestamp of the short (in seconds)
+/// @param maturityTime - The maturity timestamp of the long (in seconds)
 ///
 /// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
@@ -85,12 +85,10 @@ pub fn getCloseLongCurveFee(
     };
 
     let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
-    let normalized_time_remaining = state.time_remaining_scaled(
-        U256::from_dec_str(currentTime).unwrap(),
-        U256::from_dec_str(maturityTime).unwrap(),
-    );
+    let maturity_time = U256::from_dec_str(maturityTime).unwrap();
+    let current_time = U256::from_dec_str(currentTime).unwrap();
 
-    let result_fp = state.close_long_curve_fee(bond_amount, normalized_time_remaining);
+    let result_fp = state.close_long_curve_fee(bond_amount, maturity_time, current_time);
 
     U256::from(result_fp).to_string()
 }
@@ -103,7 +101,7 @@ pub fn getCloseLongCurveFee(
 ///
 /// @param bondAmount - The amount of bonds to close
 ///
-/// @param maturityTime - The maturity timestamp of the short (in seconds)
+/// @param maturityTime - The maturity timestamp of the long (in seconds)
 ///
 /// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
@@ -121,12 +119,10 @@ pub fn getCloseLongFlatFee(
     };
 
     let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
-    let normalized_time_remaining = state.time_remaining_scaled(
-        U256::from_dec_str(currentTime).unwrap(),
-        U256::from_dec_str(maturityTime).unwrap(),
-    );
+    let maturity_time = U256::from_dec_str(maturityTime).unwrap();
+    let current_time = U256::from_dec_str(currentTime).unwrap();
 
-    let result_fp = state.close_long_flat_fee(bond_amount, normalized_time_remaining);
+    let result_fp = state.close_long_flat_fee(bond_amount, maturity_time, current_time);
 
     U256::from(result_fp).to_string()
 }

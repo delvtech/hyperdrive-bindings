@@ -20,7 +20,9 @@ use crate::{
 ///
 /// @param closeVaultSharePrice - The current vault share price, or if the position has matured, the vault share price from the closing checkpoint
 ///
-/// @param normalizedTimeRemaining - 0 for mature bonds, 1 for not matured bonds
+/// @param maturityTime - The maturity timestamp of the short (in seconds)
+///
+/// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
 pub fn calcCloseShort(
     poolInfo: &JsPoolInfo,
@@ -28,7 +30,8 @@ pub fn calcCloseShort(
     bondAmount: &str,
     openVaultSharePrice: &str,
     closeVaultSharePrice: &str,
-    normalizedTimeRemaining: &str,
+    maturityTime: &str,
+    currentTime: &str,
 ) -> String {
     set_panic_hook();
     let state = State {
@@ -38,13 +41,15 @@ pub fn calcCloseShort(
     let bond_amount = U256::from_dec_str(bondAmount).unwrap();
     let open_vault_share_price = U256::from_dec_str(openVaultSharePrice).unwrap();
     let close_vault_share_price = U256::from_dec_str(closeVaultSharePrice).unwrap();
-    let normalized_time_remaining = U256::from_dec_str(normalizedTimeRemaining).unwrap();
+    let maturity_time = U256::from_dec_str(maturityTime).unwrap();
+    let current_time = U256::from_dec_str(currentTime).unwrap();
 
     let result_fp = state.calculate_close_short(
         bond_amount,
         open_vault_share_price,
         close_vault_share_price,
-        normalized_time_remaining,
+        maturity_time,
+        current_time,
     );
 
     U256::from(result_fp).to_string()
