@@ -7,8 +7,8 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Gets the amount of shares the trader will receive after fees for closing a
-/// short
+/// Calculates the amount of shares the trader will receive after fees for
+/// closing a short
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -16,9 +16,11 @@ use crate::{
 ///
 /// @param bondAmount - The number of short bonds to close
 ///
-/// @param openVaultSharePrice - The vault share price at the checkpoint when the position was opened
+/// @param openVaultSharePrice - The vault share price at the checkpoint when
+/// the position was opened
 ///
-/// @param closeVaultSharePrice - The current vault share price, or if the position has matured, the vault share price from the closing checkpoint
+/// @param closeVaultSharePrice - The current vault share price, or if the
+/// position has matured, the vault share price from the closing checkpoint
 ///
 /// @param maturityTime - The maturity timestamp of the short (in seconds)
 ///

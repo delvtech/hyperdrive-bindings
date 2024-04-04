@@ -8,8 +8,8 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Get the max amount of longs that can be shorted given the current state of
-/// the pool.
+/// Calculates the max amount of longs that can be shorted given the current
+/// state of the pool.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -28,7 +28,7 @@ use crate::{
 /// @param maybeMaxIterations - The maximum number of iterations to run the
 /// binary search for
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getMaxShort(
+pub fn maxShort(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     budget: &str,
@@ -52,7 +52,7 @@ pub fn getMaxShort(
         .as_ref()
         .map(|price_str| FixedPoint::from(U256::from_dec_str(price_str).unwrap()));
 
-    let result_fp = state.get_max_short(
+    let result_fp = state.calculate_max_short(
         _budget,
         open_vault_share_price,
         checkpoint_exposure,

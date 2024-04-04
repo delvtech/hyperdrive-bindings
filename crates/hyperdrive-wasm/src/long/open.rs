@@ -8,7 +8,7 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Gets the long amount that will be opened for a given base amount.
+/// Calculates the long amount that will be opened for a given base amount.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -29,8 +29,7 @@ pub fn calcOpenLong(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig, baseAmount
     U256::from(result_fp).to_string()
 }
 
-/// Gets the spot price after opening the short on the YieldSpace curve and
-/// before calculating the fees.
+/// Calculates the spot price after opening a Hyperdrive long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -38,7 +37,7 @@ pub fn calcOpenLong(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig, baseAmount
 ///
 /// @param baseAmount - The amount of base to spend
 #[wasm_bindgen(skip_jsdoc)]
-pub fn calcSpotPriceAfterLong(
+pub fn spotPriceAfterLong(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     baseAmount: &str,
@@ -50,7 +49,7 @@ pub fn calcSpotPriceAfterLong(
     };
     let base_amount = FixedPoint::from(U256::from_dec_str(baseAmount).unwrap());
 
-    let result_fp = state.get_spot_price_after_long(base_amount);
+    let result_fp = state.calculate_spot_price_after_long(base_amount, None);
 
     U256::from(result_fp).to_string()
 }

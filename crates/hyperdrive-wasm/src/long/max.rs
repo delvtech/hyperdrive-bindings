@@ -7,20 +7,21 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Gets the max long that can be opened given a budget.
+/// Calculates the max amount of base that can be used to open a long given a
+/// budget.
 ///
 /// @param poolInfo - The current state of the pool
 ///
 /// @param poolConfig - The pool's configuration
 ///
-/// @param budget - The maximum amount of base tokens that can be spent
+/// @param budget - The maximum amount of base tokens that can be spent.
 ///
 /// @param checkpointExposure - The exposure of the pool's current checkpoint
 ///
 /// @param maybeMaxIterations - The maximum number of iterations to run the
 /// binary search for
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getMaxLong(
+pub fn maxLong(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     budget: &str,
@@ -35,7 +36,7 @@ pub fn getMaxLong(
     let _budget = U256::from_dec_str(&budget).unwrap();
     let checkpoint_exposure: I256 = I256::from_dec_str(&checkpointExposure).unwrap();
 
-    let result_fp = state.get_max_long(
+    let result_fp = state.calculate_max_long(
         _budget,
         checkpoint_exposure,
         maybeMaxIterations.map(|x| x.into()),

@@ -8,7 +8,7 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Gets the curve fee paid by traders when they open a long.
+/// Calculates the curve fee paid in bonds by traders when they open a long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -16,7 +16,7 @@ use crate::{
 ///
 /// @param baseAmount - The amount of base tokens to spend
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getOpenLongCurveFee(
+pub fn openLongCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     baseAmount: &str,
@@ -34,7 +34,8 @@ pub fn getOpenLongCurveFee(
     U256::from(result_fp).to_string()
 }
 
-/// Gets the governance fee paid by traders when they open a long.
+/// Calculates the governance fee paid in bonds by traders when they open a
+/// long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -42,7 +43,7 @@ pub fn getOpenLongCurveFee(
 ///
 /// @param baseAmount - The amount of base tokens to spend
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getOpenLongGovernanceFee(
+pub fn openLongGovernanceFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     baseAmount: &str,
@@ -59,7 +60,8 @@ pub fn getOpenLongGovernanceFee(
     U256::from(result_fp).to_string()
 }
 
-/// Gets the curve fee paid by traders when they close a long.
+/// Calculates the curve fee paid in shares or base by traders when they close a
+/// long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -71,7 +73,7 @@ pub fn getOpenLongGovernanceFee(
 ///
 /// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getCloseLongCurveFee(
+pub fn closeLongCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: &str,
@@ -93,7 +95,8 @@ pub fn getCloseLongCurveFee(
     U256::from(result_fp).to_string()
 }
 
-/// Gets the flat fee paid by traders when they close a long.
+/// Calculates the flat fee paid in shares or base by traders when they close a
+/// long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -105,7 +108,7 @@ pub fn getCloseLongCurveFee(
 ///
 /// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getCloseLongFlatFee(
+pub fn closeLongFlatFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: &str,

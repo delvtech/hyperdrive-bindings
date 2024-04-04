@@ -8,7 +8,7 @@ use crate::{
     utils::set_panic_hook,
 };
 
-/// Gets the curve fee paid by the trader when they open a short.
+/// Calculates the curve fee paid by the trader when they open a short.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -16,7 +16,7 @@ use crate::{
 ///
 /// @param bondAmount - The number of bonds to short
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getOpenShortCurveFee(
+pub fn openShortCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: &str,
@@ -27,14 +27,14 @@ pub fn getOpenShortCurveFee(
         config: poolConfig.into(),
     };
     let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
-    let spot_price = state.get_spot_price();
+    let spot_price = state.calculate_spot_price();
 
     let result_fp = state.open_short_curve_fee(bond_amount, spot_price);
 
     U256::from(result_fp).to_string()
 }
 
-// Get the governance fee paid by the trader when they open a short.
+/// Calculates the governance fee paid by the trader when they open a short.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -42,7 +42,7 @@ pub fn getOpenShortCurveFee(
 ///
 /// @param bondAmount - The number of bonds to short
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getOpenShortGovernanceFee(
+pub fn openShortGovernanceFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: &str,
@@ -53,14 +53,14 @@ pub fn getOpenShortGovernanceFee(
         config: poolConfig.into(),
     };
     let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
-    let spot_price = state.get_spot_price();
+    let spot_price = state.calculate_spot_price();
 
     let result_fp = state.open_short_governance_fee(bond_amount, spot_price);
 
     U256::from(result_fp).to_string()
 }
 
-/// Gets the curve fee paid by the trader when they close a short.
+/// Calculates the curve fee paid by the trader when they close a short.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -72,7 +72,7 @@ pub fn getOpenShortGovernanceFee(
 ///
 /// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getCloseShortCurveFee(
+pub fn closeShortCurveFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: &str,
@@ -93,7 +93,7 @@ pub fn getCloseShortCurveFee(
     U256::from(result_fp).to_string()
 }
 
-/// Gets the flat fee paid by the trader when they close a short.
+/// Calculates the flat fee paid by the trader when they close a short.
 ///
 /// @param poolInfo - The current state of the pool
 ///
@@ -105,7 +105,7 @@ pub fn getCloseShortCurveFee(
 ///
 /// @param currentTime - The current timestamp (in seconds)
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getCloseShortFlatFee(
+pub fn closeShortFlatFee(
     poolInfo: &JsPoolInfo,
     poolConfig: &JsPoolConfig,
     bondAmount: &str,
