@@ -117,7 +117,7 @@ pub fn closeShortFlatFee(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let bond_amount = FixedPoint::from(U256::from_dec_str(&bondAmount).unwrap());
+    let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
     let maturity_time = U256::from_dec_str(maturityTime).unwrap();
     let current_time = U256::from_dec_str(currentTime).unwrap();
 

@@ -1,5 +1,7 @@
 .PHONY: build-and-start build install start
 
+all: build install
+
 build-and-start: build install start
 
 build:

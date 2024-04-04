@@ -5,7 +5,7 @@
 "@delvtech/hyperdrive-wasm@file:delvtech-hyperdrive-wasm-0.9.1.tgz":
   version "0.9.1"
   resolved "file:delvtech-hyperdrive-wasm-0.9.1.tgz"
-  integrity sha512-/GO24ZDz3AvBir5P7ykzPc5GD7lJpZ/MVZKVegTOKk4VwF6Xbnx0yPwmmQK9l+tlXNv9sP3YUgiRUF1Io6tYYg==
+  integrity sha512-8HJaJ25IFZvVv0wtOyfwnivqdPWiheVmAWrSH1aqPTkiqMb9qFBNPo5MIp5hdG2EUx4wAzbRp8/X9WLbZoGgvQ==
 
 "@discoveryjs/json-ext@^0.5.0":
   version "0.5.7"
