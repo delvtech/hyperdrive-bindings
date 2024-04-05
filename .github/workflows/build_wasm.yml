@@ -40,10 +40,10 @@ jobs:
         run: cargo install wasm-pack
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
-          registry-url: "https://registry.npmjs.org"
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org'
 
       - name: setup foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -54,9 +54,8 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: "v0.10.1"
-          path: "./hyperdrive"
-          ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
+          ref: 'v0.12.0'
+          path: './hyperdrive'
 
       - name: build hyperdrive-wasm
         working-directory: crates/hyperdrive-wasm
