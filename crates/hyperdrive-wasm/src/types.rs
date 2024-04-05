@@ -26,9 +26,11 @@ interface JsPoolConfig {
     timeStretch: string,
     governance: string,
     feeCollector: string,
+    sweepCollector: string,
     fees: Fees,
     linkerFactory: string,
     linkerCodeHash: string,
+    vaultSharesToken: string,
 }"#;
 
 #[wasm_bindgen(typescript_custom_section)]
@@ -89,6 +91,7 @@ pub struct StringPoolConfig {
     pub fees: StringFees,
     pub linkerFactory: String,
     pub linkerCodeHash: String,
+    pub vaultSharesToken: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -172,6 +175,7 @@ impl From<&JsPoolConfig> for PoolConfig {
                 .unwrap()
                 .try_into()
                 .unwrap(),
+            vault_shares_token: Address::from_str(&js_pool_config.vaultSharesToken).unwrap(),
         }
     }
 }

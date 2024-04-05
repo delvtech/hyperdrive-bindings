@@ -41,35 +41,33 @@ const examplePoolConfig = {
   linkerCodeHash: "0x".padEnd(66, "0"),
   linkerFactory: ZERO_ADDRESS,
   sweepCollector: ZERO_ADDRESS,
+  vaultSharesToken: ZERO_ADDRESS,
 };
 
 async function main() {
   hyperdriveWasm.initSync(hyperdriveWasm.wasmBuffer);
 
-  const spotRate = hyperdriveWasm.getSpotRate(
-    examplePoolInfo,
-    examplePoolConfig
-  );
+  const spotRate = hyperdriveWasm.spotRate(examplePoolInfo, examplePoolConfig);
   console.log("spotRate:", spotRate);
 
-  const maxLong = hyperdriveWasm.getMaxLong(
+  const maxLong = hyperdriveWasm.maxLong(
     examplePoolInfo,
     examplePoolConfig,
     MAX_BUDGET,
-    "90844806244066488"
+    "90844806244066488",
   );
   console.log("maxLong:", maxLong);
 
   const baseForMaxLong = hyperdriveWasm.calcOpenLong(
     examplePoolInfo,
     examplePoolConfig,
-    maxLong
+    maxLong,
   );
   console.log("baseForMaxLong:", baseForMaxLong);
 
-  const spotPrice = hyperdriveWasm.getSpotPrice(
+  const spotPrice = hyperdriveWasm.spotPrice(
     examplePoolInfo,
-    examplePoolConfig
+    examplePoolConfig,
   );
   console.log("spotPrice:", spotPrice);
 
@@ -85,9 +83,32 @@ async function main() {
     examplePoolInfo,
     examplePoolConfig,
     (10_000n * 10n ** 18n).toString(),
-    "900000000000000000"
+    "900000000000000000",
   );
   console.log("openShortPreview", openShortPreview);
+
+  const shortAmount = 10_000n * 10n ** 18n;
+  const currentTime = Math.floor(
+    examplePoolConfig.positionDuration * Math.random(),
+  );
+  const feeArgs = [
+    examplePoolInfo,
+    examplePoolConfig,
+    shortAmount.toString(),
+    examplePoolConfig.positionDuration.toString(),
+    currentTime.toString(),
+  ];
+
+  console.log("feeArgs:", feeArgs);
+
+  const closeShortCurveFee = hyperdriveWasm.closeShortCurveFee(...feeArgs);
+  console.log("closeShortCurveFee:", closeShortCurveFee);
+
+  const closeShortFlatFee = hyperdriveWasm.closeShortFlatFee(...feeArgs);
+  console.log("closeShortFlatFee:", closeShortFlatFee);
+
+  const openShortCurveFee = hyperdriveWasm.openShortCurveFee(...feeArgs);
+  console.log("openShortCurveFee:", openShortCurveFee);
 }
 
 main();

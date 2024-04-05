@@ -11,32 +11,29 @@ use types::{JsPoolConfig, JsPoolInfo};
 use utils::set_panic_hook;
 use wasm_bindgen::prelude::*;
 
-/// Gets the pool's spot price, i.e. the price to open a long of 1.
+/// Calculates the pool's spot price, i.e. the price to open a long of 1.
 ///
 /// @param poolInfo - The current state of the pool
 ///
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getSpotPrice(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
+pub fn spotPrice(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
     set_panic_hook();
     let state = State {
         config: poolConfig.into(),
         info: poolInfo.into(),
     };
-    let result_fp = state.get_spot_price();
+    let result_fp = state.calculate_spot_price();
     U256::from(result_fp).to_string()
 }
 
-/// Gets the pool's idle liquidity in base
+/// Calculates the pool's idle liquidity in base
 ///
 /// @param poolInfo - The current state of the pool
 ///
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getIdleShareReservesInBase(
-    poolInfo: &JsPoolInfo,
-    poolConfig: &JsPoolConfig,
-) -> String {
+pub fn idleShareReservesInBase(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
     set_panic_hook();
     let state = State {
         config: poolConfig.into(),
@@ -46,19 +43,19 @@ pub fn getIdleShareReservesInBase(
     U256::from(result_fp).to_string()
 }
 
-/// Gets the pool's fixed APR, i.e. the fixed rate a user locks in when they
-/// open a long.
+/// Calculates the pool's fixed APR, i.e. the fixed rate a user locks in when
+/// they open a long.
 ///
 /// @param poolInfo - The current state of the pool
 ///
 /// @param poolConfig - The pool's configuration
 #[wasm_bindgen(skip_jsdoc)]
-pub fn getSpotRate(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
+pub fn spotRate(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig) -> String {
     set_panic_hook();
     let state = State {
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let result_fp = state.get_spot_rate();
+    let result_fp = state.calculate_spot_rate();
     U256::from(result_fp).to_string()
 }
