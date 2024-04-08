@@ -54,7 +54,7 @@ pub fn calculate_initial_bond_reserves(
 }
 
 #[pyfunction]
-pub fn get_effective_share_reserves(
+pub fn calculate_effective_share_reserves(
     share_reserves: &str,
     share_adjustment: &str,
 ) -> PyResult<String> {
@@ -70,7 +70,7 @@ pub fn get_effective_share_reserves(
 }
 
 #[pyfunction]
-pub fn get_time_stretch(rate: &str, position_duration: &str) -> PyResult<String> {
+pub fn calculate_time_stretch(rate: &str, position_duration: &str) -> PyResult<String> {
     let rate_fp = FixedPoint::from(
         U256::from_dec_str(rate)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert rate string to U256"))?,
