@@ -9,7 +9,7 @@ from .utils import _get_interface
 # pylint: disable=too-many-arguments
 
 
-def get_max_spot_price(
+def calculate_max_spot_price(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
 ) -> str:
@@ -29,10 +29,10 @@ def get_max_spot_price(
     str (FixedPoint)
         max_spot_price = 1/1 + curve_fee * (1 / (spot_price - 1))
     """
-    return _get_interface(pool_config, pool_info).get_max_spot_price()
+    return _get_interface(pool_config, pool_info).calculate_max_spot_price()
 
 
-def get_spot_price_after_long(
+def calculate_spot_price_after_long(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     long_amount: str,
@@ -56,10 +56,10 @@ def get_spot_price_after_long(
     str (FixedPoint)
         The spot price after opening the long.
     """
-    return _get_interface(pool_config, pool_info).get_spot_price_after_long(long_amount)
+    return _get_interface(pool_config, pool_info).calculate_spot_price_after_long(long_amount)
 
 
-def get_solvency(
+def calculate_solvency(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
 ) -> str:
@@ -79,10 +79,10 @@ def get_solvency(
     str (FixedPoint)
         solvency = share_reserves - long_exposure / vault_share_price - minimum_share_reserves
     """
-    return _get_interface(pool_config, pool_info).get_solvency()
+    return _get_interface(pool_config, pool_info).calculate_solvency()
 
 
-def get_spot_rate(
+def calculate_spot_rate(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
 ) -> str:
@@ -102,10 +102,10 @@ def get_spot_rate(
     str (FixedPoint)
         The pool's spot rate.
     """
-    return _get_interface(pool_config, pool_info).get_spot_rate()
+    return _get_interface(pool_config, pool_info).calculate_spot_rate()
 
 
-def get_spot_price(
+def calculate_spot_price(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
 ) -> str:
@@ -125,7 +125,7 @@ def get_spot_price(
     str (FixedPoint)
         The pool's spot price.
     """
-    return _get_interface(pool_config, pool_info).get_spot_price()
+    return _get_interface(pool_config, pool_info).calculate_spot_price()
 
 
 def calculate_open_long(
@@ -158,7 +158,8 @@ def calculate_close_long(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     bond_amount: str,
-    normalized_time_remaining: str,
+    maturity_time: str,
+    current_time: str,
 ) -> str:
     """Calculates the amount of shares that will be returned after fees for closing a long.
 
@@ -172,15 +173,17 @@ def calculate_close_long(
         Includes attributes like reserve levels and share prices.
     bond_amount: str (FixedPoint)
         The amount of bonds to sell.
-    normalized_time_remaining: str (FixedPoint)
-        The time remaining before the long reaches maturity, normalized such that 1 is at opening and 0 is at maturity.
+    maturity_time: str (FixedPoint)
+        The maturity time of the long.
+    current_time: str (FixedPoint)
+        The current block time.
 
     Returns
     -------
     str (FixedPoint)
         The amount of shares returned.
     """
-    return _get_interface(pool_config, pool_info).calculate_close_long(bond_amount, normalized_time_remaining)
+    return _get_interface(pool_config, pool_info).calculate_close_long(bond_amount, maturity_time, current_time)
 
 
 def calculate_open_short(
@@ -226,7 +229,8 @@ def calculate_close_short(
     bond_amount: str,
     open_vault_share_price: str,
     close_vault_share_price: str,
-    normalized_time_remaining: str,
+    maturity_time: str,
+    current_time: str,
 ) -> str:
     """Gets the amount of shares the trader will receive from closing a short.
 
@@ -253,7 +257,7 @@ def calculate_close_short(
         The amount of shares the trader will receive for closing the short.
     """
     return _get_interface(pool_config, pool_info).calculate_close_short(
-        bond_amount, open_vault_share_price, close_vault_share_price, normalized_time_remaining
+        bond_amount, open_vault_share_price, close_vault_share_price, maturity_time, current_time
     )
 
 
@@ -283,7 +287,7 @@ def to_checkpoint(
     return _get_interface(pool_config, pool_info).to_checkpoint(time)
 
 
-def get_max_long(
+def calculate_max_long(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     budget: str,
@@ -312,10 +316,10 @@ def get_max_long(
     str (FixedPoint)
         The maximum long the pool and user's wallet can support.
     """
-    return _get_interface(pool_config, pool_info).get_max_long(budget, checkpoint_exposure, maybe_max_iterations)
+    return _get_interface(pool_config, pool_info).calculate_max_long(budget, checkpoint_exposure, maybe_max_iterations)
 
 
-def get_max_short(
+def calculate_max_short(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     budget: str,
@@ -350,7 +354,7 @@ def get_max_short(
     str (FixedPoint)
         The maximum short the pool and user's wallet can handle.
     """
-    return _get_interface(pool_config, pool_info).get_max_short(
+    return _get_interface(pool_config, pool_info).calculate_max_short(
         budget,
         open_vault_share_price,
         checkpoint_exposure,
