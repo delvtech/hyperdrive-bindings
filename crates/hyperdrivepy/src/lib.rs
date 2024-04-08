@@ -10,7 +10,7 @@ use pyo3::prelude::*;
 use hyperdrive_state::HyperdriveState;
 pub use hyperdrive_state_methods::*;
 pub use hyperdrive_utils::{
-    calculate_initial_bond_reserves, get_effective_share_reserves, get_time_stretch,
+    calculate_effective_share_reserves, calculate_initial_bond_reserves, calculate_time_stretch,
 };
 pub use pool_config::PyPoolConfig;
 pub use pool_info::PyPoolInfo;
@@ -22,7 +22,7 @@ pub use pool_info::PyPoolInfo;
 fn hyperdrivepy(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_class::<HyperdriveState>()?;
     m.add_function(wrap_pyfunction!(calculate_initial_bond_reserves, m)?)?;
-    m.add_function(wrap_pyfunction!(get_effective_share_reserves, m)?)?;
-    m.add_function(wrap_pyfunction!(get_time_stretch, m)?)?;
+    m.add_function(wrap_pyfunction!(calculate_effective_share_reserves, m)?)?;
+    m.add_function(wrap_pyfunction!(calculate_time_stretch, m)?)?;
     Ok(())
 }

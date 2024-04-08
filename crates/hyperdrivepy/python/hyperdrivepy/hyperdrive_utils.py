@@ -6,7 +6,7 @@ from __future__ import annotations
 from . import hyperdrivepy as rust_module  # type: ignore
 
 
-def get_time_stretch(rate: str, position_duration: str) -> str:
+def calculate_time_stretch(rate: str, position_duration: str) -> str:
     """Calculate the time stretch parameter given a pool's spot rate.
 
     ..math::
@@ -24,10 +24,10 @@ def get_time_stretch(rate: str, position_duration: str) -> str:
     time_stretch: str (FixedPoint)
         The time stretch parameter (tau).
     """
-    return rust_module.get_time_stretch(rate, position_duration)
+    return rust_module.calculate_time_stretch(rate, position_duration)
 
 
-def get_effective_share_reserves(
+def calculate_effective_share_reserves(
     share_reserves: str,
     share_adjustment: str,
 ) -> str:
@@ -48,7 +48,7 @@ def get_effective_share_reserves(
     effective_share_reserves: str (FixedPoint)
         The adjusted share reserves, accounting for the zeta factor.
     """
-    return rust_module.get_effective_share_reserves(share_reserves, share_adjustment)
+    return rust_module.calculate_effective_share_reserves(share_reserves, share_adjustment)
 
 
 def calculate_initial_bond_reserves(

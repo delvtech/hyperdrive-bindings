@@ -1,14 +1,14 @@
 use ethers::core::types::{I256, U256};
 use fixed_point::FixedPoint;
 
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::PyErr;
-use pyo3::exceptions::PyValueError;
 
 use hyperdrive_math::{
+    calculate_effective_share_reserves as rs_calculate_effective_share_reserves,
     calculate_initial_bond_reserves as rs_calculate_initial_bond_reserves,
-    get_effective_share_reserves as rs_get_effective_share_reserves,
-    get_time_stretch as rs_get_time_stretch,
+    calculate_time_stretch as rs_calculate_time_stretch,
 };
 
 #[pyfunction]
@@ -27,7 +27,9 @@ pub fn calculate_initial_bond_reserves(
         })?);
     let initial_vault_share_price_fp =
         FixedPoint::from(U256::from_dec_str(initial_vault_share_price).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert initial_vault_share_price string to U256")
+            PyErr::new::<PyValueError, _>(
+                "Failed to convert initial_vault_share_price string to U256",
+            )
         })?);
     let apr_fp = FixedPoint::from(
         U256::from_dec_str(apr)
@@ -52,7 +54,7 @@ pub fn calculate_initial_bond_reserves(
 }
 
 #[pyfunction]
-pub fn get_effective_share_reserves(
+pub fn calculate_effective_share_reserves(
     share_reserves: &str,
     share_adjustment: &str,
 ) -> PyResult<String> {
@@ -62,13 +64,13 @@ pub fn get_effective_share_reserves(
     let share_adjustment_i = I256::from_dec_str(share_adjustment).map_err(|_| {
         PyErr::new::<PyValueError, _>("Failed to convert share_adjustment string to I256")
     })?;
-    let result_fp = rs_get_effective_share_reserves(share_reserves_fp, share_adjustment_i);
+    let result_fp = rs_calculate_effective_share_reserves(share_reserves_fp, share_adjustment_i);
     let result = U256::from(result_fp).to_string();
     return Ok(result);
 }
 
 #[pyfunction]
-pub fn get_time_stretch(rate: &str, position_duration: &str) -> PyResult<String> {
+pub fn calculate_time_stretch(rate: &str, position_duration: &str) -> PyResult<String> {
     let rate_fp = FixedPoint::from(
         U256::from_dec_str(rate)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert rate string to U256"))?,
@@ -77,7 +79,7 @@ pub fn get_time_stretch(rate: &str, position_duration: &str) -> PyResult<String>
         U256::from_dec_str(position_duration)
             .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert rate string to U256"))?,
     );
-    let result_fp = rs_get_time_stretch(rate_fp, position_duration_fp);
+    let result_fp = rs_calculate_time_stretch(rate_fp, position_duration_fp);
     let result = U256::from(result_fp).to_string();
     return Ok(result);
 }
