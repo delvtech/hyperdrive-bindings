@@ -77,6 +77,14 @@ def test_calculate_solvency():
     assert int(solvency) > 0, "Expected max_spot_price to > 0."
 
 
+def test_calculate_spot_rate_after_long():
+    """test calculate_spot_rate_after_long."""
+    spot_rate = hyperdrivepy.calculate_spot_rate_after_long(POOL_CONFIG, POOL_INFO, base_amount=str(int(1_000e18)))
+    assert spot_rate is not None, "Failed to calculate spot rate after long."
+    assert isinstance(spot_rate, str), "Expected spot rate to be a string."
+    assert int(spot_rate) > 0, "Expected spot rate to > 0."
+
+
 def test_calculate_spot_rate():
     """test calculate_spot_rate."""
     spot_rate = hyperdrivepy.calculate_spot_rate(POOL_CONFIG, POOL_INFO)

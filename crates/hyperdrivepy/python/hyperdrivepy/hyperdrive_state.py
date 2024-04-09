@@ -115,6 +115,36 @@ def calculate_solvency(
     return _get_interface(pool_config, pool_info).calculate_solvency()
 
 
+def calculate_spot_rate_after_long(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    base_amount: str,
+    bond_amount: str | None = None,
+) -> str:
+    """Get the spot rate after opening a long on Hyperdrive, including fees.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    base_amount: str (FixedPoint)
+        The amount base provided.
+    bond_amount: str (FixedPoint) | None, optional
+        The number of bonds purchased.
+        Defaults to the output of `calculate_open_long(base_amount)`.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The spot rate after opening the long.
+    """
+    return _get_interface(pool_config, pool_info).calculate_spot_rate_after_long(base_amount, bond_amount)
+
+
 def calculate_spot_rate(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
