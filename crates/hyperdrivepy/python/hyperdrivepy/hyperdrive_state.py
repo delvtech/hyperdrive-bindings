@@ -248,8 +248,10 @@ def calculate_close_short(
         The share price when the short was opened.
     close_vault_share_price: str (FixedPoint)
         The share price when the short was closed.
-    normalized_time_remaining: str (FixedPoint)
-        The time remaining before the short reaches maturity, normalized such that 1 is at opening and 0 is at maturity.
+    maturity_time: str (FixedPoint)
+        The maturity time of the long.
+    current_time: str (FixedPoint)
+        The current block time.
 
     Returns
     -------
