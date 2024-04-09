@@ -27,14 +27,55 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn calculate_spot_price_after_long(&self, base_amount: &str) -> PyResult<String> {
+    pub fn calculate_spot_price_after_long(
+        &self,
+        base_amount: &str,
+        maybe_bond_amount: Option<&str>,
+    ) -> PyResult<String> {
         let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
         })?);
+        let maybe_bond_amount_fp = if let Some(bond_amount) = maybe_bond_amount {
+            Some(FixedPoint::from(U256::from_dec_str(bond_amount).map_err(
+                |_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_bond_amount string to U256",
+                    )
+                },
+            )?))
+        } else {
+            None
+        };
         let result_fp = self
             .state
-            .calculate_spot_price_after_long(base_amount_fp, None)
+            .calculate_spot_price_after_long(base_amount_fp, maybe_bond_amount_fp)
             .unwrap();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_spot_price_after_short(
+        &self,
+        bond_amount: &str,
+        maybe_base_amount: Option<&str>,
+    ) -> PyResult<String> {
+        let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
+        })?);
+        let maybe_base_amount_fp = if let Some(base_amount) = maybe_base_amount {
+            Some(FixedPoint::from(U256::from_dec_str(base_amount).map_err(
+                |_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_base_amount string to U256",
+                    )
+                },
+            )?))
+        } else {
+            None
+        };
+        let result_fp = self
+            .state
+            .calculate_spot_price_after_short(bond_amount_fp, maybe_base_amount_fp);
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }

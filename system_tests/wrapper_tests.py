@@ -51,8 +51,20 @@ def test_calculate_max_spot_price():
 
 def test_calculate_spot_price_after_long():
     """test calculate_spot_price_after_long."""
-    spot_price = hyperdrivepy.calculate_spot_price_after_long(POOL_CONFIG, POOL_INFO, long_amount=str(1_000 * 10**18))
+    spot_price = hyperdrivepy.calculate_spot_price_after_long(
+        POOL_CONFIG, POOL_INFO, base_amount=str(1_000 * 10**18), bond_amount=None
+    )
     assert spot_price is not None, "Failed to calculate spot price after long."
+    assert isinstance(spot_price, str), "Expected spot rate to be a string."
+    assert int(spot_price) > 0, "Expected max_spot_price to > 0."
+
+
+def test_calculate_spot_price_after_short():
+    """test calculate_spot_price_after_short."""
+    spot_price = hyperdrivepy.calculate_spot_price_after_short(
+        POOL_CONFIG, POOL_INFO, bond_amount=str(100 * 10**18), base_amount=None
+    )
+    assert spot_price is not None, "Failed to calculate spot price after short."
     assert isinstance(spot_price, str), "Expected spot rate to be a string."
     assert int(spot_price) > 0, "Expected max_spot_price to > 0."
 
