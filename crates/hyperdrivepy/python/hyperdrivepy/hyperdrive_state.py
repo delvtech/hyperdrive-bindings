@@ -352,6 +352,51 @@ def to_checkpoint(
     return _get_interface(pool_config, pool_info).to_checkpoint(time)
 
 
+def calculate_targeted_long(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    budget: str,
+    target_rate: str,
+    checkpoint_exposure: str,
+    maybe_max_iterations: int | None,
+    maybe_allowable_error: str,
+) -> str:
+    """Calculate the amount of bonds that can be purchased for the given budget.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    budget: str (FixedPont)
+        The account budget in base for making a long.
+    target: str (FixedPoint)
+        The target fixed rate.
+    checkpoint_exposure: str (I256)
+        The net exposure for the given checkpoint.
+    maybe_max_iterations: int, optional
+        The number of iterations to use for the Newtonian method.
+    maybe_allowable_error: str, FixedPoint
+        The amount of error supported for reaching the target rate.
+
+
+    Returns
+    -------
+    str (FixedPoint)
+        The long to hit the target rate.
+    """
+    return _get_interface(pool_config, pool_info).calculate_targeted_long_with_budget(
+        budget,
+        target_rate,
+        checkpoint_exposure,
+        maybe_max_iterations,
+        maybe_allowable_error,
+    )
+
+
 def calculate_max_long(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,

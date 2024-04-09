@@ -239,6 +239,25 @@ def test_calculate_close_short():
     assert int(shares_received) > 0
 
 
+def test_targeted_long():
+    """Test calculate_targeted_long_with_budget."""
+    budget = "1000000000000000000"  # 1 base
+    checkpoint_exposure = "10000"
+    max_iterations = 20
+    allowable_error = "0000000010000000000"
+    target = "001000000000000000"
+    targeted_long = hyperdrivepy.calculate_targeted_long(
+        POOL_CONFIG,
+        POOL_INFO,
+        budget,
+        target,
+        checkpoint_exposure,
+        max_iterations,
+        allowable_error,
+    )
+    assert int(targeted_long) > 0
+
+
 def test_max_long():
     """Test calculate_max_long."""
     budget = "1000000000000000000"  # 1 base
