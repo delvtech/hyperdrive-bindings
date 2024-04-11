@@ -49,10 +49,7 @@ pub fn calcAddLiquidity(
     let current_time = U256::from_dec_str(currentTime).unwrap();
     let contribution = FixedPoint::from(U256::from_dec_str(contribution).unwrap());
 
-    let asBase = match asBase {
-        Some(as_base) => as_base,
-        None => true,
-    };
+    let as_base = asBase.unwrap_or(true);
 
     let min_lp_share_price = match minLpSharePrice {
         Some(min_lp_share_price) => {
@@ -78,7 +75,7 @@ pub fn calcAddLiquidity(
             min_lp_share_price,
             min_apr,
             max_apr,
-            asBase,
+            as_base,
         )
         .unwrap();
 
