@@ -16,9 +16,9 @@ use crate::{
 ///
 /// @param poolConfig - The pool's configuration
 ///
-/// @param contribution - The amount of base or shares to contribute
-///
 /// @param currentTime - The current timestamp (in seconds)
+///
+/// @param contribution - The amount of base or shares to contribute
 ///
 /// @param asBase - True if the contribution is in base, false if it's in
 /// shares. Defaults to true
