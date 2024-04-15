@@ -35,10 +35,10 @@ def calculate_max_spot_price(
 def calculate_spot_price_after_long(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
-    long_amount: str,
+    base_amount: str,
+    bond_amount: str | None = None,
 ) -> str:
-    """Get the spot price after opening the long on YieldSpace
-    and before calculating the fees.
+    """Get the spot price after opening a long on Hyperdrive, including fees.
 
     Arguments
     ---------
@@ -48,15 +48,48 @@ def calculate_spot_price_after_long(
     pool_info: PoolInfo
         Current state information of the hyperdrive contract.
         Includes attributes like reserve levels and share prices.
-    long_amount: str (FixedPoint)
-        The long amount.
+    base_amount: str (FixedPoint)
+        The amount base provided.
+    bond_amount: str (FixedPoint) | None, optional
+        The number of bonds purchased.
+        Defaults to the output of `calculate_open_long(base_amount)`.
 
     Returns
     -------
     str (FixedPoint)
         The spot price after opening the long.
     """
-    return _get_interface(pool_config, pool_info).calculate_spot_price_after_long(long_amount)
+    return _get_interface(pool_config, pool_info).calculate_spot_price_after_long(base_amount, bond_amount)
+
+
+def calculate_spot_price_after_short(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    bond_amount: str,
+    base_amount: str | None = None,
+) -> str:
+    """Get the spot price after opening a short on Hyperdrive, including fees.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    bond_amount: str (FixedPoint)
+        The amount bonds shorted.
+    base_amount: str (FixedPoint) | None, optional
+        The amount of base supplied.
+        Defaults to the output of `calculate_open_short(bond_amount)`.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The spot price after opening the long.
+    """
+    return _get_interface(pool_config, pool_info).calculate_spot_price_after_short(bond_amount, base_amount)
 
 
 def calculate_solvency(
@@ -80,6 +113,36 @@ def calculate_solvency(
         solvency = share_reserves - long_exposure / vault_share_price - minimum_share_reserves
     """
     return _get_interface(pool_config, pool_info).calculate_solvency()
+
+
+def calculate_spot_rate_after_long(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    base_amount: str,
+    bond_amount: str | None = None,
+) -> str:
+    """Get the spot rate after opening a long on Hyperdrive, including fees.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    base_amount: str (FixedPoint)
+        The amount base provided.
+    bond_amount: str (FixedPoint) | None, optional
+        The number of bonds purchased.
+        Defaults to the output of `calculate_open_long(base_amount)`.
+
+    Returns
+    -------
+    str (FixedPoint)
+        The spot rate after opening the long.
+    """
+    return _get_interface(pool_config, pool_info).calculate_spot_rate_after_long(base_amount, bond_amount)
 
 
 def calculate_spot_rate(
@@ -287,6 +350,51 @@ def to_checkpoint(
         The checkpoint timestamp.
     """
     return _get_interface(pool_config, pool_info).to_checkpoint(time)
+
+
+def calculate_targeted_long(
+    pool_config: types.PoolConfigType,
+    pool_info: types.PoolInfoType,
+    budget: str,
+    target_rate: str,
+    checkpoint_exposure: str,
+    maybe_max_iterations: int | None,
+    maybe_allowable_error: str,
+) -> str:
+    """Calculate the amount of bonds that can be purchased for the given budget.
+
+    Arguments
+    ---------
+    pool_config: PoolConfig
+        Static configuration for the hyperdrive contract.
+        Set at deploy time.
+    pool_info: PoolInfo
+        Current state information of the hyperdrive contract.
+        Includes attributes like reserve levels and share prices.
+    budget: str (FixedPont)
+        The account budget in base for making a long.
+    target: str (FixedPoint)
+        The target fixed rate.
+    checkpoint_exposure: str (I256)
+        The net exposure for the given checkpoint.
+    maybe_max_iterations: int, optional
+        The number of iterations to use for the Newtonian method.
+    maybe_allowable_error: str, FixedPoint
+        The amount of error supported for reaching the target rate.
+
+
+    Returns
+    -------
+    str (FixedPoint)
+        The long to hit the target rate.
+    """
+    return _get_interface(pool_config, pool_info).calculate_targeted_long_with_budget(
+        budget,
+        target_rate,
+        checkpoint_exposure,
+        maybe_max_iterations,
+        maybe_allowable_error,
+    )
 
 
 def calculate_max_long(

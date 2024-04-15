@@ -3,7 +3,6 @@ use fixed_point::FixedPoint;
 
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
-use pyo3::PyErr;
 
 pub use crate::utils::*;
 use crate::HyperdriveState;
@@ -22,32 +21,95 @@ impl HyperdriveState {
         Ok(HyperdriveState::new(state))
     }
 
-    pub fn calculate_max_spot_price(&self) -> PyResult<String> {
-        let result_fp = self.state.calculate_max_spot_price();
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn calculate_spot_price_after_long(&self, long_amount: &str) -> PyResult<String> {
-        let long_amount_fp = FixedPoint::from(U256::from_dec_str(long_amount).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert long_amount string to U256")
-        })?);
-        let result_fp = self
-            .state
-            .calculate_spot_price_after_long(long_amount_fp, None)
-            .unwrap();
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
     pub fn calculate_solvency(&self) -> PyResult<String> {
         let result_fp = self.state.calculate_solvency();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
+    pub fn calculate_spot_price_after_long(
+        &self,
+        base_amount: &str,
+        maybe_bond_amount: Option<&str>,
+    ) -> PyResult<String> {
+        let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
+        })?);
+        let maybe_bond_amount_fp = if let Some(bond_amount) = maybe_bond_amount {
+            Some(FixedPoint::from(U256::from_dec_str(bond_amount).map_err(
+                |_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_bond_amount string to U256",
+                    )
+                },
+            )?))
+        } else {
+            None
+        };
+        let result_fp = self
+            .state
+            .calculate_spot_price_after_long(base_amount_fp, maybe_bond_amount_fp)
+            .unwrap();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_spot_price_after_short(
+        &self,
+        bond_amount: &str,
+        maybe_base_amount: Option<&str>,
+    ) -> PyResult<String> {
+        let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
+        })?);
+        let maybe_base_amount_fp = if let Some(base_amount) = maybe_base_amount {
+            Some(FixedPoint::from(U256::from_dec_str(base_amount).map_err(
+                |_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_base_amount string to U256",
+                    )
+                },
+            )?))
+        } else {
+            None
+        };
+        let result_fp = self
+            .state
+            .calculate_spot_price_after_short(bond_amount_fp, maybe_base_amount_fp)
+            .unwrap();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
     pub fn calculate_spot_price(&self) -> PyResult<String> {
         let result_fp = self.state.calculate_spot_price();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_spot_rate_after_long(
+        &self,
+        base_amount: &str,
+        maybe_bond_amount: Option<&str>,
+    ) -> PyResult<String> {
+        let base_amount_fp = FixedPoint::from(U256::from_dec_str(base_amount).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert base_amount string to U256")
+        })?);
+        let maybe_bond_amount_fp = if let Some(bond_amount) = maybe_bond_amount {
+            Some(FixedPoint::from(U256::from_dec_str(bond_amount).map_err(
+                |_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_bond_amount string to U256",
+                    )
+                },
+            )?))
+        } else {
+            None
+        };
+        let result_fp = self
+            .state
+            .calculate_spot_rate_after_long(base_amount_fp, maybe_bond_amount_fp)
+            .unwrap();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
@@ -156,57 +218,56 @@ impl HyperdriveState {
         return Ok(result);
     }
 
-    pub fn calculate_bonds_out_given_shares_in_down(&self, amount_in: &str) -> PyResult<String> {
-        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
-        })?);
-        let result_fp = self
-            .state
-            .calculate_bonds_out_given_shares_in_down(amount_in_fp);
+    pub fn calculate_max_spot_price(&self) -> PyResult<String> {
+        let result_fp = self.state.calculate_max_spot_price();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
 
-    pub fn calculate_shares_in_given_bonds_out_up(&self, amount_in: &str) -> PyResult<String> {
-        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
+    pub fn calculate_targeted_long_with_budget(
+        &self,
+        budget: &str,
+        target_rate: &str,
+        checkpoint_exposure: &str,
+        maybe_max_iterations: Option<usize>,
+        maybe_allowable_error: Option<&str>,
+    ) -> PyResult<String> {
+        let budget_fp = FixedPoint::from(U256::from_dec_str(budget).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert budget string to U256")
         })?);
-        // We unwrap the error here to throw panic error if this fails
+        let target_rate_fp = FixedPoint::from(U256::from_dec_str(target_rate).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert target_rate string to U256")
+        })?);
+        let checkpoint_exposure_i = I256::from_dec_str(checkpoint_exposure).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert checkpoint_exposure string to I256")
+        })?;
+        let maybe_allowable_error_fp = if let Some(allowable_error) = maybe_allowable_error {
+            Some(FixedPoint::from(
+                U256::from_dec_str(allowable_error).map_err(|_| {
+                    PyErr::new::<PyValueError, _>(
+                        "Failed to convert maybe_allowable_error string to U256",
+                    )
+                })?,
+            ))
+        } else {
+            None
+        };
         let result_fp = self
             .state
-            .calculate_shares_in_given_bonds_out_up_safe(amount_in_fp)
-            .unwrap();
+            .calculate_targeted_long_with_budget(
+                budget_fp,
+                target_rate_fp,
+                checkpoint_exposure_i,
+                maybe_max_iterations,
+                maybe_allowable_error_fp,
+            )
+            .map_err(|err| {
+                PyErr::new::<PyValueError, _>(format!(
+                    "Calculate_targeted_long_with_budget returned the error: {:?}",
+                    err
+                ))
+            })?;
         let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn calculate_shares_in_given_bonds_out_down(&self, amount_in: &str) -> PyResult<String> {
-        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
-        })?);
-        let result_fp = self
-            .state
-            .calculate_shares_in_given_bonds_out_down(amount_in_fp);
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn calculate_shares_out_given_bonds_in_down(&self, amount_in: &str) -> PyResult<String> {
-        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
-            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
-        })?);
-        let result_fp = self
-            .state
-            .calculate_shares_out_given_bonds_in_down(amount_in_fp);
-        let result = U256::from(result_fp).to_string();
-        return Ok(result);
-    }
-
-    pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
-        let time_int = U256::from_dec_str(time)
-            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
-        let result_int = self.state.to_checkpoint(time_int);
-        let result = result_int.to_string();
         return Ok(result);
     }
 
@@ -289,6 +350,60 @@ impl HyperdriveState {
     pub fn calculate_idle_share_reserves_in_base(&self) -> PyResult<String> {
         let result_fp = self.state.calculate_idle_share_reserves_in_base();
         let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_bonds_out_given_shares_in_down(&self, amount_in: &str) -> PyResult<String> {
+        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
+        })?);
+        let result_fp = self
+            .state
+            .calculate_bonds_out_given_shares_in_down(amount_in_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_shares_in_given_bonds_out_up(&self, amount_in: &str) -> PyResult<String> {
+        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
+        })?);
+        // We unwrap the error here to throw panic error if this fails
+        let result_fp = self
+            .state
+            .calculate_shares_in_given_bonds_out_up_safe(amount_in_fp)
+            .unwrap();
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_shares_in_given_bonds_out_down(&self, amount_in: &str) -> PyResult<String> {
+        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
+        })?);
+        let result_fp = self
+            .state
+            .calculate_shares_in_given_bonds_out_down(amount_in_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn calculate_shares_out_given_bonds_in_down(&self, amount_in: &str) -> PyResult<String> {
+        let amount_in_fp = FixedPoint::from(U256::from_dec_str(amount_in).map_err(|_| {
+            PyErr::new::<PyValueError, _>("Failed to convert amount_in string to U256")
+        })?);
+        let result_fp = self
+            .state
+            .calculate_shares_out_given_bonds_in_down(amount_in_fp);
+        let result = U256::from(result_fp).to_string();
+        return Ok(result);
+    }
+
+    pub fn to_checkpoint(&self, time: &str) -> PyResult<String> {
+        let time_int = U256::from_dec_str(time)
+            .map_err(|_| PyErr::new::<PyValueError, _>("Failed to convert time string to U256"))?;
+        let result_int = self.state.to_checkpoint(time_int);
+        let result = result_int.to_string();
         return Ok(result);
     }
 }

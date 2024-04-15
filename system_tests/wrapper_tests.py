@@ -51,8 +51,20 @@ def test_calculate_max_spot_price():
 
 def test_calculate_spot_price_after_long():
     """test calculate_spot_price_after_long."""
-    spot_price = hyperdrivepy.calculate_spot_price_after_long(POOL_CONFIG, POOL_INFO, long_amount=str(1_000 * 10**18))
+    spot_price = hyperdrivepy.calculate_spot_price_after_long(
+        POOL_CONFIG, POOL_INFO, base_amount=str(1_000 * 10**18), bond_amount=None
+    )
     assert spot_price is not None, "Failed to calculate spot price after long."
+    assert isinstance(spot_price, str), "Expected spot rate to be a string."
+    assert int(spot_price) > 0, "Expected max_spot_price to > 0."
+
+
+def test_calculate_spot_price_after_short():
+    """test calculate_spot_price_after_short."""
+    spot_price = hyperdrivepy.calculate_spot_price_after_short(
+        POOL_CONFIG, POOL_INFO, bond_amount=str(100 * 10**18), base_amount=None
+    )
+    assert spot_price is not None, "Failed to calculate spot price after short."
     assert isinstance(spot_price, str), "Expected spot rate to be a string."
     assert int(spot_price) > 0, "Expected max_spot_price to > 0."
 
@@ -63,6 +75,14 @@ def test_calculate_solvency():
     assert solvency is not None, "Failed to calculate spot price after long."
     assert isinstance(solvency, str), "Expected spot rate to be a string."
     assert int(solvency) > 0, "Expected max_spot_price to > 0."
+
+
+def test_calculate_spot_rate_after_long():
+    """test calculate_spot_rate_after_long."""
+    spot_rate = hyperdrivepy.calculate_spot_rate_after_long(POOL_CONFIG, POOL_INFO, base_amount=str(int(1_000e18)))
+    assert spot_rate is not None, "Failed to calculate spot rate after long."
+    assert isinstance(spot_rate, str), "Expected spot rate to be a string."
+    assert int(spot_rate) > 0, "Expected spot rate to > 0."
 
 
 def test_calculate_spot_rate():
@@ -217,6 +237,25 @@ def test_calculate_close_short():
         current_time,
     )
     assert int(shares_received) > 0
+
+
+def test_targeted_long():
+    """Test calculate_targeted_long_with_budget."""
+    budget = "1000000000000000000"  # 1 base
+    checkpoint_exposure = "10000"
+    max_iterations = 20
+    allowable_error = "0000000010000000000"
+    target = "001000000000000000"
+    targeted_long = hyperdrivepy.calculate_targeted_long(
+        POOL_CONFIG,
+        POOL_INFO,
+        budget,
+        target,
+        checkpoint_exposure,
+        max_iterations,
+        allowable_error,
+    )
+    assert int(targeted_long) > 0
 
 
 def test_max_long():
