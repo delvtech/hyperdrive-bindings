@@ -358,8 +358,8 @@ def calculate_targeted_long(
     budget: str,
     target_rate: str,
     checkpoint_exposure: str,
-    maybe_max_iterations: int | None,
-    maybe_allowable_error: str,
+    maybe_max_iterations: int | None = None,
+    maybe_allowable_error: str | None = None,
 ) -> str:
     """Calculate the amount of bonds that can be purchased for the given budget.
 
@@ -377,9 +377,9 @@ def calculate_targeted_long(
         The target fixed rate.
     checkpoint_exposure: str (I256)
         The net exposure for the given checkpoint.
-    maybe_max_iterations: int, optional
+    maybe_max_iterations: int | None, optional
         The number of iterations to use for the Newtonian method.
-    maybe_allowable_error: str, FixedPoint
+    maybe_allowable_error: str, FixedPoint | None, optional
         The amount of error supported for reaching the target rate.
 
 
