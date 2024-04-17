@@ -29,7 +29,7 @@ const apr = hyperwasm.getSpotRate(poolInfo, poolConfig); // => '0.03499999999999
 [Install wasm-pack](https://rustwasm.github.io/wasm-pack/installer/) then run:
 
 ```sh
-sh ./build.sh
+sh ./scripts/build.sh
 ```
 
 This will create the node package at `./pkg/`, add a couple exports so the

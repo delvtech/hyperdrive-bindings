@@ -58,10 +58,19 @@ impl HyperdriveState {
         &self,
         bond_amount: &str,
         maybe_base_amount: Option<&str>,
+        maybe_open_vault_share_price: Option<&str>,
     ) -> PyResult<String> {
         let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
         })?);
+        let open_vault_share_price_fp = FixedPoint::from(
+            U256::from_dec_str(maybe_open_vault_share_price).map_err(|_| {
+                PyErr::new::<PyValueError, _>(
+                    "Failed to convert open_vault_share_price string to U256",
+                )
+            })?,
+        );
+
         let maybe_base_amount_fp = if let Some(base_amount) = maybe_base_amount {
             Some(FixedPoint::from(U256::from_dec_str(base_amount).map_err(
                 |_| {
@@ -75,7 +84,11 @@ impl HyperdriveState {
         };
         let result_fp = self
             .state
-            .calculate_spot_price_after_short(bond_amount_fp, maybe_base_amount_fp)
+            .calculate_spot_price_after_short(
+                bond_amount_fp,
+                open_vault_share_price_fp,
+                maybe_base_amount_fp,
+            )
             .unwrap();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
@@ -154,11 +167,11 @@ impl HyperdriveState {
 
     pub fn calculate_open_short(
         &self,
-        short_amount: &str,
+        bond_amount: &str,
         spot_price: &str,
         open_vault_share_price: &str,
     ) -> PyResult<String> {
-        let short_amount_fp = FixedPoint::from(U256::from_dec_str(short_amount).map_err(|_| {
+        let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert short_amount string to U256")
         })?);
         let spot_price_fp = FixedPoint::from(U256::from_dec_str(spot_price).map_err(|_| {
@@ -172,7 +185,7 @@ impl HyperdriveState {
             })?);
         let result_fp = self
             .state
-            .calculate_open_short(short_amount_fp, spot_price_fp, open_vault_share_price_fp)
+            .calculate_open_short(bond_amount_fp, spot_price_fp, open_vault_share_price_fp)
             .unwrap();
         let result = U256::from(result_fp).to_string();
         return Ok(result);
