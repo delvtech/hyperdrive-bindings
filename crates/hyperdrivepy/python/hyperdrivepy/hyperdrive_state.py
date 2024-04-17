@@ -379,7 +379,7 @@ def calculate_targeted_long(
         The net exposure for the given checkpoint.
     maybe_max_iterations: int | None, optional
         The number of iterations to use for the Newtonian method.
-    maybe_allowable_error: str, FixedPoint | None, optional
+    maybe_allowable_error: str (FixedPoint) | None, optional
         The amount of error supported for reaching the target rate.
 
 

@@ -57,18 +57,19 @@ impl HyperdriveState {
     pub fn calculate_spot_price_after_short(
         &self,
         bond_amount: &str,
-        open_vault_share_price: &str,
         maybe_base_amount: Option<&str>,
+        maybe_open_vault_share_price: Option<&str>,
     ) -> PyResult<String> {
         let bond_amount_fp = FixedPoint::from(U256::from_dec_str(bond_amount).map_err(|_| {
             PyErr::new::<PyValueError, _>("Failed to convert bond_amount string to U256")
         })?);
-        let open_vault_share_price_fp =
-            FixedPoint::from(U256::from_dec_str(open_vault_share_price).map_err(|_| {
+        let open_vault_share_price_fp = FixedPoint::from(
+            U256::from_dec_str(maybe_open_vault_share_price).map_err(|_| {
                 PyErr::new::<PyValueError, _>(
                     "Failed to convert open_vault_share_price string to U256",
                 )
-            })?);
+            })?,
+        );
 
         let maybe_base_amount_fp = if let Some(base_amount) = maybe_base_amount {
             Some(FixedPoint::from(U256::from_dec_str(base_amount).map_err(
