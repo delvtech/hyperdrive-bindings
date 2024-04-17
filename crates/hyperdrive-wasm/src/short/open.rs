@@ -63,7 +63,9 @@ pub fn spotPriceAfterShort(
     };
     let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
 
-    let result_fp = state.calculate_spot_price_after_short(bond_amount, None);
+    let result_fp = state
+        .calculate_spot_price_after_short(bond_amount, None)
+        .unwrap();
 
     U256::from(result_fp).to_string()
 }

@@ -43,7 +43,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - name: setup foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -54,8 +54,8 @@ jobs:
         uses: actions/checkout@master
         with:
           repository: delvtech/hyperdrive
-          ref: 'v1.0.0'
-          path: './hyperdrive'
+          ref: "v1.0.1"
+          path: "./hyperdrive"
 
       - name: build hyperdrive-wasm
         working-directory: crates/hyperdrive-wasm
