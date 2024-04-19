@@ -1,13 +1,12 @@
 #![allow(non_snake_case)]
 
-
 mod long;
 mod lp;
 mod short;
 mod types;
 mod utils;
 
-use ethers::types::U256;
+use ethers::{core::k256::elliptic_curve::rand_core::block, types::U256};
 use hyperdrive_math::State;
 use types::{JsPoolConfig, JsPoolInfo};
 use utils::set_panic_hook;
@@ -42,6 +41,25 @@ pub fn idleShareReservesInBase(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig)
         info: poolInfo.into(),
     };
     let result_fp = state.calculate_idle_share_reserves_in_base();
+    U256::from(result_fp).to_string()
+}
+
+/// Calculates the pool's present value in base
+///
+/// @param poolInfo - The current state of the pool
+///
+/// @param poolConfig - The pool's configuration
+///
+/// @param currentTime - The time at which to grab the present value
+#[wasm_bindgen(skip_jsdoc)]
+pub fn presentValue(poolInfo: &JsPoolInfo, poolConfig: &JsPoolConfig, currentTime: &str) -> String {
+    set_panic_hook();
+    let state = State {
+        config: poolConfig.into(),
+        info: poolInfo.into(),
+    };
+    let current_time = U256::from_dec_str(currentTime).unwrap();
+    let result_fp = state.calculate_present_value(current_time);
     U256::from(result_fp).to_string()
 }
 
