@@ -31,12 +31,11 @@ pub fn calcOpenShort(
         info: poolInfo.into(),
         config: poolConfig.into(),
     };
-    let short_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
+    let bond_amount = FixedPoint::from(U256::from_dec_str(bondAmount).unwrap());
     let open_vault_share_price = FixedPoint::from(U256::from_dec_str(openVaultSharePrice).unwrap());
-    let spot_price = state.calculate_spot_price();
 
     let result_fp = state
-        .calculate_open_short(short_amount, spot_price, open_vault_share_price)
+        .calculate_open_short(bond_amount, open_vault_share_price)
         .unwrap();
 
     U256::from(result_fp).to_string()
