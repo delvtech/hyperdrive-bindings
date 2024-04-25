@@ -205,18 +205,15 @@ def test_calculate_close_long():
 def test_calculate_open_short():
     """Test for calculate_open_short."""
     short_amount = str(50 * 10**18)
-    spot_price = hyperdrivepy.calculate_spot_price(POOL_CONFIG, POOL_INFO)
     open_vault_share_price = str(9 * 10**17)
-    base_required = hyperdrivepy.calculate_open_short(
-        POOL_CONFIG, POOL_INFO, short_amount, spot_price, open_vault_share_price
-    )
+    base_required = hyperdrivepy.calculate_open_short(POOL_CONFIG, POOL_INFO, short_amount, open_vault_share_price)
     assert int(base_required) > 0
     base_required_default_vault_share_price = hyperdrivepy.calculate_open_short(
-        POOL_CONFIG, POOL_INFO, short_amount, spot_price, None
+        POOL_CONFIG, POOL_INFO, short_amount, None
     )
     assert int(base_required_default_vault_share_price) > 0
     assert base_required_default_vault_share_price == hyperdrivepy.calculate_open_short(
-        POOL_CONFIG, POOL_INFO, short_amount, spot_price, "0"
+        POOL_CONFIG, POOL_INFO, short_amount, "0"
     )
 
 
