@@ -253,7 +253,6 @@ def calculate_open_short(
     pool_config: types.PoolConfigType,
     pool_info: types.PoolInfoType,
     short_amount: str,
-    spot_price: str,
     open_vault_share_price: str | None = None,
 ) -> str:
     """Gets the amount of base the trader will need to deposit for a short of a given size.
@@ -268,8 +267,6 @@ def calculate_open_short(
         Includes attributes like reserve levels and share prices.
     short_amount: str (FixedPoint)
         The amount to of bonds to short.
-    spot_price: str (FixedPoint)
-        The pool's current price for bonds.
     open_vault_share_price: str (FixedPoint) | None, optional
         Optionally provide the open share price for the short.
         If this is not provided or is None, then we will use the pool's current share price.
@@ -283,7 +280,7 @@ def calculate_open_short(
         # the underlying rust code uses current market share price if this is 0
         # zero value is used because the smart contract will return 0 if the checkpoint hasn't been minted
         open_vault_share_price = "0"
-    return _get_interface(pool_config, pool_info).calculate_open_short(short_amount, spot_price, open_vault_share_price)
+    return _get_interface(pool_config, pool_info).calculate_open_short(short_amount, open_vault_share_price)
 
 
 def calculate_close_short(
