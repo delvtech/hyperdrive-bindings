@@ -44,7 +44,7 @@ jobs:
           path: "./hyperdrive-rs"
 
       - name: check out hyperdrive
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: delvtech/hyperdrive
           ref: "v1.0.3"
