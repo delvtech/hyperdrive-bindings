@@ -50,12 +50,20 @@ jobs:
         with:
           version: nightly
 
+      - name: Check out hyperdrive-rs
+        uses: actions/checkout@v4
+        with:
+          repository: delvtech/hyperdrive-rs
+          ref: "v0.1.0"
+          path: "./hyperdrive-rs"
+
       - name: check out hyperdrive
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
         with:
           repository: delvtech/hyperdrive
           ref: "v1.0.3"
-          path: "./hyperdrive"
+          path: "./hyperdrive-rs/hyperdrive"
+          ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
       - name: build hyperdrive-wasm
         working-directory: crates/hyperdrive-wasm

@@ -25,29 +25,40 @@ jobs:
     name: python lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout hyperdrive-bindings
+        uses: actions/checkout@v4
         with:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # NOTE: This is needed to ensure that hyperdrive-wrappers builds correctly.
-      - name: install foundry
+      - name: Install foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
 
-      - name: check out hyperdrive-rs
+      - name: Fetch latest release tag from hyperdrive
+        run: ./scripts/fetch-latest-tag.sh delvtech hyperdrive
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fetch latest release tag from hyperdrive-rs
+        run: ./scripts/fetch-latest-tag.sh delvtech hyperdrive-rs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check out hyperdrive-rs
         uses: actions/checkout@v4
         with:
           repository: delvtech/hyperdrive-rs
-          ref: "v1.0.3"
+          ref: ${{ env.latest_tag_hyperdrive-rs }}
           path: "./hyperdrive-rs"
 
       - name: check out hyperdrive
         uses: actions/checkout@v4
         with:
           repository: delvtech/hyperdrive
-          ref: "v1.0.3"
+          ref: ${{ env.latest_tag_hyperdrive }}
           path: "./hyperdrive-rs/hyperdrive"
           ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
 
