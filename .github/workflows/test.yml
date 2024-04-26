@@ -30,19 +30,28 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: check out hyperdrive
-        uses: actions/checkout@master
-        with:
-          repository: delvtech/hyperdrive
-          ref: "v1.0.3"
-          path: "./hyperdrive"
-          ssh-key: ${{ secrets.HYPERDRIVE_ACCESS_KEY }}
-
       # NOTE: This is needed to ensure that hyperdrive-wrappers builds correctly.
       - name: install foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
+
+      - name: check out hyperdrive-rs
+        uses: actions/checkout@v3
+        with:
+          repository: delvtech/hyperdrive-rs
+          ref: "v1.0.3"
+          path: "./hyperdrive-rs"
+
+      - name: check out hyperdrive
+        uses: actions/checkout@v3
+        with:
+          repository: delvtech/hyperdrive
+          ref: "v1.0.3"
+          path: "./hyperdrive-rs/hyperdrive"
+
+      - name: build hyperdrive
+        run: cd hyperdrive-rs/hyperdrive && make build-sol
 
       - name: setup python
         uses: actions/setup-python@v4
