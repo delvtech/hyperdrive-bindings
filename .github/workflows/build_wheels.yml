@@ -47,7 +47,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: check out hyperdrive-rs
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: delvtech/hyperdrive-rs
           ref: "v1.0.1"
