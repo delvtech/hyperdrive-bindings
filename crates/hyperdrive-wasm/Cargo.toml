@@ -21,10 +21,11 @@ wasm-bindgen-futures = "0.4.36"
 wasm-bindgen = { version = "0.2.86", features = ["serde-serialize"] }
 hex = { package = "const-hex", version = "1.6", features = ["hex"] }
 
-fixed-point = { version = "0.1.0", path = "../../hyperdrive-rs/crates/fixed-point" }
-fixed-point-macros = { version = "0.1.0", path = "../../hyperdrive-rs/crates/fixed-point-macros" }
-hyperdrive-math = { version = "0.1.0", path = "../../hyperdrive-rs/crates/hyperdrive-math" }
-hyperdrive-wrappers = { version = "0.1.0", path = "../../hyperdrive-rs/crates/hyperdrive-wrappers" }
+hyperdrive-rs = { version = "0.1.0", path="../../hyperdrive-rs/" }
+# fixed-point = { version = "0.1.0", path = "../../hyperdrive-rs/crates/fixed-point" }
+# fixed-point-macros = { version = "0.1.0", path = "../../hyperdrive-rs/crates/fixed-point-macros" }
+# hyperdrive-math = { version = "0.1.0", path = "../../hyperdrive-rs/crates/hyperdrive-math" }
+# hyperdrive-wrappers = { version = "0.1.0", path = "../../hyperdrive-rs/crates/hyperdrive-wrappers" }
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires

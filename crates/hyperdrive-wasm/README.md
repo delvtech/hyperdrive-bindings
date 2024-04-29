@@ -1,7 +1,7 @@
 # hyperdrive-wasm
 
 WASM wrappers for
-[hyperdrive-rs](https://github.com/delvtech/hyperdrive/tree/main/crates/hyperdrive-math)
+[hyperdrive-rs](https://github.com/delvtech/hyperdrive-rs)
 built using [wasm-pack](https://github.com/rustwasm/wasm-pack).
 
 ## Installing

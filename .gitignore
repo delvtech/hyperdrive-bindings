@@ -1,5 +1,6 @@
 # simlinked hyperdrive repo
 hyperdrive
+hyperdrive-rs
 
 # build cache
 cache/
