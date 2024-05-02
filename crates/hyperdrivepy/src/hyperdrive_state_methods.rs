@@ -338,7 +338,7 @@ impl HyperdriveState {
             })?;
         let result_fp = self
             .state
-            .calculate_present_value(current_block_timestamp_int);
+            .calculate_present_value(current_block_timestamp_int)?;
         let result = U256::from(result_fp).to_string();
         return Ok(result);
     }
