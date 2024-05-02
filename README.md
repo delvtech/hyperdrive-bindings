@@ -1,6 +1,10 @@
 [![license: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-lightgrey)](http://www.apache.org/licenses/LICENSE-2.0)
 [![DELV - Terms of Service](https://img.shields.io/badge/DELV-Terms_of_Service-orange)](https://elementfi.s3.us-east-2.amazonaws.com/element-finance-terms-of-service.pdf)
 
+# ⚠️ Deprecated ⚠️
+
+The Python bindings have been moved to [hyperdrive-rs](https://github.com/delvtech/hyperdrive-rs) and the WASM bindings have been moved to [hyperdrive-frontend](https://github.com/delvtech/hyperdrive-frontend).
+
 # Hyperdrive-bindings
 
 [Hyperdrive](https://hyperdrive.delv.tech) is an automated market maker that enables fixed-rate markets to be built on top of arbitrary yield sources.
